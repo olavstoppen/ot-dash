@@ -1,4 +1,4 @@
-@import "~normalize.css/normalize.css";
+@import '~modern-normalize/modern-normalize.css';
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400");
 @import "styles/colors";
 
@@ -8,8 +8,8 @@ html {
 }
 
 body {
-  background-color: $white;
-  color: $black;
+  background-color: $black;
+  color: $white;
   font-family: "Lato", sans-serif;
   height: 100vh;
   overflow: none;
