@@ -1,0 +1,30 @@
+@import "~normalize.css/normalize.css";
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400");
+@import "styles/colors";
+
+html {
+  font-size: 36px;
+  font-size: 1vmax;
+}
+
+body {
+  background-color: $white;
+  color: $black;
+  font-family: "Lato", sans-serif;
+  height: 100vh;
+  overflow: none;
+}
+
+iframe {
+  border: 0 none;
+}
+
+header {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
