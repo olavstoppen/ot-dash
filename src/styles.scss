@@ -8,11 +8,19 @@ html {
 }
 
 body {
-  background-color: $black;
-  color: $white;
+  background: $white;
+  color: $black;
   font-family: "Lato", sans-serif;
   height: 100vh;
-  overflow: none;
+  width: 100vw;
+
+  overflow: hidden;
+}
+
+main {
+  display: relative;
+  height: 100vh;
+  width: 100vw;
 }
 
 iframe {
@@ -26,5 +34,81 @@ header {
   img {
     width: 50%;
     margin: 0 auto;
+  }
+}
+
+.background {
+  position: fixed;
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 64vw 22vw 14vw;
+  grid-template-rows: 100%;
+  grid-template-areas: "page middle sidebar";
+  z-index: -1;
+}
+
+.sidebar {
+  background: $blue;
+  grid-area: sidebar;
+}
+
+.background__page {
+  grid-area: page;
+  background: $white;
+}
+
+.background__divider {
+  background: $black;
+  grid-area: middle;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  a {
+    color: $grey-light;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: 400;
+    transform: rotate(90deg);
+
+    &.active {
+      color: $white;
+      text-decoration: underline;
+    }
+  }
+
+}
+
+.page {
+  padding: 5vw;
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-gap: 2vw;
+  grid-template-columns: repeat(24, 4vw);
+  grid-template-rows: repeat(24, 4vw);
+
+  .annotation {
+    grid-column: 1 / span 14;
+    grid-row: 1 / span 2;
+  }
+
+  .title {
+    grid-column: 1 / span 14;
+    grid-row: 4 / span 3;
+  }
+
+  .content {
+    grid-column: 1 / span 14;
+    grid-row: 6 / span 10;
+  }
+
+  .middle {
+    grid-column: 10 / span 14;
+    grid-row: 6 / span 10;
   }
 }

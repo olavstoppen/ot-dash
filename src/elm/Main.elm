@@ -1,4 +1,4 @@
-port module Main exposing (Model, Msg(..), add1, init, main, toJs, update, view)
+port module Main exposing (add1, main, toJs, update, view)
 
 import Browser
 import Browser.Navigation as Nav
@@ -7,6 +7,8 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Json.Decode as Decode
+import Model exposing (Model, Msg(..), initModel)
+import Page.Transit as Transit
 
 
 
@@ -24,15 +26,9 @@ port toJs : String -> Cmd msg
 -- ---------------------------
 
 
-type alias Model =
-    { counter : Int
-    , serverMessage : String
-    }
-
-
 init : Int -> ( Model, Cmd Msg )
 init flags =
-    ( { counter = flags, serverMessage = "" }, Cmd.none )
+    ( initModel flags, Cmd.none )
 
 
 
@@ -41,21 +37,11 @@ init flags =
 -- ---------------------------
 
 
-type Msg
-    = Inc
-    | Set Int
-    | TestServer
-    | OnServerResponse (Result Http.Error String)
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         Inc ->
-            ( add1 model, toJs "Hello Js" )
-
-        Set m ->
-            ( { model | counter = m }, toJs "Hello Js" )
+            ( add1 model, toJs "Hello hm" )
 
         TestServer ->
             let
@@ -112,35 +98,29 @@ add1 model =
 
 view : Model -> Html Msg
 view model =
-    div [ class "container" ]
-        [ header []
-            [ img [ src "/images/logo.png" ] []
-            ]
-        , p [] [ text "Click on the button below to increment the state." ]
-        , div [ class "pure-g" ]
-            [ div [ class "pure-u-1-3" ]
-                [ button
-                    [ class "pure-button pure-button-primary"
-                    , onClick Inc
-                    ]
-                    [ text "+ 1" ]
-                , text <| String.fromInt model.counter
-                ]
-            , div [ class "pure-u-1-3" ] []
-            , div [ class "pure-u-1-3" ]
-                [ button
-                    [ class "pure-button pure-button-primary"
-                    , onClick TestServer
-                    ]
-                    [ text "ping dev server" ]
-                , text model.serverMessage
-                ]
-            ]
-        , p [] [ text "Then make a change to the source code and see how the state is retained after you recompile." ]
-        , p []
-            [ text "And now don't forget to add a star to the Github repo "
-            , a [ href "https://github.com/simonh1000/elm-webpack-starter" ] [ text "elm-webpack-starter" ]
-            ]
+    main_ []
+        [ background model
+        , Transit.transit model
+        ]
+
+
+background : Model -> Html Msg
+background model =
+    div [ class "background" ]
+        [ div [ class "background__page" ] []
+        , div [ class "background__divider" ] []
+        , sidebar model
+        ]
+
+
+sidebar : Model -> Html Msg
+sidebar model =
+    nav [ class "sidebar" ]
+        [ a [] [ text "Slack" ]
+        , a [] [ text "Weather" ]
+        , a [ class "active" ] [ text "Transit" ]
+        , a [] [ text "Instagram" ]
+        , a [] [ text "Birthday" ]
         ]
 
 
