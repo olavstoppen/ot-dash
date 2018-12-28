@@ -2,12 +2,14 @@ port module Main exposing (add1, main, toJs, update, view)
 
 import Browser
 import Browser.Navigation as Nav
+import Helpers exposing (getPageKey)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Json.Decode as Decode
-import Model exposing (Model, Msg(..), initModel)
+import Model exposing (..)
+import Page.Slack as Slack
 import Page.Transit as Transit
 
 
@@ -100,8 +102,23 @@ view : Model -> Html Msg
 view model =
     main_ []
         [ background model
-        , Transit.transit model
+        , getPage model
         ]
+
+
+getPage : Model -> Html Msg
+getPage model =
+    model
+        |> (case model.page of
+                Transit ->
+                    Transit.view
+
+                Slack ->
+                    Slack.view
+
+                Birthday ->
+                    Transit.view
+           )
 
 
 background : Model -> Html Msg

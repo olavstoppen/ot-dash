@@ -1,5 +1,6 @@
-module Util exposing (formatDate)
+module Helpers exposing (formatDate, getPageKey)
 
+import Model exposing (Page)
 import Time exposing (Posix, toHour, toMinute, toSecond, utc)
 
 
@@ -11,3 +12,8 @@ formatDate time =
         ++ ":"
         ++ String.fromInt (toSecond utc time)
         ++ " (UTC)"
+
+
+getPageKey : Page -> String
+getPageKey page =
+    ""
