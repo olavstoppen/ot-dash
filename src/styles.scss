@@ -62,6 +62,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  align-items: center;
 
   a {
     color: $grey-light;
@@ -173,12 +174,15 @@ nav {
 }
 
 .ellipse {
+  $size: calc(16px + 1vmax);
   background: $black;
   color: $white;
-
+  fill: $white;
   border-radius: 50%;
-  width: calc(16px + 1vmax);
-  height: calc(16px + 1vmax);
+  width: $size;
+  height: $size;
+  min-width: $size;
+  min-height: $size;
   display: flex;
   align-items: center;
   justify-content: center;
