@@ -92,6 +92,7 @@ nav {
     align-items: center;
 
     > * {
+      display: flex;
       margin-right: 1.5vmax;
     }
 
@@ -192,7 +193,7 @@ nav {
   height: 1vmax;
   width: 1vmax;
   @at-root #{&}--med {
-    height: 1.6vmax;
-    width: 1.6vmax;
+    height: 1.3vmax;
+    width: 1.3vmax;
   }
 }
