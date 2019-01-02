@@ -146,20 +146,10 @@ nav.sidebar {
   @at-root #{&}__transit {
     iframe.transit__map {
       $size: 100%;
-
       height: $size;
       width: $size;
+      background-color: $grey-light;
 
-      .rtmap-page {
-        > .leaflet-control-container {
-          > .leaflet-top {
-            &.leaflet-right {
-              display: none !important;
-            }
-          }
-        }
-
-      }
     }
 
     .departures {

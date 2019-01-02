@@ -15,28 +15,53 @@ import Page.Slack as Slack
 import Page.Transit as Transit
 import Page.Weather as Weather
 import Services exposing (fetchDepartures)
+import Time exposing (..)
 import Url exposing (Url)
 import Url.Parser as UrlParser exposing ((</>), Parser)
-
-
-
--- ---------------------------
--- PORTS
--- ---------------------------
 
 
 port toJs : String -> Cmd msg
 
 
-
--- ---------------------------
--- MODEL
--- ---------------------------
+urlParser : Parser (Page -> msg) msg
+urlParser =
+    UrlParser.oneOf
+        [ UrlParser.map Transit <| UrlParser.s "transit"
+        , UrlParser.map Slack <| UrlParser.s "slack"
+        , UrlParser.map Birthday <| UrlParser.s "birthday"
+        , UrlParser.map Instagram <| UrlParser.s "instagram"
+        , UrlParser.map Weather <| UrlParser.s "weather"
+        ]
 
 
 init : Int -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( initModel flags url key, fetchDepartures OnServerResponse )
+    let
+        activePage =
+            Maybe.withDefault Birthday <|
+                UrlParser.parse urlParser url
+
+        model =
+            { key = key
+            , serverMessage = ""
+            , activePage = activePage
+            , pages =
+                [ Transit
+                , Slack
+                , Birthday
+                ]
+            , departures =
+                [ Bus <| Departure (millisToPosix 123123123) "Kvernevik" "3"
+                , Train <| Departure (millisToPosix 5645645645) "Tog til Sandnes" "X76"
+                , Bus <| Departure (millisToPosix 234234234) "Buss til Forus" "6"
+                , Unknown
+                ]
+            , weather = []
+            , birthdays = []
+            , slack = SlackData "" [] []
+            }
+    in
+    ( model, Nav.pushUrl key (getPageKey activePage) )
 
 
 
@@ -70,7 +95,7 @@ update message model =
                     ( { model | serverMessage = "Error: " ++ httpErrorToString err }, Cmd.none )
 
 
-handleUrlRequest : Key -> UrlRequest -> Cmd msg
+handleUrlRequest : Key -> UrlRequest -> Cmd Msg
 handleUrlRequest key urlRequest =
     case urlRequest of
         Internal url ->

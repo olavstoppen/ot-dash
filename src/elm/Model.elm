@@ -1,4 +1,4 @@
-module Model exposing (Departure, Emoji, Forecast(..), Href, InstagramInfo, Model, Msg(..), Page(..), Person, SlackData, SlackEvent(..), Temperature, Transport(..), WeatherData, initModel, urlParser)
+module Model exposing (Departure, Emoji, Forecast(..), Href, InstagramInfo, Model, Msg(..), Page(..), Person, SlackData, SlackEvent(..), Temperature, Transport(..), WeatherData)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -116,39 +116,6 @@ type alias Href =
 
 type alias Emoji =
     Href
-
-
-urlParser : Parser (Page -> msg) msg
-urlParser =
-    UrlParser.oneOf
-        [ UrlParser.map Transit <| UrlParser.s "transit"
-        , UrlParser.map Slack <| UrlParser.s "slack"
-        , UrlParser.map Birthday <| UrlParser.s "birthday"
-        , UrlParser.map Instagram <| UrlParser.s "instagram"
-        , UrlParser.map Weather <| UrlParser.s "weather"
-        ]
-
-
-initModel : Int -> Url -> Key -> Model
-initModel flags url key =
-    { key = key
-    , serverMessage = ""
-    , activePage = Maybe.withDefault Transit <| UrlParser.parse urlParser url
-    , pages =
-        [ Transit
-        , Slack
-        , Birthday
-        ]
-    , departures =
-        [ Bus <| Departure (millisToPosix 123123123) "Kvernevik" "3"
-        , Train <| Departure (millisToPosix 5645645645) "Tog til Sandnes" "X76"
-        , Bus <| Departure (millisToPosix 234234234) "Buss til Forus" "6"
-        , Unknown
-        ]
-    , weather = []
-    , birthdays = []
-    , slack = SlackData "" [] []
-    }
 
 
 type Msg

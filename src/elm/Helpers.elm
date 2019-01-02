@@ -29,10 +29,10 @@ getPageKey page =
             "slack"
 
         Weather ->
-            "slack"
+            "weather"
 
         Instagram ->
-            "slack"
+            "instagram"
 
 
 getPageTitle : Page -> String
