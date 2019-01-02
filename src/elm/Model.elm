@@ -1,4 +1,4 @@
-module Model exposing (Model, Msg(..), Page(..), Passing, Transport(..), initModel)
+module Model exposing (Departure, Model, Msg(..), Page(..), Transport(..), initModel)
 
 import Http exposing (Error(..))
 import Time exposing (..)
@@ -8,7 +8,10 @@ type alias Model =
     { counter : Int
     , serverMessage : String
     , page : Page
-    , passings : List Transport
+    , departures : List Transport
+    , weather : List Forecast
+    , birthdays : List Person
+    , slack : SlackData
     }
 
 
@@ -17,12 +20,12 @@ type alias Model =
 
 
 type Transport
-    = Train Passing
-    | Bus Passing
+    = Train Departure
+    | Bus Departure
     | Unknown
 
 
-type alias Passing =
+type alias Departure =
     { time : Posix
     , destination : String
     , name : String
@@ -44,7 +47,7 @@ type alias Person =
 -- Slack
 
 
-type alias SlackInfo =
+type alias SlackData =
     { imageUrl : Url
     , topEmojis : List Emoji
     , lastestEvents : List SlackEvent
@@ -84,6 +87,12 @@ type alias Emoji =
 -- Weather
 
 
+type Forecast
+    = Sunny WeatherData
+    | Cloudy WeatherData
+    | Rain WeatherData
+
+
 type alias Temperature =
     Int
 
@@ -113,10 +122,13 @@ initModel flags =
     { counter = flags
     , serverMessage = ""
     , page = Transit
-    , passings =
-        [ Bus <| Passing (millisToPosix 123123123) "Kvernevik" "3"
-        , Train <| Passing (millisToPosix 5645645645) "Tog til Sandnes" "X76"
-        , Bus <| Passing (millisToPosix 234234234) "Buss til Forus" "6"
+    , departures =
+        [ Bus <| Departure (millisToPosix 123123123) "Kvernevik" "3"
+        , Train <| Departure (millisToPosix 5645645645) "Tog til Sandnes" "X76"
+        , Bus <| Departure (millisToPosix 234234234) "Buss til Forus" "6"
         , Unknown
         ]
+    , weather = []
+    , birthdays = []
+    , slack = SlackData "" [] []
     }

@@ -2,6 +2,7 @@ module Page.Transit exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Model exposing (..)
 import Svg exposing (path, svg)
 import Svg.Attributes exposing (class, d, height, viewBox, width)
@@ -25,7 +26,7 @@ trainIcon =
         ]
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     div [ class "page page__transit" ]
         [ title
@@ -51,26 +52,26 @@ annotation =
 body : Model -> Html msg
 body model =
     div [ class "content" ]
-        [ div [ class "passings" ] <| List.map passing model.passings
+        [ div [ class "departures" ] <| List.map departure model.departures
         ]
 
 
-passing : Transport -> Html msg
-passing transport =
-    div [ class "passing" ] <|
+departure : Transport -> Html msg
+departure transport =
+    div [ class "departure" ] <|
         case transport of
             Unknown ->
                 [ text "Unknown transport" ]
 
-            Bus passing_ ->
-                [ div [ class "ellipse" ] [ text passing_.name ]
-                , div [] [ text passing_.destination ]
+            Bus departure_ ->
+                [ div [ class "ellipse" ] [ text departure_.name ]
+                , div [] [ text departure_.destination ]
                 , div [] [ text "10 min" ]
                 ]
 
-            Train passing_ ->
+            Train departure_ ->
                 [ div [ class "ellipse" ] [ trainIcon ]
-                , div [] [ text passing_.destination ]
+                , div [] [ text departure_.destination ]
                 , div [] [ text "30 min" ]
                 ]
 
