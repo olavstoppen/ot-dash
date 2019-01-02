@@ -12,6 +12,10 @@ type alias Model =
     }
 
 
+
+-- Transit
+
+
 type Transport
     = Train Passing
     | Bus Passing
@@ -25,6 +29,37 @@ type alias Passing =
     }
 
 
+
+-- Birthdays
+
+
+type alias Person =
+    { firstName : String
+    , lastName : String
+    , imageUrl : Url
+    }
+
+
+
+-- Slack
+
+
+type alias SlackInfo =
+    { imageUrl : Url
+    , topEmojis : List Emoji
+    , lastestEvents : List SlackEvent
+    }
+
+
+type SlackEvent
+    = Reaction Person Posix Emoji
+    | Message Person Posix
+
+
+
+-- Global
+
+
 type Msg
     = Inc
     | TestServer
@@ -35,6 +70,42 @@ type Page
     = Transit
     | Slack
     | Birthday
+
+
+type alias Url =
+    String
+
+
+type alias Emoji =
+    Url
+
+
+
+-- Weather
+
+
+type alias Temperature =
+    Int
+
+
+type alias WeatherData =
+    { high : Temperature
+    , low : Temperature
+    , feelslike : Temperature
+    , description : String
+    }
+
+
+
+-- Instagram
+
+
+type alias InstagramInfo =
+    { likes : Int
+    , comments : Int
+    , description : String
+    , imageUrl : Url
+    }
 
 
 initModel : Int -> Model
