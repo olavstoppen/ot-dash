@@ -1,5 +1,6 @@
 module Page.Transit exposing (view)
 
+import Helpers exposing (getPageTitle)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -29,16 +30,16 @@ trainIcon =
 view : Model -> Html Msg
 view model =
     div [ class "page page__transit" ]
-        [ title
+        [ title model
         , annotation
         , body model
         , div [ class "square" ] [ livemap model ]
         ]
 
 
-title : Html msg
-title =
-    h1 [ class "title" ] [ text "Transit" ]
+title : Model -> Html msg
+title model =
+    h1 [ class "title" ] [ text <| getPageTitle model.activePage ]
 
 
 annotation : Html msg

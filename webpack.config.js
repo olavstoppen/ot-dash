@@ -2,7 +2,6 @@ const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const elmMinify = require("elm-minify");
-
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -19,13 +18,15 @@ var common = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "dist"),
-    publicPath: "",
+    publicPath: "/",
     // webpack -p automatically adds hash when building for production
     filename: filename
   },
   plugins: [
     new HTMLWebpackPlugin({
+      // Use this template to get basic responsive meta tags
       template: "src/index.html",
+      // inject details of output file at end of body
       inject: "body"
     })
   ],

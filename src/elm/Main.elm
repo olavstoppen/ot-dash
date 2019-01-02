@@ -1,7 +1,7 @@
-port module Main exposing (add1, main, toJs, update, view)
+port module Main exposing (background, getPage, httpErrorToString, init, main, toJs, update, view)
 
-import Browser
-import Browser.Navigation as Nav
+import Browser exposing (UrlRequest(..))
+import Browser.Navigation as Nav exposing (Key)
 import Helpers exposing (getPageKey)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -9,9 +9,14 @@ import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Json.Decode as Decode
 import Model exposing (..)
+import Page.Birthday as Birthday
+import Page.Instagram as Instagram
 import Page.Slack as Slack
 import Page.Transit as Transit
+import Page.Weather as Weather
 import Services exposing (fetchDepartures)
+import Url exposing (Url)
+import Url.Parser as UrlParser exposing ((</>), Parser)
 
 
 
@@ -29,9 +34,9 @@ port toJs : String -> Cmd msg
 -- ---------------------------
 
 
-init : Int -> ( Model, Cmd Msg )
-init flags =
-    ( initModel flags, fetchDepartures OnServerResponse )
+init : Int -> Url -> Key -> ( Model, Cmd Msg )
+init flags url key =
+    ( initModel flags url key, fetchDepartures OnServerResponse )
 
 
 
@@ -43,8 +48,15 @@ init flags =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
-        Inc ->
-            ( add1 model, toJs "Hello hm" )
+        OnUrlRequest urlRequest ->
+            ( model, handleUrlRequest model.key urlRequest )
+
+        OnUrlChange url ->
+            ( { model
+                | activePage = Maybe.withDefault model.activePage <| UrlParser.parse urlParser url
+              }
+            , Cmd.none
+            )
 
         TestServer ->
             ( model, fetchDepartures OnServerResponse )
@@ -56,6 +68,16 @@ update message model =
 
                 Err err ->
                     ( { model | serverMessage = "Error: " ++ httpErrorToString err }, Cmd.none )
+
+
+handleUrlRequest : Key -> UrlRequest -> Cmd msg
+handleUrlRequest key urlRequest =
+    case urlRequest of
+        Internal url ->
+            Nav.pushUrl key (Url.toString url)
+
+        External url ->
+            Nav.load url
 
 
 httpErrorToString : Http.Error -> String
@@ -77,16 +99,6 @@ httpErrorToString err =
             "BadBody: " ++ s
 
 
-{-| increments the counter
-
-    add1 5 --> 6
-
--}
-add1 : Model -> Model
-add1 model =
-    { model | counter = model.counter + 1 }
-
-
 
 -- ---------------------------
 -- VIEW
@@ -97,14 +109,17 @@ view : Model -> Html Msg
 view model =
     main_ []
         [ background model
-        , getPage model
+        , div [ class "layout" ]
+            [ getPage model
+            , sidebar model
+            ]
         ]
 
 
 getPage : Model -> Html Msg
 getPage model =
     model
-        |> (case model.page of
+        |> (case model.activePage of
                 Transit ->
                     Transit.view
 
@@ -112,7 +127,13 @@ getPage model =
                     Slack.view
 
                 Birthday ->
-                    Transit.view
+                    Birthday.view
+
+                Weather ->
+                    Weather.view
+
+                Instagram ->
+                    Instagram.view
            )
 
 
@@ -121,18 +142,18 @@ background model =
     div [ class "background" ]
         [ div [ class "background__page" ] []
         , div [ class "background__divider" ] []
-        , sidebar model
+        , div [ class "background__sidebar" ] []
         ]
 
 
 sidebar : Model -> Html Msg
 sidebar model =
     nav [ class "sidebar" ]
-        [ a [] [ text "Slack" ]
-        , a [] [ text "Weather" ]
-        , a [ class "active" ] [ text "Transit" ]
-        , a [] [ text "Instagram" ]
-        , a [] [ text "Birthday" ]
+        [ a [ href "/slack" ] [ text "Slack" ]
+        , a [ href "/weather" ] [ text "Weather" ]
+        , a [ href "/transit" ] [ text "Transit" ]
+        , a [ href "/instagram" ] [ text "Instagram" ]
+        , a [ href "/birthday" ] [ text "Birthday" ]
         ]
 
 
@@ -144,7 +165,7 @@ sidebar model =
 
 main : Program Int Model Msg
 main =
-    Browser.document
+    Browser.application
         { init = init
         , update = update
         , view =
@@ -152,5 +173,12 @@ main =
                 { title = "Olavstoppen"
                 , body = [ view m ]
                 }
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
+        , onUrlRequest = OnUrlRequest
+        , onUrlChange = OnUrlChange
         }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none

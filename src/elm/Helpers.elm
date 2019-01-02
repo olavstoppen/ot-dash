@@ -1,6 +1,8 @@
-module Helpers exposing (formatDate, getPageKey)
+module Helpers exposing (formatDate, getPageKey, getPageTitle, toPascalCase)
 
-import Model exposing (Page)
+import Browser exposing (UrlRequest(..))
+import Model exposing (Page(..))
+import String
 import Time exposing (Posix, toHour, toMinute, toSecond, utc)
 
 
@@ -16,4 +18,31 @@ formatDate time =
 
 getPageKey : Page -> String
 getPageKey page =
-    ""
+    case page of
+        Transit ->
+            "transit"
+
+        Birthday ->
+            "birthday"
+
+        Slack ->
+            "slack"
+
+        Weather ->
+            "slack"
+
+        Instagram ->
+            "slack"
+
+
+getPageTitle : Page -> String
+getPageTitle page =
+    toPascalCase <| getPageKey page
+
+
+toPascalCase : String -> String
+toPascalCase text =
+    String.concat
+        [ String.toUpper <| String.slice 0 1 text
+        , String.toLower <| String.slice 1 (String.length text) text
+        ]
