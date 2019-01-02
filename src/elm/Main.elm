@@ -11,6 +11,7 @@ import Json.Decode as Decode
 import Model exposing (..)
 import Page.Slack as Slack
 import Page.Transit as Transit
+import Services exposing (fetchDepartures)
 
 
 
@@ -30,7 +31,7 @@ port toJs : String -> Cmd msg
 
 init : Int -> ( Model, Cmd Msg )
 init flags =
-    ( initModel flags, Cmd.none )
+    ( initModel flags, fetchDepartures OnServerResponse )
 
 
 
@@ -46,13 +47,7 @@ update message model =
             ( add1 model, toJs "Hello hm" )
 
         TestServer ->
-            let
-                expect =
-                    Http.expectJson OnServerResponse (Decode.field "result" Decode.string)
-            in
-            ( model
-            , Http.get { url = "/test", expect = expect }
-            )
+            ( model, fetchDepartures OnServerResponse )
 
         OnServerResponse res ->
             case res of
