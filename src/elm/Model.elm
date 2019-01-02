@@ -11,8 +11,8 @@ import Url.Parser as UrlParser exposing ((</>), Parser)
 type alias Model =
     { key : Key
     , serverMessage : String
-    , activePage : Page
-    , pages : List Page
+    , activePage : ( Int, Page )
+    , pages : List ( Int, Page )
     , departures : List Transport
     , weather : List Forecast
     , birthdays : List Person
@@ -123,3 +123,4 @@ type Msg
     | OnUrlChange Url
     | TestServer
     | OnServerResponse (Result Http.Error String)
+    | ChangePage Posix

@@ -30,16 +30,16 @@ trainIcon =
 view : Model -> Html Msg
 view model =
     div [ class "page page__transit" ]
-        [ title model
+        [ title
         , annotation
         , body model
         , div [ class "square" ] [ livemap model ]
         ]
 
 
-title : Model -> Html msg
-title model =
-    h1 [ class "title" ] [ text <| getPageTitle model.activePage ]
+title : Html msg
+title =
+    h1 [ class "title" ] [ text "Transit" ]
 
 
 annotation : Html msg

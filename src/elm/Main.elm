@@ -16,6 +16,7 @@ import Page.Transit as Transit
 import Page.Weather as Weather
 import Services exposing (fetchDepartures)
 import Time exposing (..)
+import Tuple exposing (..)
 import Url exposing (Url)
 import Url.Parser as UrlParser exposing ((</>), Parser)
 
@@ -34,22 +35,44 @@ urlParser =
         ]
 
 
+staticPages : List Page
+staticPages =
+    [ Transit
+    , Slack
+    , Birthday
+    , Instagram
+    , Weather
+    ]
+
+
+getActivePage : Page -> ( Int, Page )
+getActivePage page =
+    List.indexedMap pair staticPages
+        |> List.filter (\( _, page_ ) -> page == page_)
+        |> List.head
+        |> Maybe.withDefault ( 0, Transit )
+
+
+getActivePage_ : Int -> ( Int, Page )
+getActivePage_ index =
+    List.indexedMap pair staticPages
+        |> List.filter (\( index_, _ ) -> index == index_)
+        |> List.head
+        |> Maybe.withDefault ( 0, Transit )
+
+
 init : Int -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
     let
-        activePage =
+        urlPage =
             Maybe.withDefault Birthday <|
                 UrlParser.parse urlParser url
 
         model =
             { key = key
             , serverMessage = ""
-            , activePage = activePage
-            , pages =
-                [ Transit
-                , Slack
-                , Birthday
-                ]
+            , activePage = getActivePage urlPage
+            , pages = List.indexedMap pair staticPages
             , departures =
                 [ Bus <| Departure (millisToPosix 123123123) "Kvernevik" "3"
                 , Train <| Departure (millisToPosix 5645645645) "Tog til Sandnes" "X76"
@@ -61,7 +84,7 @@ init flags url key =
             , slack = SlackData "" [] []
             }
     in
-    ( model, Nav.pushUrl key (getPageKey activePage) )
+    ( model, Nav.pushUrl key (getPageKey urlPage) )
 
 
 
@@ -77,11 +100,24 @@ update message model =
             ( model, handleUrlRequest model.key urlRequest )
 
         OnUrlChange url ->
-            ( { model
-                | activePage = Maybe.withDefault model.activePage <| UrlParser.parse urlParser url
-              }
-            , Cmd.none
-            )
+            let
+                urlPage =
+                    Maybe.withDefault (second model.activePage) <| UrlParser.parse urlParser url
+
+                nextPage =
+                    getActivePage urlPage
+            in
+            ( { model | activePage = nextPage }, Cmd.none )
+
+        ChangePage _ ->
+            let
+                nextUrlPage =
+                    first model.activePage
+                        |> (+) 1
+                        |> getActivePage_
+                        |> second
+            in
+            ( model, Nav.pushUrl model.key <| getPageKey nextUrlPage )
 
         TestServer ->
             ( model, fetchDepartures OnServerResponse )
@@ -144,7 +180,7 @@ view model =
 getPage : Model -> Html Msg
 getPage model =
     model
-        |> (case model.activePage of
+        |> (case second model.activePage of
                 Transit ->
                     Transit.view
 
@@ -182,6 +218,11 @@ sidebar model =
         ]
 
 
+link : Page -> String -> String -> Html Msg
+link activePage href_ title =
+    a [ href href_ ] [ text title ]
+
+
 
 -- ---------------------------
 -- MAIN
@@ -206,4 +247,4 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Time.every 30000 ChangePage
