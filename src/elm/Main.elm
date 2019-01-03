@@ -14,7 +14,8 @@ import Page.Instagram as Instagram
 import Page.Slack as Slack
 import Page.Transit as Transit
 import Page.Weather as Weather
-import Services exposing (fetchSlackEvents)
+import Services exposing (..)
+import Task
 import Time exposing (..)
 import Tuple exposing (..)
 import Url exposing (Url)
@@ -61,7 +62,7 @@ getActivePage_ index =
         |> Maybe.withDefault ( 0, Transit )
 
 
-init : Int -> Url -> Key -> ( Model, Cmd Msg )
+init : Flags -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         urlPage =
@@ -70,6 +71,8 @@ init flags url key =
 
         model =
             { key = key
+            , apiKey = flags.apiKey
+            , zone = Time.utc
             , activePage = getActivePage urlPage
             , pages = List.indexedMap pair staticPages
             , departures =
@@ -82,12 +85,16 @@ init flags url key =
             , birthdays = []
             , slackInfo = SlackInfo "" [] []
             , slackEvents = []
+            , instagram = []
             }
     in
     ( model
     , Cmd.batch
         [ Nav.pushUrl key (getPageKey urlPage)
-        , fetchSlackEvents UpdateSlackEvents
+        , Task.perform SetTimeZone Time.here
+        , fetchSlackEvents UpdateSlackEvents model
+        , fetchWeather UpdateWeather model
+        , fetchInstagram UpdateInstagram model
         ]
     )
 
@@ -101,6 +108,9 @@ init flags url key =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        SetTimeZone zone ->
+            ( { model | zone = zone }, Cmd.none )
+
         OnUrlRequest urlRequest ->
             ( model, handleUrlRequest model.key urlRequest )
 
@@ -132,6 +142,24 @@ update message model =
                 Err err ->
                     -- FIXME
                     ( model, Cmd.none )
+
+        UpdateWeather res ->
+            case res of
+                Ok weatherInfo ->
+                    ( { model | weatherInfo = weatherInfo }, Cmd.none )
+
+                Err err ->
+                    Debug.log (Debug.toString err)
+                        ( model, Cmd.none )
+
+        UpdateInstagram res ->
+            case res of
+                Ok instagram ->
+                    ( { model | instagram = instagram }, Cmd.none )
+
+                Err err ->
+                    Debug.log (Debug.toString err)
+                        ( model, Cmd.none )
 
 
 handleUrlRequest : Key -> UrlRequest -> Cmd Msg
@@ -232,7 +260,7 @@ link activePage href_ title =
 -- ---------------------------
 
 
-main : Program Int Model Msg
+main : Program Flags Model Msg
 main =
     Browser.application
         { init = init

@@ -1,4 +1,4 @@
-module Model exposing (DegreesCelsius, Departure, Emoji, Forecast(..), Href, InstagramInfo, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Forecast, Href, InstagramInfo, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -8,8 +8,15 @@ import Url exposing (Url)
 import Url.Parser as UrlParser exposing ((</>), Parser)
 
 
+type alias Flags =
+    { apiKey : String
+    }
+
+
 type alias Model =
     { key : Key
+    , apiKey : String
+    , zone : Zone
     , activePage : ( Int, Page )
     , pages : List ( Int, Page )
     , departures : List Transport
@@ -17,6 +24,7 @@ type alias Model =
     , birthdays : List Person
     , slackInfo : SlackInfo
     , slackEvents : List SlackEvent
+    , instagram : List InstagramInfo
     }
 
 
@@ -69,18 +77,18 @@ type SlackEvent
 -- Weather
 
 
-type Forecast
-    = Sunny WeatherData
-    | Cloudy WeatherData
-    | Rain WeatherData
+type alias WeatherInfo =
+    { today : WeatherData
+    , forecast : List Forecast
+    }
 
 
-type alias DegreesCelsius =
-    Float
-
-
-type alias MilliMeter =
-    Float
+type alias WeatherData =
+    { temperature : Temperature
+    , rainfall : Maybe Rainfall
+    , description : String
+    , symbolUrl : String
+    }
 
 
 type alias Temperature =
@@ -98,18 +106,20 @@ type alias Rainfall =
     }
 
 
-type alias WeatherData =
-    { temperature : Temperature
-    , rainfall : Maybe Rainfall
-    , description : String
+type alias Forecast =
+    { high : DegreesCelsius
+    , low : DegreesCelsius
+    , current : DegreesCelsius
     , symbolUrl : String
     }
 
 
-type alias WeatherInfo =
-    { today : WeatherData
-    , forecast : List Forecast
-    }
+type alias DegreesCelsius =
+    Float
+
+
+type alias MilliMeter =
+    Float
 
 
 
@@ -117,9 +127,11 @@ type alias WeatherInfo =
 
 
 type alias InstagramInfo =
-    { likes : Int
-    , comments : Int
+    { comments : Int
+    , likes : Int
     , description : String
+    , imageHeight : Int
+    , imageWidth : Int
     , imageUrl : Href
     , time : Posix
     }
@@ -149,4 +161,7 @@ type Msg
     = OnUrlRequest UrlRequest
     | OnUrlChange Url
     | ChangePage Posix
+    | SetTimeZone Zone
     | UpdateSlackEvents (Result Http.Error (List SlackEvent))
+    | UpdateWeather (Result Http.Error WeatherInfo)
+    | UpdateInstagram (Result Http.Error (List InstagramInfo))
