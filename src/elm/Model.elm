@@ -1,4 +1,4 @@
-module Model exposing (Departure, Emoji, Forecast(..), Href, InstagramInfo, Model, Msg(..), Page(..), Person, SlackData, SlackEvent(..), Temperature, Transport(..), WeatherData)
+module Model exposing (DegreesCelsius, Departure, Emoji, Forecast(..), Href, InstagramInfo, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -10,13 +10,12 @@ import Url.Parser as UrlParser exposing ((</>), Parser)
 
 type alias Model =
     { key : Key
-    , serverMessage : String
     , activePage : ( Int, Page )
     , pages : List ( Int, Page )
     , departures : List Transport
-    , weather : List Forecast
+    , weatherInfo : WeatherInfo
     , birthdays : List Person
-    , slackInfo : SlackData
+    , slackInfo : SlackInfo
     , slackEvents : List SlackEvent
     }
 
@@ -53,7 +52,7 @@ type alias Person =
 -- Slack
 
 
-type alias SlackData =
+type alias SlackInfo =
     { imageUrl : Href
     , topEmojis : List Emoji
     , lastestEvents : List SlackEvent
@@ -76,15 +75,40 @@ type Forecast
     | Rain WeatherData
 
 
+type alias DegreesCelsius =
+    Float
+
+
+type alias MilliMeter =
+    Float
+
+
 type alias Temperature =
-    Int
+    { high : DegreesCelsius
+    , low : DegreesCelsius
+    , current : DegreesCelsius
+    , feelslike : DegreesCelsius
+    }
+
+
+type alias Rainfall =
+    { high : MilliMeter
+    , low : MilliMeter
+    , current : MilliMeter
+    }
 
 
 type alias WeatherData =
-    { high : Temperature
-    , low : Temperature
-    , feelslike : Temperature
+    { temperature : Temperature
+    , rainfall : Maybe Rainfall
     , description : String
+    , symbolUrl : String
+    }
+
+
+type alias WeatherInfo =
+    { today : WeatherData
+    , forecast : List Forecast
     }
 
 
@@ -97,6 +121,7 @@ type alias InstagramInfo =
     , comments : Int
     , description : String
     , imageUrl : Href
+    , time : Posix
     }
 
 
@@ -123,7 +148,5 @@ type alias Emoji =
 type Msg
     = OnUrlRequest UrlRequest
     | OnUrlChange Url
-    | TestServer
-    | OnServerResponse (Result Http.Error String)
     | ChangePage Posix
     | UpdateSlackEvents (Result Http.Error (List SlackEvent))

@@ -14,7 +14,7 @@ import Page.Instagram as Instagram
 import Page.Slack as Slack
 import Page.Transit as Transit
 import Page.Weather as Weather
-import Services exposing (fetchDepartures, fetchSlackEvents)
+import Services exposing (fetchSlackEvents)
 import Time exposing (..)
 import Tuple exposing (..)
 import Url exposing (Url)
@@ -70,7 +70,6 @@ init flags url key =
 
         model =
             { key = key
-            , serverMessage = ""
             , activePage = getActivePage urlPage
             , pages = List.indexedMap pair staticPages
             , departures =
@@ -79,9 +78,9 @@ init flags url key =
                 , Bus <| Departure (millisToPosix 234234234) "Buss til Forus" "6"
                 , Unknown
                 ]
-            , weather = []
+            , weatherInfo = WeatherInfo (WeatherData (Temperature 0.0 0.0 0.0 0.0) Nothing "" "") []
             , birthdays = []
-            , slackInfo = SlackData "" [] []
+            , slackInfo = SlackInfo "" [] []
             , slackEvents = []
             }
     in
@@ -124,17 +123,6 @@ update message model =
                         |> second
             in
             ( model, Nav.pushUrl model.key <| getPageKey nextUrlPage )
-
-        TestServer ->
-            ( model, fetchDepartures OnServerResponse )
-
-        OnServerResponse res ->
-            case res of
-                Ok r ->
-                    ( { model | serverMessage = r }, Cmd.none )
-
-                Err err ->
-                    ( { model | serverMessage = "Error: " ++ httpErrorToString err }, Cmd.none )
 
         UpdateSlackEvents res ->
             case res of
@@ -262,4 +250,5 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 30000 ChangePage
+    -- Time.every 30000 ChangePage
+    Sub.none
