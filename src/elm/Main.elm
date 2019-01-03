@@ -14,7 +14,7 @@ import Page.Instagram as Instagram
 import Page.Slack as Slack
 import Page.Transit as Transit
 import Page.Weather as Weather
-import Services exposing (fetchDepartures)
+import Services exposing (fetchDepartures, fetchSlackEvents)
 import Time exposing (..)
 import Tuple exposing (..)
 import Url exposing (Url)
@@ -81,10 +81,16 @@ init flags url key =
                 ]
             , weather = []
             , birthdays = []
-            , slack = SlackData "" [] []
+            , slackInfo = SlackData "" [] []
+            , slackEvents = []
             }
     in
-    ( model, Nav.pushUrl key (getPageKey urlPage) )
+    ( model
+    , Cmd.batch
+        [ Nav.pushUrl key (getPageKey urlPage)
+        , fetchSlackEvents UpdateSlackEvents
+        ]
+    )
 
 
 
@@ -129,6 +135,18 @@ update message model =
 
                 Err err ->
                     ( { model | serverMessage = "Error: " ++ httpErrorToString err }, Cmd.none )
+
+        UpdateSlackEvents res ->
+            case res of
+                Ok events ->
+                    ( { model | slackEvents = events }, Cmd.none )
+
+                Err err ->
+                    Debug.log
+                        (httpErrorToString
+                            err
+                        )
+                        ( model, Cmd.none )
 
 
 handleUrlRequest : Key -> UrlRequest -> Cmd Msg

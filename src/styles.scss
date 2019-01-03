@@ -142,18 +142,42 @@ nav.sidebar {
 
     height: $size;
     width: $size;
+
+    background-color: $grey-light;
+  }
+  @at-root #{&}__slack {
+    .events {
+      display: flex;
+      flex-direction: column;
+
+      .event {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        > * {
+          margin-right: 1vmax;
+          margin-bottom: 1vmax;
+
+          &:last-child {
+            margin-right: 0;
+            margin-left: auto;
+            justify-self: flex-end;
+          }
+        }
+      }
+    }
+
   }
   @at-root #{&}__transit {
     iframe.transit__map {
       $size: 100%;
       height: $size;
       width: $size;
-      background-color: $grey-light;
 
     }
 
     .departures {
-
       display: flex;
       flex-direction: column;
 

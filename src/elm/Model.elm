@@ -16,7 +16,8 @@ type alias Model =
     , departures : List Transport
     , weather : List Forecast
     , birthdays : List Person
-    , slack : SlackData
+    , slackInfo : SlackData
+    , slackEvents : List SlackEvent
     }
 
 
@@ -62,6 +63,7 @@ type alias SlackData =
 type SlackEvent
     = Reaction Person Posix Emoji
     | Message Person Posix
+    | UnknownSlackEvent
 
 
 
@@ -124,3 +126,4 @@ type Msg
     | TestServer
     | OnServerResponse (Result Http.Error String)
     | ChangePage Posix
+    | UpdateSlackEvents (Result Http.Error (List SlackEvent))
