@@ -142,11 +142,8 @@ update message model =
                     ( { model | slackEvents = events }, Cmd.none )
 
                 Err err ->
-                    Debug.log
-                        (httpErrorToString
-                            err
-                        )
-                        ( model, Cmd.none )
+                    -- FIXME
+                    ( model, Cmd.none )
 
 
 handleUrlRequest : Key -> UrlRequest -> Cmd Msg
