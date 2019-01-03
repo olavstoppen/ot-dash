@@ -1,3 +1,6 @@
+require("dotenv").config();
+const Dotenv = require("dotenv-webpack");
+
 const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
@@ -19,14 +22,12 @@ var common = {
   output: {
     path: path.join(__dirname, "dist"),
     publicPath: "",
-    // webpack -p automatically adds hash when building for production
     filename: filename
   },
   plugins: [
+    new Dotenv(),
     new HTMLWebpackPlugin({
-      // Use this template to get basic responsive meta tags
       template: "src/index.html",
-      // inject details of output file at end of body
       inject: "body"
     })
   ],
@@ -46,7 +47,6 @@ var common = {
       {
         test: /\.scss$/,
         exclude: [/elm-stuff/, /node_modules/],
-        // see https://github.com/webpack-contrib/css-loader#url
         loaders: ["style-loader", "css-loader?url=false", "sass-loader"]
       },
       {
@@ -108,14 +108,7 @@ if (MODE === "development") {
       stats: "errors-only",
       contentBase: path.join(__dirname, "src/assets"),
       historyApiFallback: true,
-      overlay: true,
-      // feel free to delete this section if you don't need anything like this
-      before(app) {
-        // on port 3000
-        app.get("/test", function(req, res) {
-          res.json({ result: "OK" });
-        });
-      }
+      overlay: true
     }
   });
 }
@@ -130,16 +123,8 @@ if (MODE === "production") {
         verbose: true,
         dry: false
       }),
-      new CopyWebpackPlugin([
-        {
-          from: "src/assets"
-        }
-      ]),
-      new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: "[name]-[hash].css"
-      })
+      new CopyWebpackPlugin([{ from: "src/assets" }]),
+      new MiniCssExtractPlugin({ filename: "[name]-[hash].css" })
     ],
     module: {
       rules: [
@@ -148,9 +133,7 @@ if (MODE === "production") {
           exclude: [/elm-stuff/, /node_modules/],
           use: {
             loader: "elm-webpack-loader",
-            options: {
-              optimize: true
-            }
+            options: { optimize: true }
           }
         },
         {
