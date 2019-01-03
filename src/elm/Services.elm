@@ -1,4 +1,4 @@
-module Services exposing (fetchDepartures, fetchSlackEvents)
+module Services exposing (fetchSlackEvents)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -7,22 +7,31 @@ import Model exposing (..)
 import Time exposing (..)
 
 
-fetchDepartures : (Result Http.Error String -> Msg) -> Cmd Msg
-fetchDepartures callback =
-    Http.get
-        { url = "/test"
-        , expect =
-            Http.expectJson callback <|
-                Decode.field "result" Decode.string
+baseUrl : String -> String
+baseUrl path =
+    "https://pingubot-server.herokuapp.com/" ++ path
+
+
+get : String -> (Result Http.Error a -> Msg) -> Decoder a -> Cmd Msg
+get path callback decoder =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "x-api-key" "" ]
+        , url = baseUrl path
+        , body = Http.emptyBody
+        , expect = Http.expectJson callback decoder
+        , timeout = Nothing
+        , tracker = Nothing
         }
+
+
+
+-- Slack
 
 
 fetchSlackEvents : (Result Http.Error (List SlackEvent) -> Msg) -> Cmd Msg
 fetchSlackEvents callback =
-    Http.get
-        { url = "https://pingubot-server.herokuapp.com/LatestMessages"
-        , expect = Http.expectJson callback <| list decodeLatestMessage
-        }
+    get "LatestMessages" callback <| list decodeLatestMessage
 
 
 decodeLatestMessage : Decoder SlackEvent
@@ -47,6 +56,28 @@ decodeSlackEvent message =
 
         _ ->
             succeed UnknownSlackEvent
+
+
+
+-- Weather
+
+
+fetchWeather : (Result Http.Error (List SlackEvent) -> Msg) -> Cmd Msg
+fetchWeather callback =
+    get "Weather" callback <| list decodeLatestMessage
+
+
+
+-- Calendar
+
+
+fetchCalendar : (Result Http.Error (List SlackEvent) -> Msg) -> Cmd Msg
+fetchCalendar callback =
+    get "Calendar" callback <| list decodeLatestMessage
+
+
+
+-- Global
 
 
 decodePerson : Decoder Person
