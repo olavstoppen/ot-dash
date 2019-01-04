@@ -2,12 +2,13 @@ port module Main exposing (background, getPage, httpErrorToString, init, main, t
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (getPageKey)
+import Helpers exposing (getPageKey, sortTransport)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Json.Decode as Decode
+import List exposing (..)
 import Model exposing (..)
 import Page.Birthday as Birthday
 import Page.Instagram as Instagram
@@ -73,9 +74,11 @@ init flags url key =
             { key = key
             , apiKey = flags.apiKey
             , zone = Time.utc
+            , now = millisToPosix 0
+            , pageCountdown = 30
             , activePage = getActivePage urlPage
             , pages = List.indexedMap pair staticPages
-            , departures =
+            , publicTransport =
                 [ Bus <| Departure (millisToPosix 123123123) "Kvernevik" "3"
                 , Train <| Departure (millisToPosix 5645645645) "Tog til Sandnes" "X76"
                 , Bus <| Departure (millisToPosix 234234234) "Buss til Forus" "6"
@@ -95,6 +98,7 @@ init flags url key =
         , fetchSlackEvents UpdateSlackEvents model
         , fetchWeather UpdateWeather model
         , fetchInstagram UpdateInstagram model
+        , fetchPublicTransport UpdatePublicTransport model
         ]
     )
 
@@ -124,15 +128,26 @@ update message model =
             in
             ( { model | activePage = nextPage }, Cmd.none )
 
-        ChangePage _ ->
+        UpdateNow now ->
             let
-                nextUrlPage =
-                    first model.activePage
-                        |> (+) 1
-                        |> getActivePage_
-                        |> second
+                nextPageCountdown =
+                    model.pageCountdown - 1
+
+                updatedModel =
+                    { model | now = now }
             in
-            ( model, Nav.pushUrl model.key <| getPageKey nextUrlPage )
+            if nextPageCountdown < 0 then
+                let
+                    nextUrlPage =
+                        first model.activePage
+                            |> (+) 1
+                            |> getActivePage_
+                            |> second
+                in
+                ( { updatedModel | pageCountdown = 30 }, Nav.pushUrl model.key <| getPageKey nextUrlPage )
+
+            else
+                ( { updatedModel | pageCountdown = nextPageCountdown }, Cmd.none )
 
         UpdateSlackEvents res ->
             case res of
@@ -156,6 +171,15 @@ update message model =
             case res of
                 Ok instagram ->
                     ( { model | instagram = instagram }, Cmd.none )
+
+                Err err ->
+                    Debug.log (Debug.toString err)
+                        ( model, Cmd.none )
+
+        UpdatePublicTransport res ->
+            case res of
+                Ok publicTransports ->
+                    ( { model | publicTransport = sortWith sortTransport <| List.concat publicTransports }, Cmd.none )
 
                 Err err ->
                     Debug.log (Debug.toString err)
@@ -278,5 +302,4 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    -- Time.every 30000 ChangePage
-    Sub.none
+    Time.every 1000 UpdateNow

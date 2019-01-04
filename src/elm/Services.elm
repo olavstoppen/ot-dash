@@ -1,4 +1,4 @@
-module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchSlackEvents, fetchWeather)
+module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchPublicTransport, fetchSlackEvents, fetchWeather)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -173,6 +173,52 @@ fetchBirthdays callback =
 --     "imageUrl": "https://secure.gravatar.com/avatar/048195daf5327cef0444ac61ad958c3a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0002-512.png"
 --   }
 -- ]
+-- Public Transport
+
+
+fetchPublicTransport : (Result Http.Error (List (List Transport)) -> Msg) -> Model -> Cmd Msg
+fetchPublicTransport callback { apiKey } =
+    get apiKey "PublicTransport" callback <| list decodeDepartures
+
+
+decodeDepartures : Decoder (List Transport)
+decodeDepartures =
+    field "transportMode" string
+        |> andThen decodeStop
+
+
+decodeStop : String -> Decoder (List Transport)
+decodeStop transportMode =
+    case transportMode of
+        "bus" ->
+            field "departures" (list decodeBus)
+
+        "rail" ->
+            field "departures" (list decodeTrain)
+
+        _ ->
+            succeed [ Unknown ]
+
+
+decodeBus : Decoder Transport
+decodeBus =
+    Decode.succeed Departure
+        |> required "departurePosix" decodeTime
+        |> required "text" string
+        |> optional "route" string "3"
+        |> map Bus
+
+
+decodeTrain : Decoder Transport
+decodeTrain =
+    Decode.succeed Departure
+        |> required "departurePosix" decodeTime
+        |> required "text" string
+        |> optional "route" string "NSB"
+        |> map Train
+
+
+
 -- Global
 
 

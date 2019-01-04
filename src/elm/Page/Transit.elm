@@ -1,6 +1,6 @@
 module Page.Transit exposing (view)
 
-import Helpers exposing (getPageTitle)
+import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -14,13 +14,17 @@ view model =
         [ title
         , annotation
         , body model
-        , div [ class "square" ] [ livemap model ]
+        , square model
         ]
 
 
 title : Html msg
 title =
-    h1 [ class "title" ] [ text "Transit" ]
+    div [ class "title" ]
+        [ div [ class "animated fadeInDown faster" ]
+            [ h1 [] [ text "Transit" ]
+            ]
+        ]
 
 
 annotation : Html msg
@@ -34,12 +38,14 @@ annotation =
 body : Model -> Html msg
 body model =
     div [ class "content" ]
-        [ div [ class "departures" ] <| List.map departure model.departures
+        [ div [ class "animated fadeInDown faster" ]
+            [ div [ class "departures" ] <| List.map (departure model) model.publicTransport
+            ]
         ]
 
 
-departure : Transport -> Html msg
-departure transport =
+departure : Model -> Transport -> Html msg
+departure model transport =
     div [ class "departure" ] <|
         case transport of
             Unknown ->
@@ -48,16 +54,25 @@ departure transport =
             Bus departure_ ->
                 [ div [ class "ellipse" ] [ text departure_.name ]
                 , div [] [ text departure_.destination ]
-                , div [] [ text "10 min" ]
+                , div [] [ text <| formatDateDiffMinutes model.zone model.now departure_.time ]
                 ]
 
             Train departure_ ->
                 [ div [ class "ellipse" ] [ trainIcon ]
                 , div [] [ text departure_.destination ]
-                , div [] [ text "30 min" ]
+                , div [] [ text <| formatDateDiffMinutes model.zone model.now departure_.time ]
                 ]
 
 
 livemap : Model -> Html msg
 livemap model =
     iframe [ class "transit__map", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
+
+
+square : Model -> Html Msg
+square model =
+    div [ class "square " ]
+        [ div [ class "animated slideInLeft faster delay-2s" ]
+            [ iframe [ class "transit__map ", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
+            ]
+        ]

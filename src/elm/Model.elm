@@ -17,9 +17,11 @@ type alias Model =
     { key : Key
     , apiKey : String
     , zone : Zone
+    , now : Posix
     , activePage : ( Int, Page )
+    , pageCountdown : Int
     , pages : List ( Int, Page )
-    , departures : List Transport
+    , publicTransport : List Transport
     , weatherInfo : WeatherInfo
     , birthdays : List Person
     , slackInfo : SlackInfo
@@ -152,8 +154,9 @@ type alias Emoji =
 type Msg
     = OnUrlRequest UrlRequest
     | OnUrlChange Url
-    | ChangePage Posix
+    | UpdateNow Posix
     | SetTimeZone Zone
     | UpdateSlackEvents (Result Http.Error (List SlackEvent))
     | UpdateWeather (Result Http.Error WeatherInfo)
     | UpdateInstagram (Result Http.Error (List InstagramPost))
+    | UpdatePublicTransport (Result Http.Error (List (List Transport)))
