@@ -1,4 +1,4 @@
-module Services exposing (fetchInstagram, fetchSlackEvents, fetchWeather)
+module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchSlackEvents, fetchWeather)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -134,14 +134,14 @@ fetchCalendar callback =
 -- Instagram
 
 
-fetchInstagram : (Result Http.Error (List InstagramInfo) -> Msg) -> Model -> Cmd Msg
+fetchInstagram : (Result Http.Error (List InstagramPost) -> Msg) -> Model -> Cmd Msg
 fetchInstagram callback { apiKey } =
     get apiKey "Instagram" callback <| list decodeInstagram
 
 
-decodeInstagram : Decoder InstagramInfo
+decodeInstagram : Decoder InstagramPost
 decodeInstagram =
-    Decode.succeed InstagramInfo
+    Decode.succeed InstagramPost
         |> required "comments" int
         |> required "likes" int
         |> required "description" string
@@ -152,6 +152,27 @@ decodeInstagram =
 
 
 
+-- Birthday
+
+
+fetchBirthdays : (Result Http.Error (List SlackEvent) -> Msg) -> Cmd Msg
+fetchBirthdays callback =
+    get "" "Calendar" callback <| list decodeLatestMessage
+
+
+
+-- [
+--   {
+--     "firstName": "Stian",
+--     "lastName": "Bakkenator",
+--     "imageUrl": "https://secure.gravatar.com/avatar/db4defee9f1940fdb5d5f48718dffc4d.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0021-512.png"
+--   },
+--   {
+--     "firstName": "Stian",
+--     "lastName": "Bakken Batman",
+--     "imageUrl": "https://secure.gravatar.com/avatar/048195daf5327cef0444ac61ad958c3a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0002-512.png"
+--   }
+-- ]
 -- Global
 
 

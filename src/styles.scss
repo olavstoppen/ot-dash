@@ -108,9 +108,15 @@ nav.sidebar {
     display: flex;
     align-items: center;
 
+    > h3 {
+      line-height: calc(1.1em + 0.3vmax);
+      font-size: calc(16px + 0.3vmax);
+      font-weight: 400;
+    }
+
     > * {
       display: flex;
-      margin-right: 1.5vmax;
+      margin-right: 1.3vmax;
     }
 
   }
@@ -118,6 +124,7 @@ nav.sidebar {
   .title {
     grid-column: 2 / span 9;
     grid-row: 6 / span 2;
+
     font-size: calc(16px + 2.5vmax);
     font-weight: 600;
   }
@@ -125,6 +132,7 @@ nav.sidebar {
   .content {
     grid-column: 2 / span 9;
     grid-row: 9 / span 10;
+    font-weight: 400;
     @at-root #{&}--wide {
       grid-column: 2 / span 13;
       grid-row: 6 / span 10;
@@ -132,24 +140,29 @@ nav.sidebar {
   }
 
   .footer {
-    grid-column: 2 / span 13;
-    grid-row: 19 / span 2;
+    grid-column: 2 / span 9;
+    grid-row: 20 / span 1;
+
+    line-height: calc(1.1em + 0.1vmax);
+    font-size: calc(16px + 0.1vmax);
+    font-weight: 400;
+
   }
 
   .square {
-    grid-column: 12 / span 8;
+    grid-column: 13 / span 8;
     grid-row: 6 / span 8;
 
     $size: 30vmax;
     height: $size;
     width: $size;
     background-color: $grey-light;
-  }
-  @at-root #{&}__instagram {
+
     img {
       height: 100%;
     }
-
+  }
+  @at-root #{&}__instagram {
     .stats {
       display: flex;
       flex-direction: row;
@@ -158,6 +171,12 @@ nav.sidebar {
       > * {
         margin-right: 1vmax;
         margin-bottom: 1vmax;
+        display: flex;
+        align-items: center;
+
+        > * {
+          margin-right: .3vmax;
+        }
 
         &:last-child {
           margin-right: 0;

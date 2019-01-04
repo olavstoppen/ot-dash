@@ -3,6 +3,7 @@ module Page.Instagram exposing (view)
 import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Icons exposing (..)
 import Model exposing (..)
 import Time exposing (Zone)
 
@@ -35,23 +36,35 @@ title =
 annotation : Html msg
 annotation =
     div [ class "annotation" ]
-        [ h3 [] [ text "instagram.com/olavstoppen" ]
+        [ img [ class "icon--med", src "/icons/instagram.png" ] []
+        , h3 [] [ text "instagram.com/olavstoppen" ]
         ]
 
 
-body : InstagramInfo -> Html msg
+body : InstagramPost -> Html Msg
 body instagramPost =
-    div [ class "content" ]
-        [ text instagramPost.description
-        ]
+    div [ class "content" ] <|
+        List.map paragraph <|
+            String.lines instagramPost.description
 
 
-footer : Zone -> InstagramInfo -> Html msg
+paragraph : String -> Html Msg
+paragraph s =
+    p [] [ text s ]
+
+
+footer : Zone -> InstagramPost -> Html msg
 footer zone instagramPost =
     div [ class "footer" ]
         [ div [ class "stats" ]
-            [ div [ class "stat" ] [ text <| String.fromInt instagramPost.likes ]
-            , div [ class "stat" ] [ text <| String.fromInt instagramPost.comments ]
+            [ div [ class "stat" ]
+                [ likeIcon
+                , text <| String.fromInt instagramPost.likes
+                ]
+            , div [ class "stat" ]
+                [ chatIcon
+                , text <| String.fromInt instagramPost.comments
+                ]
             , div [ class "stat" ] [ text <| formatDate zone instagramPost.time ]
             ]
         ]
