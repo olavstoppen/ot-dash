@@ -24,18 +24,22 @@ view model =
                 , annotation
                 , footer model.zone instagramPost
                 , body instagramPost
-                , div [ class "square" ] [ img [ src instagramPost.imageUrl ] [] ]
+                , square instagramPost
                 ]
 
 
 title : Html msg
 title =
-    h1 [ class "title" ] [ text "Nytt på Instagram" ]
+    div [ class "title" ]
+        [ div [ class "animated fadeInDown faster" ]
+            [ h1 [] [ text "Nytt på Instagram" ]
+            ]
+        ]
 
 
 annotation : Html msg
 annotation =
-    div [ class "annotation" ]
+    div [ class "annotation animated fadeIn faster" ]
         [ img [ class "icon--med", src "/icons/instagram.png" ] []
         , h3 [] [ text "instagram.com/olavstoppen" ]
         ]
@@ -43,9 +47,11 @@ annotation =
 
 body : InstagramPost -> Html Msg
 body instagramPost =
-    div [ class "content" ] <|
-        List.map paragraph <|
-            String.lines instagramPost.description
+    div [ class "content" ]
+        [ div [ class "animated fadeInDown faster" ] <|
+            List.map paragraph <|
+                String.lines instagramPost.description
+        ]
 
 
 paragraph : String -> Html Msg
@@ -53,9 +59,9 @@ paragraph s =
     p [] [ text s ]
 
 
-footer : Zone -> InstagramPost -> Html msg
+footer : Zone -> InstagramPost -> Html Msg
 footer zone instagramPost =
-    div [ class "footer" ]
+    div [ class "footer animated fadeIn faster" ]
         [ div [ class "stats" ]
             [ div [ class "stat" ]
                 [ likeIcon
@@ -66,5 +72,14 @@ footer zone instagramPost =
                 , text <| String.fromInt instagramPost.comments
                 ]
             , div [ class "stat" ] [ text <| formatDate zone instagramPost.time ]
+            ]
+        ]
+
+
+square : InstagramPost -> Html Msg
+square instagramPost =
+    div [ class "square " ]
+        [ div [ class "animated slideInLeft faster" ]
+            [ img [ src instagramPost.imageUrl ] []
             ]
         ]
