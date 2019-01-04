@@ -55,7 +55,7 @@ toMonthNumber month =
             11
 
         Dec ->
-            11
+            12
 
 
 getPageKey : Page -> String

@@ -1,4 +1,4 @@
-module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Forecast, Href, InstagramInfo, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Href, InstagramInfo, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -79,7 +79,7 @@ type SlackEvent
 
 type alias WeatherInfo =
     { today : WeatherData
-    , forecast : List Forecast
+    , forecast : List WeatherData
     }
 
 
@@ -103,14 +103,6 @@ type alias Rainfall =
     { high : MilliMeter
     , low : MilliMeter
     , current : MilliMeter
-    }
-
-
-type alias Forecast =
-    { high : DegreesCelsius
-    , low : DegreesCelsius
-    , current : DegreesCelsius
-    , symbolUrl : String
     }
 
 

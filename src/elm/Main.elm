@@ -140,8 +140,8 @@ update message model =
                     ( { model | slackEvents = events }, Cmd.none )
 
                 Err err ->
-                    -- FIXME
-                    ( model, Cmd.none )
+                    Debug.log (Debug.toString err)
+                        ( model, Cmd.none )
 
         UpdateWeather res ->
             case res of

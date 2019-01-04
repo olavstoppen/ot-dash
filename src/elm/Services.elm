@@ -49,13 +49,13 @@ decodeSlackEvent message =
         "reaction_added" ->
             Decode.succeed Reaction
                 |> required "user" decodePerson
-                |> required "timestamp" decodeTime
-                |> hardcoded "some-emoji-url"
+                |> required "posix" decodeTime
+                |> required "emojiUrl" string
 
         "message" ->
             Decode.succeed Message
                 |> required "user" decodePerson
-                |> required "timestamp" decodeTime
+                |> required "posix" decodeTime
 
         _ ->
             succeed UnknownSlackEvent
@@ -74,7 +74,7 @@ decodeWeatherInfo : Decoder WeatherInfo
 decodeWeatherInfo =
     Decode.succeed WeatherInfo
         |> required "today" decodeWeatherData
-        |> required "forecast" (list decodeForecast)
+        |> required "forecast" (list decodeWeatherData)
 
 
 decodeWeatherData : Decoder WeatherData
@@ -111,23 +111,14 @@ decodeWeatherData =
     Decode.succeed toDecoder
         |> required "highestTemp" float
         |> required "lowestTemp" float
-        |> required "currentTemp" float
-        |> optional "currentTemp" float 0.0
+        |> required "temp" float
+        |> optional "temp" float 0.0
         |> optional "maxRainfall" float 0.0
         |> optional "minRainfall" float 0.0
         |> optional "currentRainfall" float 0.0
         |> optional "description" string ""
         |> required "symbolUrl" string
         |> resolve
-
-
-decodeForecast : Decoder Forecast
-decodeForecast =
-    Decode.succeed Forecast
-        |> required "highestTemp" float
-        |> required "lowestTemp" float
-        |> required "temp" float
-        |> required "symbolUrl" string
 
 
 
@@ -157,7 +148,7 @@ decodeInstagram =
         |> required "imageHeight" int
         |> required "imageWidth" int
         |> required "imageUrl" string
-        |> required "timestamp" decodeTime_
+        |> required "posix" decodeTime
 
 
 
@@ -174,14 +165,9 @@ decodePerson =
 
 decodeTime : Decoder Posix
 decodeTime =
-    map stringToTime string
+    map toPosix int
 
 
-decodeTime_ : Decoder Posix
-decodeTime_ =
-    map millisToPosix int
-
-
-stringToTime : String -> Posix
-stringToTime text =
-    millisToPosix <| Maybe.withDefault 0 <| String.toInt text
+toPosix : Int -> Posix
+toPosix number =
+    millisToPosix <| number * 1000
