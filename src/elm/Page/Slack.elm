@@ -36,7 +36,9 @@ annotation =
 body : Model -> Html Msg
 body model =
     div [ class "content" ]
-        [ div [ class "events animated fadeInDown faster" ] <| List.map event model.slackEvents
+        [ div [ class "animated fadeInDown faster" ]
+            [ div [ class "events " ] <| List.map event model.slackEvents
+            ]
         ]
 
 

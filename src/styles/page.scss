@@ -126,14 +126,8 @@
         align-items: center;
 
         > * {
-          margin-right: 1vmax;
+          margin-right: .5vmax;
           margin-bottom: 1vmax;
-
-          &:last-child {
-            margin-right: 0;
-            margin-left: auto;
-            justify-self: flex-end;
-          }
         }
 
         .who {
