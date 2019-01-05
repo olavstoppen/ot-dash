@@ -46,7 +46,7 @@
     grid-row: 9 / span 10;
     font-weight: 400;
     @at-root #{&}--wide {
-      grid-column: 2 / span 19;
+      grid-column: 2 / span 18;
       grid-row: 6 / span 10;
     }
     overflow: hidden;
@@ -74,7 +74,7 @@
   }
 
   .square {
-    grid-column: 13 / span 8;
+    grid-column: 13 / span 7;
     grid-row: 6 / span 10;
     $size: 100%;
     height: $size;
@@ -135,7 +135,27 @@
             justify-self: flex-end;
           }
         }
+
+        .who {
+          margin-right: .25vmax;
+
+        }
       }
+    }
+
+    .image {
+      height: 3vmax;
+      @at-root #{&}--round {
+        border-radius: 50%;
+      }
+      @at-root #{&}--small {
+        height: 2vmax;
+      }
+    }
+
+    .topEmojis {
+      display: flex;
+      justify-content: space-evenly;
     }
 
   }

@@ -11,44 +11,83 @@ view model =
         [ title
         , annotation
         , body model
-        , div [ class "square" ] [ text "IMAGE HERE" ]
+        , square
+        , footer model
         ]
 
 
-title : Html msg
+title : Html Msg
 title =
-    h1 [ class "title" ] [ text "Skravletoppen" ]
-
-
-annotation : Html msg
-annotation =
-    div [ class "annotation" ]
-        [ h3 [] [ text "Slack idag" ]
+    div [ class "title" ]
+        [ div [ class "animated fadeInDown faster" ]
+            [ h1 [] [ text "Skravletoppen" ]
+            ]
         ]
 
 
-body : Model -> Html msg
+annotation : Html Msg
+annotation =
+    div [ class "annotation animated fadeIn faster" ]
+        [ img [ class "icon--med", src "/icons/slack.png" ] []
+        , h3 [] [ text "Slack i dag" ]
+        ]
+
+
+body : Model -> Html Msg
 body model =
     div [ class "content" ]
-        [ div [ class "events" ] <| List.map event model.slackEvents
+        [ div [ class "events animated fadeInDown faster" ] <| List.map event model.slackEvents
         ]
 
 
-event : SlackEvent -> Html msg
+event : SlackEvent -> Html Msg
 event slackEvent =
     div [ class "event" ] <|
         case slackEvent of
             Reaction person time emoji ->
-                [ div [] [ text "IMAGE" ]
-                , div [ class "" ] [ text ("@" ++ person.firstName) ]
+                [ div [] [ imageRound person.imageUrl ]
+                , div [ class "who" ] [ text person.firstName ]
                 , div [] [ text "reacted with " ]
-                , div [] [ text "EMOJI" ]
+                , div [] [ image emoji ]
                 ]
 
             Message person time ->
-                [ div [ class "" ] [ text person.firstName ]
+                [ div [] [ imageRound person.imageUrl ]
+                , div [ class "who" ] [ text person.firstName ]
                 , div [] [ text "posted something new and very interesting" ]
+                , div [] []
                 ]
 
             UnknownSlackEvent ->
                 [ text "Who dis slack event" ]
+
+
+square : Html Msg
+square =
+    div [ class "square " ]
+        [ div [ class "animated slideInLeft faster" ]
+            [ img [ src "/images/typing.png" ] []
+            ]
+        ]
+
+
+footer : Model -> Html Msg
+footer model =
+    div [ class "footer animated fadeIn faster" ]
+        [ topEmojis model.slackInfo.topEmojis
+        ]
+
+
+imageRound : String -> Html Msg
+imageRound imageUrl =
+    img [ class "image image--round", src imageUrl ] []
+
+
+image : String -> Html Msg
+image emoji =
+    img [ class "image--small", src emoji ] []
+
+
+topEmojis : List String -> Html Msg
+topEmojis emojis =
+    div [ class "topEmojis" ] <| List.map image emojis

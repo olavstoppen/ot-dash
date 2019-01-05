@@ -81,7 +81,7 @@ init flags url key =
             , publicTransport = []
             , weatherInfo = WeatherInfo (WeatherData (Temperature 0.0 0.0 0.0 0.0) Nothing "" "" "") []
             , birthdays = []
-            , slackInfo = SlackInfo "" [] []
+            , slackInfo = SlackInfo []
             , slackEvents = []
             , instagram = []
             }
@@ -95,6 +95,7 @@ init flags url key =
         , fetchWeather UpdateWeather model
         , fetchInstagram UpdateInstagram model
         , fetchPublicTransport UpdatePublicTransport model
+        , fetchSlackInfo UpdateSlackInfo model
         ]
     )
 
@@ -176,6 +177,15 @@ update message model =
             case res of
                 Ok publicTransports ->
                     ( { model | publicTransport = sortWith sortTransport <| List.concat publicTransports }, Cmd.none )
+
+                Err err ->
+                    Debug.log (Debug.toString err)
+                        ( model, Cmd.none )
+
+        UpdateSlackInfo res ->
+            case res of
+                Ok slackInfo ->
+                    ( { model | slackInfo = slackInfo }, Cmd.none )
 
                 Err err ->
                     Debug.log (Debug.toString err)

@@ -16,7 +16,7 @@ view model =
         ]
 
 
-title : Html msg
+title : Html Msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -25,7 +25,7 @@ title =
         ]
 
 
-annotation : Html msg
+annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ metIcon
@@ -33,7 +33,7 @@ annotation =
         ]
 
 
-body : WeatherData -> Html msg
+body : WeatherData -> Html Msg
 body weatherData =
     let
         { temperature, symbolUrl, description, rainfall } =

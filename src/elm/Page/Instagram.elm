@@ -28,7 +28,7 @@ view model =
                 ]
 
 
-title : Html msg
+title : Html Msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -37,7 +37,7 @@ title =
         ]
 
 
-annotation : Html msg
+annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ img [ class "icon--med", src "/icons/instagram.png" ] []

@@ -63,9 +63,7 @@ type alias Person =
 
 
 type alias SlackInfo =
-    { imageUrl : Href
-    , topEmojis : List Emoji
-    , lastestEvents : List SlackEvent
+    { topEmojis : List Emoji
     }
 
 
@@ -161,3 +159,4 @@ type Msg
     | UpdateWeather (Result Http.Error WeatherInfo)
     | UpdateInstagram (Result Http.Error (List InstagramPost))
     | UpdatePublicTransport (Result Http.Error (List (List Transport)))
+    | UpdateSlackInfo (Result Http.Error SlackInfo)

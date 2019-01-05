@@ -18,7 +18,7 @@ view model =
         ]
 
 
-title : Html msg
+title : Html Msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -27,15 +27,15 @@ title =
         ]
 
 
-annotation : Html msg
+annotation : Html Msg
 annotation =
-    div [ class "annotation" ]
+    div [ class "annotation animated fadeIn faster" ]
         [ busIcon
         , h3 [] [ text "kolumbus.no" ]
         ]
 
 
-body : Model -> Html msg
+body : Model -> Html Msg
 body model =
     div [ class "content" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -44,7 +44,7 @@ body model =
         ]
 
 
-departure : Model -> Transport -> Html msg
+departure : Model -> Transport -> Html Msg
 departure model transport =
     div [ class "departure" ] <|
         case transport of
@@ -64,7 +64,7 @@ departure model transport =
                 ]
 
 
-livemap : Model -> Html msg
+livemap : Model -> Html Msg
 livemap model =
     iframe [ class "transit__map", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
 

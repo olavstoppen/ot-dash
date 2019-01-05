@@ -1,4 +1,4 @@
-module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchPublicTransport, fetchSlackEvents, fetchWeather)
+module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchPublicTransport, fetchSlackEvents, fetchSlackInfo, fetchWeather)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -59,6 +59,23 @@ decodeSlackEvent message =
 
         _ ->
             succeed UnknownSlackEvent
+
+
+
+-- Slack info
+
+
+fetchSlackInfo :
+    (Result Http.Error SlackInfo -> Msg)
+    -> Model
+    -> Cmd Msg
+fetchSlackInfo callback { apiKey } =
+    get apiKey "Emojistats" callback <| decodeSlackInfo
+
+
+decodeSlackInfo : Decoder SlackInfo
+decodeSlackInfo =
+    map SlackInfo (list string)
 
 
 
