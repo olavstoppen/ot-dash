@@ -90,6 +90,7 @@ type alias WeatherData =
     , rainfall : Maybe Rainfall
     , description : String
     , symbolUrl : String
+    , day : String
     }
 
 

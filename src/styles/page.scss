@@ -1,0 +1,290 @@
+.page {
+  // padding: 5vw;
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: repeat(21, 1fr);
+  grid-template-rows: repeat(21, 1fr);
+
+  .annotation {
+    grid-column: 2 / span 13;
+    grid-row: 2 / span 2;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    > h3 {
+      line-height: calc(1.1em + 0.3vmax);
+      font-size: calc(16px + 0.3vmax);
+      font-weight: 400;
+    }
+
+    > * {
+      display: flex;
+      margin-right: 1.3vmax;
+    }
+
+  }
+
+  .title {
+    grid-column: 2 / span 9;
+    grid-row: 6 / span 2;
+    overflow: hidden;
+
+    > * {
+      height: 100%;
+    }
+
+    h1 {
+      font-size: calc(16px + 2.5vmax);
+      font-weight: 600;
+    }
+  }
+
+  .content {
+    grid-column: 2 / span 9;
+    grid-row: 9 / span 10;
+    font-weight: 400;
+    @at-root #{&}--wide {
+      grid-column: 2 / span 19;
+      grid-row: 6 / span 10;
+    }
+    overflow: hidden;
+
+    > * {
+      height: 100%;
+    }
+  }
+
+  .footer {
+    grid-column: 2 / span 9;
+    grid-row: 20 / span 1;
+    line-height: calc(1.1em + 0.1vmax);
+    font-size: calc(16px + 0.1vmax);
+    font-weight: 400;
+    overflow: hidden;
+    @at-root #{&}--tall {
+      grid-column: 2 / span 13;
+      grid-row: 18 / span 3;
+    }
+
+    > * {
+      height: 100%;
+    }
+  }
+
+  .square {
+    grid-column: 13 / span 8;
+    grid-row: 6 / span 10;
+    $size: 100%;
+    height: $size;
+    width: $size;
+    overflow: hidden;
+
+    > * {
+      height: 100%;
+    }
+
+    img {
+      height: 100%;
+    }
+
+  }
+  @at-root #{&}__instagram {
+    .stats {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      > * {
+        margin-right: 1vmax;
+        margin-bottom: 1vmax;
+        display: flex;
+        align-items: center;
+
+        > * {
+          margin-right: .3vmax;
+        }
+
+        &:last-child {
+          margin-right: 0;
+          margin-left: auto;
+          justify-self: flex-end;
+        }
+      }
+    }
+
+  }
+  @at-root #{&}__slack {
+    .events {
+      display: flex;
+      flex-direction: column;
+
+      .event {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        > * {
+          margin-right: 1vmax;
+          margin-bottom: 1vmax;
+
+          &:last-child {
+            margin-right: 0;
+            margin-left: auto;
+            justify-self: flex-end;
+          }
+        }
+      }
+    }
+
+  }
+  @at-root #{&}__transit {
+    iframe.transit__map {
+      $size: 100%;
+      height: $size;
+      width: $size;
+
+    }
+
+    .departures {
+      display: flex;
+      flex-direction: column;
+
+      .departure {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-bottom: 1px solid $grey-light;
+        padding: 16px 0;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        > * {
+          margin-right: 1vmax;
+
+          &:last-child {
+            margin-right: 0;
+            margin-left: auto;
+            justify-self: flex-end;
+          }
+        }
+      }
+    }
+  }
+  @at-root #{&}__weather {
+    .today {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(15, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      background: $blue;
+      color: $white;
+      font-weight: 300;
+
+      .temperature {
+        grid-column: 2 / span 7;
+        grid-row: 2 / span 5;
+        display: flex;
+        align-items: stretch;
+
+        * > {
+          height: 100%;
+        }
+      }
+
+      .description {
+        grid-column: 2 / span 7;
+        grid-row: 8 / span 2;
+        line-height: calc(1.1em + .2vmax);
+        font-size: calc(16px + .2vmax);
+
+        display: flex;
+        align-items: flex-end;
+      }
+
+      .highlow {
+        grid-column: 10 / span 5;
+        grid-row: 2 / span 2;
+
+        display: flex;
+        justify-content: flex-end;
+
+        > * {
+          margin-left: 1vmax;
+        }
+      }
+
+      .rainfall {
+        grid-column: 10 / span 5;
+        grid-row: 5 / span 5;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+
+        .title {
+          margin-bottom: 1vmax;
+          text-align: right;
+        }
+
+        .downfall {
+          display: flex;
+
+          > * {
+            margin-left: 1vmax;
+          }
+        }
+      }
+
+    }
+
+    .forecasts {
+      display: flex;
+
+      .forecast {
+        display: flex;
+        flex-direction: column;
+        margin-right: 2vmax;
+        width: 100%;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .symbol {
+          display: flex;
+          justify-content: center;
+
+          img {
+            height: 5vmax;
+          }
+        }
+
+        .temperature {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 1vmax;
+          line-height: calc(1.1em + .1vmax);
+          font-size: calc(16px + .1vmax);
+        }
+
+        .day {
+          display: flex;
+          justify-content: center;
+          margin-top: 1vmax;
+          line-height: calc(1.1em + .1vmax);
+          font-size: calc(16px + .1vmax);
+        }
+      }
+
+    }
+
+    .met-icon-fix {
+      margin-top: .4vmax;
+    }
+  }
+}

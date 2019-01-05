@@ -80,8 +80,8 @@ decodeWeatherInfo =
 decodeWeatherData : Decoder WeatherData
 decodeWeatherData =
     let
-        toDecoder : Float -> Float -> Float -> Float -> Float -> Float -> Float -> String -> String -> Decoder WeatherData
-        toDecoder highestTemp lowestTemp currentTemp feelslike maxRainfall minRainfall currentRainfall description symbolUrl =
+        toDecoder : Float -> Float -> Float -> Float -> Float -> Float -> Float -> String -> String -> String -> Decoder WeatherData
+        toDecoder highestTemp lowestTemp currentTemp feelslike maxRainfall minRainfall currentRainfall description symbolUrl day =
             let
                 temperature =
                     { high = highestTemp
@@ -106,6 +106,7 @@ decodeWeatherData =
                 , rainfall = maybeRainfall
                 , description = description
                 , symbolUrl = symbolUrl
+                , day = day
                 }
     in
     Decode.succeed toDecoder
@@ -118,6 +119,7 @@ decodeWeatherData =
         |> optional "currentRainfall" float 0.0
         |> optional "description" string ""
         |> required "symbolUrl" string
+        |> required "name" string
         |> resolve
 
 

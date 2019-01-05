@@ -2,9 +2,115 @@ module Page.Weather exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Icons exposing (..)
 import Model exposing (..)
+import String exposing (..)
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
-    div [] [ text "weather page" ]
+    div [ class "page page__weather" ]
+        [ annotation
+        , body model.weatherInfo.today
+        , footer model.weatherInfo.forecast
+        ]
+
+
+title : Html msg
+title =
+    div [ class "title" ]
+        [ div [ class "animated fadeInDown faster" ]
+            [ h1 [] [ text "Transit" ]
+            ]
+        ]
+
+
+annotation : Html msg
+annotation =
+    div [ class "annotation animated fadeIn faster" ]
+        [ metIcon
+        , h3 [] [ text "met.no" ]
+        ]
+
+
+body : WeatherData -> Html msg
+body weatherData =
+    let
+        { temperature, symbolUrl, description, rainfall } =
+            weatherData
+
+        todayTemp =
+            (temperature.current |> fromFloat) ++ " °"
+
+        ( highTemp, lowTemp ) =
+            ( viewFloat "Dag " temperature.high " ° ↑"
+            , viewFloat "Natt " temperature.low " ° ↓"
+            )
+
+        todayRainfall =
+            case rainfall of
+                Nothing ->
+                    div [ class "title" ] [ text "Ingen regn idag! " ]
+
+                Just rainfall_ ->
+                    div []
+                        [ div [ class "title" ] [ text "Nedbør" ]
+                        , div [ class "downfall" ]
+                            [ div []
+                                [ text <|
+                                    viewFloat "Høy " rainfall_.high " mm"
+                                ]
+                            , div []
+                                [ text <|
+                                    viewFloat "Lav " rainfall_.low " mm"
+                                ]
+                            ]
+                        ]
+    in
+    div [ class "content--wide" ]
+        [ div [ class "animated fadeInDown faster today" ]
+            [ div [ class "temperature" ]
+                [ div [ class "big" ] [ text todayTemp ]
+                , div [ class "big" ] [ img [ src symbolUrl ] [] ]
+                ]
+            , div [ class "description" ] [ text description ]
+            , div [ class "highlow" ]
+                [ div [] [ text highTemp ]
+                , div [] [ text lowTemp ]
+                ]
+            , div [ class "rainfall" ]
+                [ todayRainfall
+                ]
+            ]
+        ]
+
+
+footer : List WeatherData -> Html Msg
+footer forecasts =
+    div [ class "footer--tall animated fadeIn faster" ]
+        [ div [ class "forecasts" ] <|
+            List.map forecast forecasts
+        ]
+
+
+forecast : WeatherData -> Html Msg
+forecast { symbolUrl, temperature, day } =
+    let
+        ( highTemp, lowTemp ) =
+            ( viewFloat "" temperature.high " ° ↑"
+            , viewFloat "" temperature.low " ° ↓"
+            )
+    in
+    div [ class "forecast" ]
+        [ div [ class "symbol" ] [ img [ src symbolUrl ] [] ]
+        , div [ class "temperature" ]
+            [ div [] [ text highTemp ]
+            , div [ class "fade-out" ] [ text lowTemp ]
+            ]
+        , div [ class "day" ] [ text day ]
+        ]
+
+
+viewFloat : String -> Float -> String -> String
+viewFloat before temp after =
+    before ++ (temp |> fromFloat) ++ after

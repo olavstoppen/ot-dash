@@ -75,16 +75,11 @@ init flags url key =
             , apiKey = flags.apiKey
             , zone = Time.utc
             , now = millisToPosix 0
-            , pageCountdown = 30
+            , pageCountdown = 30000
             , activePage = getActivePage urlPage
             , pages = List.indexedMap pair staticPages
-            , publicTransport =
-                [ Bus <| Departure (millisToPosix 123123123) "Kvernevik" "3"
-                , Train <| Departure (millisToPosix 5645645645) "Tog til Sandnes" "X76"
-                , Bus <| Departure (millisToPosix 234234234) "Buss til Forus" "6"
-                , Unknown
-                ]
-            , weatherInfo = WeatherInfo (WeatherData (Temperature 0.0 0.0 0.0 0.0) Nothing "" "") []
+            , publicTransport = []
+            , weatherInfo = WeatherInfo (WeatherData (Temperature 0.0 0.0 0.0 0.0) Nothing "" "" "") []
             , birthdays = []
             , slackInfo = SlackInfo "" [] []
             , slackEvents = []
@@ -95,6 +90,7 @@ init flags url key =
     , Cmd.batch
         [ Nav.pushUrl key (getPageKey urlPage)
         , Task.perform SetTimeZone Time.here
+        , Task.perform UpdateNow Time.now
         , fetchSlackEvents UpdateSlackEvents model
         , fetchWeather UpdateWeather model
         , fetchInstagram UpdateInstagram model
