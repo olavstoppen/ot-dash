@@ -32,7 +32,7 @@
 
   .title {
     grid-column: 2 / span 9;
-    grid-row: 6 / span 2;
+    grid-row: 6 / span 3;
     overflow: hidden;
 
     > * {
@@ -47,11 +47,15 @@
 
   .content {
     grid-column: 2 / span 9;
-    grid-row: 9 / span 10;
+    grid-row: 8 / span 10;
     font-weight: 400;
     @at-root #{&}--wide {
       grid-column: 2 / span 18;
       grid-row: 6 / span 10;
+    }
+    @at-root #{&}--tall {
+      grid-column: 2 / span 10;
+      grid-row: 8 / span 13;
     }
     overflow: hidden;
 
@@ -140,16 +144,6 @@
       }
     }
 
-    .image {
-      height: 3vmax;
-      @at-root #{&}--round {
-        border-radius: 50%;
-      }
-      @at-root #{&}--small {
-        height: 2vmax;
-      }
-    }
-
     .topEmojis {
       display: flex;
       justify-content: space-evenly;
@@ -211,6 +205,14 @@
 
         * > {
           height: 100%;
+        }
+
+        img {
+          height: 13vmax;
+        }
+
+        .todays {
+          margin-right: 2vmax;
         }
       }
 
@@ -324,5 +326,34 @@
       }
 
     }
+  }
+  @at-root #{&}__lunch {
+    .lunch {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1vmax;
+      justify-content: stretch;
+
+      .lunchDay {
+        display: flex;
+        flex-direction: column;
+        min-width: 19.8vmax;
+        margin-bottom: 1vmax;
+        margin-right: 1vmax;
+        padding: 1vmax;
+
+        &.active {
+          background: $blue;
+          color: $white;
+        }
+
+        .maincourse,
+        .soup {
+          margin-left: 1vmax;
+        }
+
+      }
+    }
+
   }
 }

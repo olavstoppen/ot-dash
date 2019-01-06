@@ -1,4 +1,4 @@
-module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchPublicTransport, fetchSlackEvents, fetchSlackInfo, fetchWeather)
+module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLunchMenu, fetchPublicTransport, fetchSlackEvents, fetchSlackInfo, fetchWeather)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -235,6 +235,68 @@ decodeTrain =
         |> required "text" string
         |> optional "route" string "NSB"
         |> map Train
+
+
+
+-- LunchMenu
+
+
+fetchLunchMenu : (Result Http.Error (List LunchData) -> Msg) -> Model -> Cmd Msg
+fetchLunchMenu callback { apiKey } =
+    get apiKey "LunchMenu" callback <| list decodeLunch
+
+
+decodeLunch : Decoder LunchData
+decodeLunch =
+    Decode.succeed LunchData
+        |> required "name" decodeDay
+        |> required "name" string
+        |> required "dishes" decodeHeadList
+        |> required "soups" decodeHeadList
+
+
+decodeHeadList : Decoder String
+decodeHeadList =
+    list string
+        |> andThen getHead
+
+
+getHead : List String -> Decoder String
+getHead strings =
+    case List.head strings of
+        Nothing ->
+            succeed ""
+
+        Just head ->
+            succeed head
+
+
+decodeDay : Decoder Weekday
+decodeDay =
+    string
+        |> andThen toWeekday
+
+
+toWeekday : String -> Decoder Weekday
+toWeekday day =
+    case day of
+        "Mandag" ->
+            succeed Mon
+
+        "Tirsdag" ->
+            succeed Tue
+
+        "Onsdag" ->
+            succeed Tue
+
+        "Torsdag" ->
+            succeed Tue
+
+        "Fredag" ->
+            succeed Tue
+
+        _ ->
+            fail "Day not found"
 
 
 

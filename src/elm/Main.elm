@@ -12,6 +12,7 @@ import List exposing (..)
 import Model exposing (..)
 import Page.Birthday as Birthday
 import Page.Instagram as Instagram
+import Page.Lunch as Lunch
 import Page.Slack as Slack
 import Page.Transit as Transit
 import Page.Weather as Weather
@@ -34,6 +35,7 @@ urlParser =
         , UrlParser.map Birthday <| UrlParser.s "birthday"
         , UrlParser.map Instagram <| UrlParser.s "instagram"
         , UrlParser.map Weather <| UrlParser.s "weather"
+        , UrlParser.map Lunch <| UrlParser.s "lunch"
         ]
 
 
@@ -44,6 +46,7 @@ staticPages =
     , Birthday
     , Instagram
     , Weather
+    , Lunch
     ]
 
 
@@ -84,6 +87,7 @@ init flags url key =
             , slackInfo = SlackInfo []
             , slackEvents = []
             , instagram = []
+            , lunchMenu = []
             }
     in
     ( model
@@ -96,6 +100,7 @@ init flags url key =
         , fetchInstagram UpdateInstagram model
         , fetchPublicTransport UpdatePublicTransport model
         , fetchSlackInfo UpdateSlackInfo model
+        , fetchLunchMenu UpdateLunchMenu model
         ]
     )
 
@@ -191,6 +196,15 @@ update message model =
                     Debug.log (Debug.toString err)
                         ( model, Cmd.none )
 
+        UpdateLunchMenu res ->
+            case res of
+                Ok lunchMenu ->
+                    ( { model | lunchMenu = lunchMenu }, Cmd.none )
+
+                Err err ->
+                    Debug.log (Debug.toString err)
+                        ( model, Cmd.none )
+
 
 handleUrlRequest : Key -> UrlRequest -> Cmd Msg
 handleUrlRequest key urlRequest =
@@ -261,6 +275,9 @@ getPage model =
         Instagram ->
             Instagram.view model
 
+        Lunch ->
+            Lunch.view model
+
 
 background : Model -> Html Msg
 background model =
@@ -279,12 +296,13 @@ sidebar model =
         , a [ href "/transit" ] [ text "Transit" ]
         , a [ href "/instagram" ] [ text "Instagram" ]
         , a [ href "/birthday" ] [ text "Birthday" ]
+        , a [ href "/lunch" ] [ text "Lunsjmeny" ]
         ]
 
 
-link : Page -> String -> String -> Html Msg
-link activePage href_ title =
-    a [ href href_ ] [ text title ]
+link : Page -> Page -> String -> String -> Html Msg
+link activePage page href_ title =
+    a [ classList [ ( "page", activePage == page ) ], href href_ ] [ text title ]
 
 
 

@@ -97,6 +97,9 @@ getPageKey page =
         Instagram ->
             "instagram"
 
+        Lunch ->
+            "lunch"
+
 
 getPageTitle : Page -> String
 getPageTitle page =

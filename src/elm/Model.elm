@@ -1,4 +1,4 @@
-module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Href, InstagramPost, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -27,6 +27,7 @@ type alias Model =
     , slackInfo : SlackInfo
     , slackEvents : List SlackEvent
     , instagram : List InstagramPost
+    , lunchMenu : List LunchData
     }
 
 
@@ -131,6 +132,18 @@ type alias InstagramPost =
 
 
 
+-- Lunch
+
+
+type alias LunchData =
+    { day : Weekday
+    , dayName : String
+    , maincourse : String
+    , soup : String
+    }
+
+
+
 -- Global
 
 
@@ -140,6 +153,7 @@ type Page
     | Birthday
     | Weather
     | Instagram
+    | Lunch
 
 
 type alias Href =
@@ -160,3 +174,4 @@ type Msg
     | UpdateInstagram (Result Http.Error (List InstagramPost))
     | UpdatePublicTransport (Result Http.Error (List (List Transport)))
     | UpdateSlackInfo (Result Http.Error SlackInfo)
+    | UpdateLunchMenu (Result Http.Error (List LunchData))
