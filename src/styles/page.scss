@@ -65,7 +65,7 @@
     overflow: hidden;
     @at-root #{&}--tall {
       grid-column: 2 / span 13;
-      grid-row: 18 / span 3;
+      grid-row: 17 / span 3;
     }
 
     > * {
@@ -263,6 +263,7 @@
       .forecast {
         display: flex;
         flex-direction: column;
+        align-items: center;
         margin-right: 2vmax;
         width: 100%;
 
@@ -275,22 +276,25 @@
           justify-content: center;
 
           img {
-            height: 5vmax;
+            height: 4vmax;
           }
         }
 
         .temperature {
           display: flex;
-          justify-content: space-between;
           margin-top: 1vmax;
           line-height: calc(1.1em + .1vmax);
           font-size: calc(16px + .1vmax);
+
+          > *:first-child {
+            margin-right: 1vmax;
+          }
         }
 
         .day {
           display: flex;
           justify-content: center;
-          margin-top: 1vmax;
+          margin-top: .5vmax;
           line-height: calc(1.1em + .1vmax);
           font-size: calc(16px + .1vmax);
         }
