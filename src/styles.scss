@@ -36,15 +36,6 @@ header {
   }
 }
 
-.big {
-  line-height: calc(1.1em + 5vmax);
-  font-size: calc(16px + 5vmax);
-
-  img {
-    height: 13vmax;
-  }
-}
-
 .fade-out {
   color: $grey;
 }
@@ -130,5 +121,14 @@ nav.sidebar {
   @at-root #{&}--med {
     height: 1.3vmax;
     width: 1.3vmax;
+  }
+}
+
+.big {
+  line-height: calc(1.1em + 5vmax);
+  font-size: calc(16px + 5vmax);
+
+  img {
+    height: 13vmax;
   }
 }

@@ -8,78 +8,58 @@ import Model exposing (..)
 import Time exposing (Zone)
 
 
-view : Model -> Html Msg
-view model =
-    case List.head model.instagram of
-        Nothing ->
-            div [ class "page page__instagram" ]
-                [ title
-                , annotation
-                , div [ class "content" ] [ text "No new posts on Instagram" ]
-                ]
-
-        Just instagramPost ->
-            div [ class "page page__instagram" ]
-                [ title
-                , annotation
-                , footer model.zone instagramPost
-                , body instagramPost
-                , square instagramPost
-                ]
+view : Person -> Html Msg
+view person =
+    div [ class "page page__birthday" ]
+        [ annotation
+        , title
+        , body person
+        , square person.imageUrl
+        , footer
+        ]
 
 
 title : Html Msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ h1 [] [ text "Nytt på Instagram" ]
+            [ h1 [] [ text "Gratulere med dagen!" ]
             ]
         ]
 
 
 annotation : Html Msg
 annotation =
-    div [ class "annotation animated fadeIn faster" ]
-        [ img [ class "icon--med", src "/icons/instagram.png" ] []
-        , h3 [] [ text "instagram.com/olavstoppen" ]
+    div [ class "annotation--corner animated fadeIn faster flags" ]
+        [ img [ class "", src "/images/flags.svg" ] []
         ]
 
 
-body : InstagramPost -> Html Msg
-body instagramPost =
+body : Person -> Html Msg
+body { firstName } =
     div [ class "content" ]
-        [ div [ class "animated fadeInDown faster" ] <|
-            List.map paragraph <|
-                String.lines instagramPost.description
-        ]
-
-
-paragraph : String -> Html Msg
-paragraph s =
-    p [] [ text s ]
-
-
-footer : Zone -> InstagramPost -> Html Msg
-footer zone instagramPost =
-    div [ class "footer animated fadeIn faster" ]
-        [ div [ class "stats" ]
-            [ div [ class "stat" ]
-                [ likeIcon
-                , text <| String.fromInt instagramPost.likes
-                ]
-            , div [ class "stat" ]
-                [ chatIcon
-                , text <| String.fromInt instagramPost.comments
-                ]
-            , div [ class "stat" ] [ text <| formatDate zone instagramPost.time ]
+        [ div [ class "animated fadeInDown faster" ]
+            [ p [] [ text "Hurra for deg som fyller ditt år! Ja, deg vil vi gratulere!" ]
+            , p [] [ text "Alle i ring omkring deg vi står, og se nå vil vi marsjere, bukke, nikke, neie, snu oss omkring, danse så for deg med hopp og sprett og spring, ønske deg av hjertet alle gode ting, og si meg så, hva vil du mere?" ]
+            , p [] [ text <| "Gratulerer " ++ firstName ++ "!" ]
             ]
         ]
 
 
-square : InstagramPost -> Html Msg
-square instagramPost =
+square : Href -> Html Msg
+square imageUrl =
     div [ class "square " ]
         [ div [ class "animated slideInLeft faster" ]
-            [ img [ src instagramPost.imageUrl ] []
+            [ img [ src imageUrl ] []
+            ]
+        ]
+
+
+footer : Html Msg
+footer =
+    div [ class "footer--tall animated fadeIn faster" ]
+        [ div [ class "gifts" ]
+            [ img [ src "images/cake.svg" ] []
+            , img [ src "images/gift.svg" ] []
             ]
         ]

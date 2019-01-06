@@ -80,7 +80,7 @@ init flags url key =
             , pages = List.indexedMap pair staticPages
             , publicTransport = []
             , weatherInfo = WeatherInfo (WeatherData (Temperature 0.0 0.0 0.0 0.0) Nothing "" "" "") []
-            , birthdays = []
+            , birthdays = [ Person "Michael" "Marszalek" "/images/typing.png" ]
             , slackInfo = SlackInfo []
             , slackEvents = []
             , instagram = []
@@ -240,23 +240,26 @@ view model =
 
 getPage : Model -> Html Msg
 getPage model =
-    model
-        |> (case second model.activePage of
-                Transit ->
-                    Transit.view
+    case second model.activePage of
+        Transit ->
+            Transit.view model
 
-                Slack ->
-                    Slack.view
+        Slack ->
+            Slack.view model
 
-                Birthday ->
-                    Birthday.view
+        Birthday ->
+            case List.head model.birthdays of
+                Nothing ->
+                    div [] []
 
-                Weather ->
-                    Weather.view
+                Just person ->
+                    Birthday.view person
 
-                Instagram ->
-                    Instagram.view
-           )
+        Weather ->
+            Weather.view model
+
+        Instagram ->
+            Instagram.view model
 
 
 background : Model -> Html Msg

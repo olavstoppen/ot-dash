@@ -9,6 +9,10 @@
   .annotation {
     grid-column: 2 / span 13;
     grid-row: 2 / span 2;
+    @at-root #{&}--corner {
+      grid-column: 1 / span 14;
+      grid-row: 1 / span 3;
+    }
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -113,7 +117,6 @@
         }
       }
     }
-
   }
   @at-root #{&}__slack {
     .events {
@@ -304,6 +307,22 @@
 
     .met-icon-fix {
       margin-top: .4vmax;
+    }
+  }
+  @at-root #{&}__birthday {
+    .flags {
+      img {
+        height: 13vmax;
+
+      }
+    }
+
+    .gifts {
+      > * {
+        margin-right: 6vmax;
+        height: 10vmax;
+      }
+
     }
   }
 }
