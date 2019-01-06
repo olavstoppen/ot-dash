@@ -92,4 +92,8 @@ image emoji =
 
 topEmojis : List String -> Html Msg
 topEmojis emojis =
-    div [ class "topEmojis" ] <| List.map image emojis
+    div [ class "topEmojis" ] <|
+        List.concat
+            [ [ h4 [] [ text "Topp emojis" ] ]
+            , List.map image emojis
+            ]
