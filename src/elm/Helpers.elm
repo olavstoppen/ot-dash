@@ -36,7 +36,15 @@ formatDateTime zone time =
 
 formatDateDiffMinutes : Zone -> Posix -> Posix -> String
 formatDateDiffMinutes zone from to =
-    (diff Minute zone from to |> fromInt) ++ " min"
+    let
+        diffNow =
+            diff Minute zone from to
+    in
+    if diffNow == 0 then
+        " nå"
+
+    else
+        (diffNow |> fromInt) ++ " min"
 
 
 toMonthNumber : Month -> Int

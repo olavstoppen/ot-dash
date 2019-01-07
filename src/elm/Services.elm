@@ -222,18 +222,18 @@ decodeStop transportMode =
 decodeBus : Decoder Transport
 decodeBus =
     Decode.succeed Departure
-        |> required "departurePosix" decodeTime
+        |> required "expectedDeparturePosix" decodeTime
         |> required "text" string
-        |> optional "route" string "3"
+        |> optional "line" string ""
         |> map Bus
 
 
 decodeTrain : Decoder Transport
 decodeTrain =
     Decode.succeed Departure
-        |> required "departurePosix" decodeTime
+        |> required "expectedDeparturePosix" decodeTime
         |> required "text" string
-        |> optional "route" string "NSB"
+        |> optional "line" string "NSB"
         |> map Train
 
 
