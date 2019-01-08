@@ -287,13 +287,13 @@ toWeekday day =
             succeed Tue
 
         "Onsdag" ->
-            succeed Tue
+            succeed Wed
 
         "Torsdag" ->
-            succeed Tue
+            succeed Thu
 
         "Fredag" ->
-            succeed Tue
+            succeed Fri
 
         _ ->
             fail "Day not found"
