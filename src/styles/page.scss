@@ -9,6 +9,7 @@
   .full-page {
     grid-column: 1 / span 15;
     grid-row: 1 / span 21;
+    width: 100.02%; // small offset to fix white background overlay
     z-index: -1;
   }
 
@@ -352,7 +353,7 @@
     .container {
       position: relative;
       height: 100%;
-      width: 100.02%;
+      width: 100%;
       overflow: hidden;
 
       .image {
