@@ -11,55 +11,24 @@ import Time exposing (Zone)
 view : Person -> Html Msg
 view person =
     div [ class "page page__birthday" ]
-        [ annotation
-        , title
-        , body person
-        , square person.imageUrl
-        , footer
-        ]
-
-
-title : Html Msg
-title =
-    div [ class "title" ]
-        [ div [ class "animated fadeInDown faster" ]
-            [ h1 [] [ text "Gratulere med dagen!" ]
-            ]
-        ]
-
-
-annotation : Html Msg
-annotation =
-    div [ class "annotation--corner animated fadeIn faster flags" ]
-        [ img [ class "", src "/images/flags.svg" ] []
+        [ body person
+        , background "https://images.unsplash.com/photo-1495934270965-eca97329fde8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
         ]
 
 
 body : Person -> Html Msg
 body { firstName } =
-    div [ class "content" ]
-        [ div [ class "animated fadeInDown faster" ]
-            [ p [] [ text "Hurra for deg som fyller ditt år! Ja, deg vil vi gratulere!" ]
-            , p [] [ text "Alle i ring omkring deg vi står, og se nå vil vi marsjere, bukke, nikke, neie, snu oss omkring, danse så for deg med hopp og sprett og spring, ønske deg av hjertet alle gode ting, og si meg så, hva vil du mere?" ]
-            , p [] [ text <| "Gratulerer " ++ firstName ++ "!" ]
+    div [ class "content--middle" ]
+        [ div [ class "animated fadeInDown faster " ]
+            [ div [ class "person" ]
+                [ h1 [] [ text <| "🎂 Gratulere med dagen " ++ firstName ++ "! 🎂" ]
+                ]
             ]
         ]
 
 
-square : Href -> Html Msg
-square imageUrl =
-    div [ class "square " ]
-        [ div [ class "animated slideInLeft faster" ]
-            [ img [ src imageUrl ] []
-            ]
-        ]
-
-
-footer : Html Msg
-footer =
-    div [ class "footer--tall animated fadeIn faster" ]
-        [ div [ class "gifts" ]
-            [ img [ src "images/cake.svg" ] []
-            , img [ src "images/gift.svg" ] []
-            ]
+background : Href -> Html Msg
+background imageUrl =
+    div [ class "full-page" ]
+        [ div [ class "container" ] [ img [ src imageUrl, class "image" ] [] ]
         ]

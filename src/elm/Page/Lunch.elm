@@ -64,17 +64,9 @@ lunchDay todayWeekDay { dayName, maincourse, soup, day } =
         ]
 
 
-foodImageUrls : List String
-foodImageUrls =
-    [ "/images/food_1.jpg"
-    , "/images/food_2.jpg"
-    , "/images/food_3.jpg"
-    ]
-
-
 getRandomFoodImage : Model -> String
 getRandomFoodImage model =
-    "/images/food_3.jpg"
+    "https://images.unsplash.com/photo-1444952483853-7c36e902e722?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjUwMDQxfQ"
 
 
 square : Model -> Html Msg

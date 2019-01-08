@@ -6,6 +6,12 @@
   grid-template-columns: repeat(21, 1fr);
   grid-template-rows: repeat(21, 1fr);
 
+  .full-page {
+    grid-column: 1 / span 15;
+    grid-row: 1 / span 21;
+    z-index: -1;
+  }
+
   .annotation {
     grid-column: 2 / span 13;
     grid-row: 2 / span 2;
@@ -31,8 +37,8 @@
   }
 
   .title {
-    grid-column: 2 / span 9;
-    grid-row: 6 / span 3;
+    grid-column: 2 / span 13;
+    grid-row: 5 / span 3;
     overflow: hidden;
 
     > * {
@@ -46,6 +52,7 @@
   }
 
   .content {
+    height: 100%;
     grid-column: 2 / span 9;
     grid-row: 8 / span 10;
     font-weight: 400;
@@ -56,6 +63,10 @@
     @at-root #{&}--tall {
       grid-column: 2 / span 10;
       grid-row: 8 / span 13;
+    }
+    @at-root #{&}--middle {
+      grid-column: 2 / span 17;
+      grid-row: 9 / span 4;
     }
     overflow: hidden;
 
@@ -79,6 +90,7 @@
     > * {
       height: 100%;
     }
+
   }
 
   .square {
@@ -314,9 +326,19 @@
   @at-root #{&}__birthday {
     .flags {
       img {
-        height: 13vmax;
+        height: 10vmax;
 
       }
+    }
+
+    .person {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3vmax;
+      background: $white;
     }
 
     .gifts {
@@ -326,6 +348,27 @@
       }
 
     }
+
+    .container {
+      position: relative;
+      height: 100%;
+      width: 100.02%;
+      overflow: hidden;
+
+      .image {
+        position: absolute;
+        margin: auto;
+        min-height: 100%;
+        min-width: 100%;
+        left: -110%;
+        right: -100%;
+        top: -0%;
+        bottom: -0%;
+
+      }
+
+    }
+
   }
   @at-root #{&}__lunch {
     .lunch {

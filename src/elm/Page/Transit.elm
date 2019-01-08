@@ -37,9 +37,11 @@ annotation =
 
 body : Model -> Html Msg
 body model =
-    div [ class "content" ]
+    div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ div [ class "departures" ] <| List.map (departure model) model.publicTransport
+            [ div [ class "departures" ] <|
+                List.map (departure model) <|
+                    List.take 8 model.publicTransport
             ]
         ]
 
