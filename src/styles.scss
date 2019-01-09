@@ -58,7 +58,7 @@ header {
     grid-area: middle;
   }
   @at-root #{&}__sidebar {
-    background: $blue;
+    background: $black-light;
     grid-area: sidebar;
   }
 }

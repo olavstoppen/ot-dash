@@ -11,6 +11,7 @@ import Json.Decode as Decode
 import List exposing (..)
 import Model exposing (..)
 import Page.Birthday as Birthday
+import Page.Error as Error
 import Page.Instagram as Instagram
 import Page.Lunch as Lunch
 import Page.Slack as Slack
@@ -67,13 +68,13 @@ init flags url key =
             , pageCountdown = 30000
             , activePage = getActivePage urlPage
             , pages = pages
-            , publicTransport = []
-            , weatherInfo = WeatherInfo (WeatherData (Temperature 0.0 0.0 0.0 0.0) Nothing "" "" "") []
-            , birthdays = [ Person "Michael" "Marszalek" "/images/typing.png" ]
-            , slackInfo = SlackInfo []
-            , slackEvents = []
-            , instagram = []
-            , lunchMenu = []
+            , publicTransport = NotAsked
+            , weatherInfo = NotAsked
+            , birthdays = NotAsked
+            , slackInfo = NotAsked
+            , slackEvents = NotAsked
+            , instagram = NotAsked
+            , lunchMenu = NotAsked
             }
     in
     ( model
@@ -118,12 +119,20 @@ getPage model =
             Slack.view model
 
         Birthday ->
-            case List.head model.birthdays of
-                Nothing ->
-                    div [] []
+            case model.birthdays of
+                Success birthdays ->
+                    case List.head birthdays of
+                        Nothing ->
+                            div [] []
 
-                Just person ->
-                    Birthday.view person
+                        Just person ->
+                            Birthday.view person
+
+                Failure err ->
+                    Error.view err
+
+                _ ->
+                    div [] [ text "loading" ]
 
         Weather ->
             Weather.view model

@@ -10,12 +10,23 @@ import Model exposing (..)
 
 view : Model -> Html Msg
 view model =
-    div [ class "page page__transit" ]
-        [ title
-        , annotation
-        , body model
-        , square model
-        ]
+    case model.publicTransport of
+        Success publicTransport ->
+            div [ class "page page__transit" ]
+                [ title
+                , annotation
+                , body publicTransport model
+                , square model
+                ]
+
+        _ ->
+            div [ class "page page__transit" ]
+                [ div [ class "content" ]
+                    [ div [ class "animated fadeInDown faster today" ]
+                        [ div [] [ text "Mangler data" ]
+                        ]
+                    ]
+                ]
 
 
 title : Html Msg
@@ -35,13 +46,13 @@ annotation =
         ]
 
 
-body : Model -> Html Msg
-body model =
+body : List Transport -> Model -> Html Msg
+body publicTransport model =
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
             [ div [ class "departures" ] <|
                 List.map (departure model) <|
-                    List.take 8 model.publicTransport
+                    List.take 8 publicTransport
             ]
         ]
 

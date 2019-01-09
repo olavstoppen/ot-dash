@@ -5,27 +5,36 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Icons exposing (..)
 import Model exposing (..)
+import Page.Error as Error
 import Time exposing (Zone)
 
 
 view : Model -> Html Msg
 view model =
-    case List.head model.instagram of
-        Nothing ->
-            div [ class "page page__instagram" ]
-                [ title
-                , annotation
-                , div [ class "content" ] [ text "No new posts on Instagram" ]
-                ]
+    case model.instagram of
+        Success instagramPosts ->
+            case List.head instagramPosts of
+                Nothing ->
+                    div [ class "page page__instagram" ]
+                        [ title
+                        , annotation
+                        , div [ class "content" ] [ text "No new posts on Instagram" ]
+                        ]
 
-        Just instagramPost ->
-            div [ class "page page__instagram" ]
-                [ title
-                , annotation
-                , footer model.zone instagramPost
-                , body instagramPost
-                , square instagramPost
-                ]
+                Just instagramPost ->
+                    div [ class "page page__instagram" ]
+                        [ title
+                        , annotation
+                        , footer model.zone instagramPost
+                        , body instagramPost
+                        , square instagramPost
+                        ]
+
+        Failure err _ ->
+            Error.view err
+
+        _ ->
+            div [] [ text "loading" ]
 
 
 title : Html Msg

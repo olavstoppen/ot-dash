@@ -6,13 +6,13 @@ import Model exposing (..)
 
 
 view : Model -> Html Msg
-view model =
+view { slackEvents, slackInfo } =
     div [ class "page page__slack" ]
         [ title
         , annotation
-        , body model
+        , body slackEvents
         , square
-        , footer model
+        , footer slackInfo
         ]
 
 
@@ -33,11 +33,16 @@ annotation =
         ]
 
 
-body : Model -> Html Msg
-body model =
+body : RemoteData (List SlackEvent) -> Html Msg
+body slackEvents =
     div [ class "content" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ div [ class "events " ] <| List.map event model.slackEvents
+            [ case slackEvents of
+                Success slackEvents_ ->
+                    div [ class "events " ] <| List.map event slackEvents_
+
+                _ ->
+                    div [] [ text "Mangler data" ]
             ]
         ]
 
@@ -73,10 +78,15 @@ square =
         ]
 
 
-footer : Model -> Html Msg
-footer model =
+footer : RemoteData SlackInfo -> Html Msg
+footer slackInfo =
     div [ class "footer animated fadeIn faster" ]
-        [ topEmojis model.slackInfo.topEmojis
+        [ case slackInfo of
+            Success slackInfo_ ->
+                topEmojis slackInfo_.topEmojis
+
+            _ ->
+                div [] [ text "Mangler data" ]
         ]
 
 

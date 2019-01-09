@@ -11,12 +11,23 @@ import Time exposing (..)
 
 view : Model -> Html Msg
 view model =
-    div [ class "page page__lunch" ]
-        [ title
-        , annotation
-        , body model
-        , square model
-        ]
+    case model.lunchMenu of
+        Success lunchMenu ->
+            div [ class "page page__lunch" ]
+                [ title
+                , annotation
+                , body lunchMenu model.now model.zone
+                , square model
+                ]
+
+        _ ->
+            div [ class "page page__lunch" ]
+                [ div [ class "content" ]
+                    [ div [ class "animated fadeInDown faster today" ]
+                        [ div [] [ text "Mangler data" ]
+                        ]
+                    ]
+                ]
 
 
 title : Html Msg
@@ -36,15 +47,15 @@ annotation =
         ]
 
 
-body : Model -> Html Msg
-body model =
+body : List LunchData -> Posix -> Zone -> Html Msg
+body lunchMenu now zone =
     let
         todayWeekDay =
-            toWeekday model.zone model.now
+            toWeekday zone now
     in
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ div [ class "lunch" ] <| List.map (lunchDay todayWeekDay) model.lunchMenu
+            [ div [ class "lunch" ] <| List.map (lunchDay todayWeekDay) lunchMenu
             ]
         ]
 

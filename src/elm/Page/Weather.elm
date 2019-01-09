@@ -9,11 +9,22 @@ import String exposing (..)
 
 view : Model -> Html Msg
 view model =
-    div [ class "page page__weather" ]
-        [ annotation
-        , body model.weatherInfo.today
-        , footer model.weatherInfo.forecast
-        ]
+    case model.weatherInfo of
+        Success weatherInfo ->
+            div [ class "page page__weather" ]
+                [ annotation
+                , body weatherInfo.today
+                , footer weatherInfo.forecast
+                ]
+
+        _ ->
+            div [ class "page page__weather" ]
+                [ div [ class "content" ]
+                    [ div [ class "animated fadeInDown faster today" ]
+                        [ div [] [ text "Mangler data" ]
+                        ]
+                    ]
+                ]
 
 
 title : Html Msg

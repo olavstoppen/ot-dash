@@ -1,4 +1,4 @@
-module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -21,14 +21,21 @@ type alias Model =
     , activePage : ( Int, Page )
     , pageCountdown : Int
     , pages : List ( Int, Page )
-    , publicTransport : List Transport
-    , weatherInfo : WeatherInfo
-    , birthdays : List Person
-    , slackInfo : SlackInfo
-    , slackEvents : List SlackEvent
-    , instagram : List InstagramPost
-    , lunchMenu : List LunchData
+    , publicTransport : RemoteData (List Transport)
+    , weatherInfo : RemoteData WeatherInfo
+    , birthdays : RemoteData (List Person)
+    , slackInfo : RemoteData SlackInfo
+    , slackEvents : RemoteData (List SlackEvent)
+    , instagram : RemoteData (List InstagramPost)
+    , lunchMenu : RemoteData (List LunchData)
     }
+
+
+type RemoteData a
+    = NotAsked
+    | Loading
+    | Failure Http.Error
+    | Success a
 
 
 

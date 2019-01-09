@@ -73,56 +73,50 @@ update message model =
         UpdateSlackEvents res ->
             case res of
                 Ok events ->
-                    ( { model | slackEvents = events }, Cmd.none )
+                    ( { model | slackEvents = Success events }, Cmd.none )
 
                 Err err ->
-                    Debug.log (Debug.toString err)
-                        ( model, Cmd.none )
+                    ( { model | slackEvents = Failure err }, Cmd.none )
 
         UpdateWeather res ->
             case res of
                 Ok weatherInfo ->
-                    ( { model | weatherInfo = weatherInfo }, Cmd.none )
+                    ( { model | weatherInfo = Success weatherInfo }, Cmd.none )
 
                 Err err ->
-                    Debug.log (Debug.toString err)
-                        ( model, Cmd.none )
+                    ( { model | weatherInfo = Failure err }, Cmd.none )
 
         UpdateInstagram res ->
             case res of
                 Ok instagram ->
-                    ( { model | instagram = instagram }, Cmd.none )
+                    ( { model | instagram = Success instagram }, Cmd.none )
 
                 Err err ->
-                    Debug.log (Debug.toString err)
-                        ( model, Cmd.none )
+                    ( { model | instagram = Failure err }, Cmd.none )
 
         UpdatePublicTransport res ->
             case res of
                 Ok publicTransports ->
-                    ( { model | publicTransport = sortWith sortTransport <| List.concat publicTransports }, Cmd.none )
+                    ( { model | publicTransport = Success <| sortWith sortTransport <| List.concat publicTransports }, Cmd.none )
 
                 Err err ->
-                    Debug.log (Debug.toString err)
-                        ( model, Cmd.none )
+                    ( { model | publicTransport = Failure err }, Cmd.none )
 
         UpdateSlackInfo res ->
             case res of
                 Ok slackInfo ->
-                    ( { model | slackInfo = slackInfo }, Cmd.none )
+                    ( { model | slackInfo = Success slackInfo }, Cmd.none )
 
                 Err err ->
-                    Debug.log (Debug.toString err)
-                        ( model, Cmd.none )
+                    ( { model | slackInfo = Failure err }, Cmd.none )
 
         UpdateLunchMenu res ->
             case res of
                 Ok lunchMenu ->
-                    ( { model | lunchMenu = lunchMenu }, Cmd.none )
+                    ( { model | lunchMenu = Success lunchMenu }, Cmd.none )
 
                 Err err ->
-                    Debug.log (Debug.toString err)
-                        ( model, Cmd.none )
+                    ( { model | lunchMenu = Failure err }, Cmd.none )
 
 
 handleUrlRequest : Key -> UrlRequest -> Cmd Msg
@@ -133,25 +127,6 @@ handleUrlRequest key urlRequest =
 
         External url ->
             Nav.load url
-
-
-httpErrorToString : Http.Error -> String
-httpErrorToString err =
-    case err of
-        BadUrl _ ->
-            "BadUrl"
-
-        Timeout ->
-            "Timeout"
-
-        NetworkError ->
-            "NetworkError"
-
-        BadStatus _ ->
-            "BadStatus"
-
-        BadBody s ->
-            "BadBody: " ++ s
 
 
 urlParser : Parser (Page -> msg) msg
