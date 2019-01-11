@@ -58,7 +58,7 @@ body publicTransport model =
 
 
 departure : Model -> Transport -> Html Msg
-departure model transport =
+departure { here } transport =
     div [ class "departure" ] <|
         case transport of
             Unknown ->
@@ -67,13 +67,13 @@ departure model transport =
             Bus departure_ ->
                 [ div [ class "ellipse" ] [ text departure_.name ]
                 , div [] [ text departure_.destination ]
-                , div [] [ text <| formatDateDiffMinutes model.zone model.now departure_.time ]
+                , div [] [ text <| formatDateDiffMinutes here.zone here.time departure_.time ]
                 ]
 
             Train departure_ ->
                 [ div [ class "ellipse" ] [ trainIcon ]
                 , div [] [ text departure_.destination ]
-                , div [] [ text <| formatDateDiffMinutes model.zone model.now departure_.time ]
+                , div [] [ text <| formatDateDiffMinutes here.zone here.time departure_.time ]
                 ]
 
 

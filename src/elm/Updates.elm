@@ -34,7 +34,14 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         SetTimeZone zone ->
-            ( { model | zone = zone }, Cmd.none )
+            let
+                { here } =
+                    model
+
+                updatedHere =
+                    { here | zone = zone }
+            in
+            ( { model | here = updatedHere }, Cmd.none )
 
         OnUrlRequest urlRequest ->
             ( model, handleUrlRequest model.key urlRequest )
@@ -54,8 +61,14 @@ update message model =
                 nextPageCountdown =
                     model.pageCountdown - 1
 
+                { here } =
+                    model
+
                 updatedModel =
-                    { model | now = now }
+                    { model
+                        | here =
+                            Here now here.zone <| toWeekday here.zone now
+                    }
             in
             if nextPageCountdown < 0 then
                 let

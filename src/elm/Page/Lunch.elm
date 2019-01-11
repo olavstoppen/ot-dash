@@ -16,7 +16,7 @@ view model =
             div [ class "page page__lunch" ]
                 [ title
                 , annotation
-                , body lunchMenu model.now model.zone
+                , body lunchMenu model.here
                 , square model
                 ]
 
@@ -47,15 +47,11 @@ annotation =
         ]
 
 
-body : List LunchData -> Posix -> Zone -> Html Msg
-body lunchMenu now zone =
-    let
-        todayWeekDay =
-            toWeekday zone now
-    in
+body : List LunchData -> Here -> Html Msg
+body lunchMenu { day } =
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ div [ class "lunch" ] <| List.map (lunchDay todayWeekDay) lunchMenu
+            [ div [ class "lunch" ] <| List.map (lunchDay day) lunchMenu
             ]
         ]
 

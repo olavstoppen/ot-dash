@@ -1,4 +1,4 @@
-module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -16,18 +16,17 @@ type alias Flags =
 type alias Model =
     { key : Key
     , apiKey : String
-    , zone : Zone
-    , now : Posix
     , activePage : ( Int, Page )
+    , here : Here
     , pageCountdown : Int
     , pages : List ( Int, Page )
     , publicTransport : RemoteData (List Transport)
-    , weatherInfo : RemoteData WeatherInfo
     , birthdays : RemoteData (List Person)
     , slackInfo : RemoteData SlackInfo
     , slackEvents : RemoteData (List SlackEvent)
     , instagram : RemoteData (List InstagramPost)
     , lunchMenu : RemoteData (List LunchData)
+    , weatherInfo : RemoteData WeatherInfo
     }
 
 
@@ -36,6 +35,34 @@ type RemoteData a
     | Loading
     | Failure Http.Error
     | Success a
+
+
+type alias Here =
+    { time : Posix
+    , zone : Zone
+    , day : Weekday
+    }
+
+
+
+-- Global
+
+
+type Page
+    = Transit
+    | Slack
+    | Birthday
+    | Weather
+    | Instagram
+    | Lunch
+
+
+type alias Href =
+    String
+
+
+type alias Emoji =
+    Href
 
 
 
@@ -148,27 +175,6 @@ type alias LunchData =
     , maincourse : String
     , soup : String
     }
-
-
-
--- Global
-
-
-type Page
-    = Transit
-    | Slack
-    | Birthday
-    | Weather
-    | Instagram
-    | Lunch
-
-
-type alias Href =
-    String
-
-
-type alias Emoji =
-    Href
 
 
 type Msg

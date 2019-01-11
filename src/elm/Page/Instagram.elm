@@ -25,12 +25,12 @@ view model =
                     div [ class "page page__instagram" ]
                         [ title
                         , annotation
-                        , footer model.zone instagramPost
+                        , footer model.here instagramPost
                         , body instagramPost
                         , square instagramPost
                         ]
 
-        Failure err _ ->
+        Failure err ->
             Error.view err
 
         _ ->
@@ -68,8 +68,8 @@ paragraph s =
     p [] [ text s ]
 
 
-footer : Zone -> InstagramPost -> Html Msg
-footer zone instagramPost =
+footer : Here -> InstagramPost -> Html Msg
+footer { zone } instagramPost =
     div [ class "footer animated fadeIn faster" ]
         [ div [ class "stats" ]
             [ div [ class "stat" ]

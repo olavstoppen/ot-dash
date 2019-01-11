@@ -57,14 +57,13 @@ init : Flags -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         urlPage =
-            Maybe.withDefault Birthday <|
+            Maybe.withDefault Instagram <|
                 UrlParser.parse urlParser url
 
         model =
             { key = key
             , apiKey = flags.apiKey
-            , zone = Time.utc
-            , now = millisToPosix 0
+            , here = Here (millisToPosix 0) Time.utc Mon
             , pageCountdown = 30000
             , activePage = getActivePage urlPage
             , pages = pages
