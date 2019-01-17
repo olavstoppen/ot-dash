@@ -180,7 +180,11 @@ type alias LunchData =
 type Msg
     = OnUrlRequest UrlRequest
     | OnUrlChange Url
-    | UpdateNow Posix
+    | FetchAllData Posix
+    | EverySecond Posix
+    | EveryMinute Posix
+    | EveryHour Posix
+    | EveryDay Posix
     | SetTimeZone Zone
     | UpdateSlackEvents (Result Http.Error (List SlackEvent))
     | UpdateWeather (Result Http.Error WeatherInfo)

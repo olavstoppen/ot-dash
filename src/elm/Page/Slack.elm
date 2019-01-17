@@ -96,12 +96,14 @@ square imageUrl =
 footer : RemoteData SlackInfo -> Html Msg
 footer slackInfo =
     div [ class "footer animated fadeIn faster" ]
-        [ case slackInfo of
-            Success slackInfo_ ->
-                topEmojis slackInfo_.topEmojis
+        [ div [ class "topEmojis" ] <|
+            case slackInfo of
+                Success slackInfo_ ->
+                    topEmojis slackInfo_.topEmojis
 
-            _ ->
-                div [] [ text "No one is reacting 😲" ]
+                _ ->
+                    [ h4 [] [ text "No one is reacting 😲" ]
+                    ]
         ]
 
 
@@ -115,10 +117,9 @@ image emoji =
     img [ class "image--small", src emoji ] []
 
 
-topEmojis : List String -> Html Msg
+topEmojis : List String -> List (Html Msg)
 topEmojis emojis =
-    div [ class "topEmojis" ] <|
-        List.concat
-            [ [ h4 [] [ text "Topp emojis" ] ]
-            , List.map image emojis
-            ]
+    List.concat
+        [ [ h4 [] [ text "Topp emojis" ] ]
+        , List.map image emojis
+        ]

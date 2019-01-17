@@ -46,17 +46,7 @@ update message model =
         OnUrlRequest urlRequest ->
             ( model, handleUrlRequest model.key urlRequest )
 
-        OnUrlChange url ->
-            let
-                urlPage =
-                    Maybe.withDefault (second model.activePage) <| UrlParser.parse urlParser url
-
-                nextPage =
-                    getActivePage urlPage
-            in
-            ( { model | activePage = nextPage }, Cmd.none )
-
-        UpdateNow now ->
+        EverySecond now ->
             let
                 nextPageCountdown =
                     model.pageCountdown - 1
@@ -82,6 +72,52 @@ update message model =
 
             else
                 ( { updatedModel | pageCountdown = nextPageCountdown }, Cmd.none )
+
+        EveryMinute _ ->
+            ( model
+            , Cmd.batch
+                [ fetchPublicTransport UpdatePublicTransport model
+                , fetchSlackEvents UpdateSlackEvents model
+                ]
+            )
+
+        EveryHour _ ->
+            ( model
+            , Cmd.batch
+                [ fetchWeather UpdateWeather model
+                , fetchInstagram UpdateInstagram model
+                , fetchSlackInfo UpdateSlackInfo model
+                ]
+            )
+
+        EveryDay _ ->
+            ( model
+            , Cmd.batch
+                [ fetchLunchMenu UpdateLunchMenu model
+                ]
+            )
+
+        FetchAllData _ ->
+            ( model
+            , Cmd.batch
+                [ fetchSlackEvents UpdateSlackEvents model
+                , fetchWeather UpdateWeather model
+                , fetchInstagram UpdateInstagram model
+                , fetchPublicTransport UpdatePublicTransport model
+                , fetchSlackInfo UpdateSlackInfo model
+                , fetchLunchMenu UpdateLunchMenu model
+                ]
+            )
+
+        OnUrlChange url ->
+            let
+                urlPage =
+                    Maybe.withDefault (second model.activePage) <| UrlParser.parse urlParser url
+
+                nextPage =
+                    getActivePage urlPage
+            in
+            ( { model | activePage = nextPage }, Cmd.none )
 
         UpdateSlackEvents res ->
             case res of

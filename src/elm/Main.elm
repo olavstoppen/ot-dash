@@ -50,7 +50,12 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 1000 UpdateNow
+    Sub.batch
+        [ Time.every 1000 EverySecond
+        , Time.every (1000 * 60) EveryMinute
+        , Time.every (1000 * 60 * 60) EveryHour
+        , Time.every (1000 * 60 * 60 * 24) EveryDay
+        ]
 
 
 init : Flags -> Url -> Key -> ( Model, Cmd Msg )
@@ -80,13 +85,7 @@ init flags url key =
     , Cmd.batch
         [ Nav.pushUrl key (getPageKey urlPage)
         , Task.perform SetTimeZone Time.here
-        , Task.perform UpdateNow Time.now
-        , fetchSlackEvents UpdateSlackEvents model
-        , fetchWeather UpdateWeather model
-        , fetchInstagram UpdateInstagram model
-        , fetchPublicTransport UpdatePublicTransport model
-        , fetchSlackInfo UpdateSlackInfo model
-        , fetchLunchMenu UpdateLunchMenu model
+        , Task.perform FetchAllData Time.now
         ]
     )
 
