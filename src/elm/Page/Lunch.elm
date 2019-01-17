@@ -24,7 +24,7 @@ view model =
             div [ class "page page__lunch" ]
                 [ div [ class "content" ]
                     [ div [ class "animated fadeInDown faster today" ]
-                        [ div [] [ text "Mangler data" ]
+                        [ div [] [ text "Where has the lunch gone? 😱" ]
                         ]
                     ]
                 ]
@@ -42,7 +42,7 @@ title =
 annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
-        [ img [ class "image--small", src "/images/toma.png" ] []
+        [ h3 [] [ text "🍽️" ]
         , h3 [] [ text "Kanalpiren" ]
         ]
 
@@ -58,15 +58,21 @@ body lunchMenu { day } =
 
 lunchDay : Weekday -> LunchData -> Html Msg
 lunchDay todayWeekDay { dayName, maincourse, soup, day } =
-    div [ classList [ ( "lunchDay", True ), ( "active", todayWeekDay == day ) ] ]
-        [ div [ class "day " ] [ text dayName ]
-        , div [ class "maincourse" ]
-            [ strong [] [ text "Varmrett: " ]
-            , text maincourse
+    div [ class "lunchDay" ]
+        [ div
+            [ classList
+                [ ( "day ellipse", True )
+                , ( "active", todayWeekDay == day )
+                ]
             ]
-        , div [ class "soup" ]
-            [ strong [] [ text "Suppe: " ]
-            , text soup
+            [ text <| String.slice 0 1 dayName ]
+        , div [ class "labels" ]
+            [ strong [] [ text "Varmrett: " ]
+            , strong [] [ text "Suppe: " ]
+            ]
+        , div [ class "courses" ]
+            [ p [] [ text maincourse ]
+            , p [] [ text soup ]
             ]
         ]
 

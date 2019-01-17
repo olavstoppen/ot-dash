@@ -65,13 +65,13 @@ departure { here } transport =
                 [ text "Unknown transport" ]
 
             Bus departure_ ->
-                [ div [ class "ellipse" ] [ text departure_.name ]
+                [ div [ class "ellipse active" ] [ text departure_.name ]
                 , div [] [ text departure_.destination ]
                 , div [] [ text <| formatDateDiffMinutes here.zone here.time departure_.time ]
                 ]
 
             Train departure_ ->
-                [ div [ class "ellipse" ] [ trainIcon ]
+                [ div [ class "ellipse active" ] [ trainIcon "icon--med" ]
                 , div [] [ text departure_.destination ]
                 , div [] [ text <| formatDateDiffMinutes here.zone here.time departure_.time ]
                 ]

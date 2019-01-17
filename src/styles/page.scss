@@ -374,26 +374,27 @@
   @at-root #{&}__lunch {
     .lunch {
       display: flex;
-      flex-wrap: wrap;
-      margin-top: 1vmax;
-      justify-content: stretch;
+      flex-direction: column;
 
       .lunchDay {
         display: flex;
-        flex-direction: column;
-        min-width: 19.8vmax;
-        margin-bottom: 1vmax;
-        margin-right: 1vmax;
-        padding: 1vmax;
+        align-items: center;
+        padding-bottom: 1vmax;
 
-        &.active {
-          background: $blue;
-          color: $white;
+        border-bottom: 1px solid $grey-light;
+
+        &:not(:first-child) {
+          margin-top: 1vmax;
         }
 
-        .maincourse,
-        .soup {
-          margin-left: 1vmax;
+        .courses,
+        .labels {
+          p,
+          strong {
+            display: block;
+            margin: 0;
+          }
+          margin-left: 2vmax;
         }
 
       }

@@ -101,10 +101,10 @@ nav.sidebar {
 }
 
 .ellipse {
-  $size: calc(16px + 1vmax);
-  background: $black;
-  color: $white;
-  fill: $white;
+  $size: calc(16px + 2vmax);
+  background: $white;
+  color: $black;
+  fill: $black;
   border-radius: 50%;
   width: $size;
   height: $size;
@@ -113,6 +113,13 @@ nav.sidebar {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid $black;
+
+  &.active {
+    background: $black;
+    color: $white;
+    fill: $white;
+  }
 }
 
 .icon {
