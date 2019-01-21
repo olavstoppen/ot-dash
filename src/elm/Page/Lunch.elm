@@ -79,7 +79,7 @@ lunchDay todayWeekDay { dayName, maincourse, soup, day } =
 
 getRandomFoodImage : Model -> String
 getRandomFoodImage model =
-    "https://images.unsplash.com/photo-1444952483853-7c36e902e722?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjUwMDQxfQ"
+    "https://images.unsplash.com/photo-1487376318617-f43c7b41e2e2?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjUwMTY4fQ"
 
 
 square : Model -> Html Msg

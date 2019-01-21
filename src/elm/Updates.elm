@@ -48,17 +48,11 @@ update message model =
 
         EverySecond now ->
             let
-                nextPageCountdown =
-                    model.pageCountdown - 1
-
-                { here } =
-                    model
-
                 updatedModel =
-                    { model
-                        | here =
-                            Here now here.zone <| toWeekday here.zone now
-                    }
+                    updateNow now model
+
+                nextPageCountdown =
+                    updatedModel.pageCountdown - 1
             in
             if nextPageCountdown < 0 then
                 let
@@ -220,3 +214,12 @@ getActivePage_ index =
 pages : List ( Int, Page )
 pages =
     List.indexedMap pair staticPages
+
+
+updateNow : Posix -> Model -> Model
+updateNow now model =
+    { model
+        | here =
+            Here now model.here.zone <|
+                toWeekday model.here.zone now
+    }
