@@ -21,7 +21,7 @@ import Services exposing (..)
 import Task
 import Time exposing (..)
 import Tuple exposing (..)
-import Updates exposing (getActivePage, pages, update, urlParser)
+import Updates exposing (update, urlParser)
 import Url exposing (Url)
 import Url.Parser as UrlParser exposing ((</>), Parser)
 
@@ -63,15 +63,23 @@ init flags url key =
     let
         urlPage =
             Maybe.withDefault Instagram <|
-                UrlParser.parse (urlParser model) url
+                UrlParser.parse (urlParser NotAsked) url
 
         model =
             { key = key
             , apiKey = flags.apiKey
             , here = Here (millisToPosix 0) Time.utc Mon
-            , pageCountdown = 30000
-            , activePage = ( 1, Instagram )
-            , pages = pages
+            , pages =
+                { active = urlPage
+                , countdown = 30
+                , available =
+                    [ Transit
+                    , Slack
+                    , Instagram
+                    , Weather
+                    , Lunch
+                    ]
+                }
             , publicTransport = NotAsked
             , weatherInfo = NotAsked
             , birthdays = NotAsked
@@ -109,7 +117,7 @@ view model =
 
 getPage : Model -> Html Msg
 getPage model =
-    case second model.activePage of
+    case model.pages.active of
         Transit ->
             Transit.view model
 

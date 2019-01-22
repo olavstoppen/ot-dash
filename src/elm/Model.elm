@@ -1,4 +1,4 @@
-module Model exposing (DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (Birthdays, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -16,12 +16,10 @@ type alias Flags =
 type alias Model =
     { key : Key
     , apiKey : String
-    , activePage : ( Int, Page )
     , here : Here
-    , pageCountdown : Int
-    , pages : List ( Int, Page )
+    , pages : Pages
     , publicTransport : RemoteData (List Transport)
-    , birthdays : RemoteData (List Person)
+    , birthdays : Birthdays
     , slackInfo : RemoteData SlackInfo
     , slackEvents : RemoteData (List SlackEvent)
     , instagram : RemoteData (List InstagramPost)
@@ -45,9 +43,9 @@ type alias Here =
 
 
 type alias Pages =
-    { active : ( Int, Page )
+    { active : Page
     , countdown : Int
-    , available : List ( Int, Page )
+    , available : List Page
     }
 
 
@@ -70,6 +68,10 @@ type alias Href =
 
 type alias Emoji =
     Href
+
+
+type alias Birthdays =
+    RemoteData (List Person)
 
 
 

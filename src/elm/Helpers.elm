@@ -111,7 +111,12 @@ getPageKey page =
 
 getPageTitle : Page -> String
 getPageTitle page =
-    toPascalCase <| getPageKey page
+    case page of
+        Lunch ->
+            "Lunchmenu"
+
+        _ ->
+            toPascalCase <| getPageKey page
 
 
 toPascalCase : String -> String

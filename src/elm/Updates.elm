@@ -1,4 +1,4 @@
-port module Updates exposing (getActivePage, pages, update, urlParser)
+port module Updates exposing (update, urlParser)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -9,6 +9,7 @@ import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Json.Decode as Decode
 import List exposing (..)
+import List.Extra as ListExtra
 import Model exposing (..)
 import Page.Birthday as Birthday
 import Page.Instagram as Instagram
@@ -51,23 +52,21 @@ update message model =
                 updatedModel =
                     updateNow now model
 
-                nextPageCountdown =
-                    updatedModel.pageCountdown - 1
+                { pages } =
+                    updatedModel
+
+                nextCountdown =
+                    pages.countdown - 1
             in
-            if nextPageCountdown < 0 then
-                let
-                    nextUrlPage =
-                        first model.activePage
-                            |> (+) 1
-                            |> getActivePage_
-                            |> second
-                in
-                ( { updatedModel | pageCountdown = 30 }
-                , Nav.pushUrl model.key <| getPageKey nextUrlPage
+            if nextCountdown < 0 then
+                ( { updatedModel | pages = { pages | countdown = 30 } }
+                , Nav.pushUrl model.key <|
+                    getPageKey <|
+                        nextPage pages.available pages.active
                 )
 
             else
-                ( { updatedModel | pageCountdown = nextPageCountdown }, Cmd.none )
+                ( { updatedModel | pages = { pages | countdown = nextCountdown } }, Cmd.none )
 
         EveryMinute _ ->
             ( model
@@ -108,12 +107,12 @@ update message model =
         OnUrlChange url ->
             let
                 urlPage =
-                    Maybe.withDefault (second model.activePage) <| UrlParser.parse (urlParser model) url
+                    Maybe.withDefault model.pages.active <| UrlParser.parse (urlParser model.birthdays) url
 
-                nextPage =
-                    getActivePage urlPage
+                { pages } =
+                    model
             in
-            ( { model | activePage = nextPage }, Cmd.none )
+            ( { model | pages = { pages | active = urlPage } }, Cmd.none )
 
         UpdateSlackEvents res ->
             case res of
@@ -174,10 +173,10 @@ handleUrlRequest key urlRequest =
             Nav.load url
 
 
-urlParser : Model -> Parser (Page -> msg) msg
-urlParser model =
+urlParser : Birthdays -> Parser (Page -> msg) msg
+urlParser birthdays =
     UrlParser.oneOf
-        [ UrlParser.map (birthdayUrlName model) <|
+        [ UrlParser.map (birthdayUrlName birthdays) <|
             UrlParser.s "birthday"
                 </> UrlParser.string
         , UrlParser.map Birthday <| UrlParser.s "birthday"
@@ -189,41 +188,18 @@ urlParser model =
         ]
 
 
-birthdayUrlName : Model -> String -> Page
-birthdayUrlName model segment =
+birthdayUrlName : Birthdays -> String -> Page
+birthdayUrlName birthdays segment =
     Birthday
 
 
-staticPages : List Page
-staticPages =
-    [ Transit
-    , Slack
-    , Birthday
-    , Instagram
-    , Weather
-    , Lunch
-    ]
-
-
-getActivePage : Page -> ( Int, Page )
-getActivePage page =
-    List.indexedMap pair staticPages
-        |> List.filter (\( _, page_ ) -> page == page_)
-        |> List.head
-        |> Maybe.withDefault ( 0, Transit )
-
-
-getActivePage_ : Int -> ( Int, Page )
-getActivePage_ index =
-    List.indexedMap pair staticPages
-        |> List.filter (\( index_, _ ) -> index == index_)
-        |> List.head
-        |> Maybe.withDefault ( 0, Transit )
-
-
-pages : List ( Int, Page )
-pages =
-    List.indexedMap pair staticPages
+nextPage : List Page -> Page -> Page
+nextPage pages active =
+    pages
+        |> ListExtra.elemIndex active
+        |> Maybe.map ((+) 1)
+        |> Maybe.andThen (\index -> ListExtra.getAt index pages)
+        |> Maybe.withDefault (Maybe.withDefault Weather (List.head pages))
 
 
 updateNow : Posix -> Model -> Model
