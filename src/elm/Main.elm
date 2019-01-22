@@ -51,10 +51,10 @@ main =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Time.every 1000 EverySecond
-        , Time.every (1000 * 60) EveryMinute
-        , Time.every (1000 * 60 * 60) EveryHour
-        , Time.every (1000 * 60 * 60 * 24) EveryDay
+        [ every 1000 EverySecond
+        , every (1000 * 60) EveryMinute
+        , every (1000 * 60 * 60) EveryHour
+        , every (1000 * 60 * 60 * 24) EveryDay
         ]
 
 
@@ -63,14 +63,14 @@ init flags url key =
     let
         urlPage =
             Maybe.withDefault Instagram <|
-                UrlParser.parse urlParser url
+                UrlParser.parse (urlParser model) url
 
         model =
             { key = key
             , apiKey = flags.apiKey
             , here = Here (millisToPosix 0) Time.utc Mon
             , pageCountdown = 30000
-            , activePage = getActivePage urlPage
+            , activePage = ( 1, Instagram )
             , pages = pages
             , publicTransport = NotAsked
             , weatherInfo = NotAsked

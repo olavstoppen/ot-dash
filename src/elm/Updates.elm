@@ -62,7 +62,9 @@ update message model =
                             |> getActivePage_
                             |> second
                 in
-                ( { updatedModel | pageCountdown = 30 }, Nav.pushUrl model.key <| getPageKey nextUrlPage )
+                ( { updatedModel | pageCountdown = 30 }
+                , Nav.pushUrl model.key <| getPageKey nextUrlPage
+                )
 
             else
                 ( { updatedModel | pageCountdown = nextPageCountdown }, Cmd.none )
@@ -106,7 +108,7 @@ update message model =
         OnUrlChange url ->
             let
                 urlPage =
-                    Maybe.withDefault (second model.activePage) <| UrlParser.parse urlParser url
+                    Maybe.withDefault (second model.activePage) <| UrlParser.parse (urlParser model) url
 
                 nextPage =
                     getActivePage urlPage
@@ -172,16 +174,24 @@ handleUrlRequest key urlRequest =
             Nav.load url
 
 
-urlParser : Parser (Page -> msg) msg
-urlParser =
+urlParser : Model -> Parser (Page -> msg) msg
+urlParser model =
     UrlParser.oneOf
-        [ UrlParser.map Transit <| UrlParser.s "transit"
-        , UrlParser.map Slack <| UrlParser.s "slack"
+        [ UrlParser.map (birthdayUrlName model) <|
+            UrlParser.s "birthday"
+                </> UrlParser.string
         , UrlParser.map Birthday <| UrlParser.s "birthday"
+        , UrlParser.map Transit <| UrlParser.s "transit"
+        , UrlParser.map Slack <| UrlParser.s "slack"
         , UrlParser.map Instagram <| UrlParser.s "instagram"
         , UrlParser.map Weather <| UrlParser.s "weather"
         , UrlParser.map Lunch <| UrlParser.s "lunch"
         ]
+
+
+birthdayUrlName : Model -> String -> Page
+birthdayUrlName model segment =
+    Birthday
 
 
 staticPages : List Page

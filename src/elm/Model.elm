@@ -44,6 +44,13 @@ type alias Here =
     }
 
 
+type alias Pages =
+    { active : ( Int, Page )
+    , countdown : Int
+    , available : List ( Int, Page )
+    }
+
+
 
 -- Global
 

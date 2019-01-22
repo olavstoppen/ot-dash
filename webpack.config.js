@@ -21,7 +21,7 @@ var common = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "dist"),
-    publicPath: "",
+    publicPath: "/",
     filename: filename
   },
   plugins: [
