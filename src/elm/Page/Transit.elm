@@ -62,7 +62,7 @@ departure { here } transport =
     div [ class "departure" ] <|
         case transport of
             Unknown ->
-                [ text "Unknown transport" ]
+                [ text "Ukjent transport" ]
 
             Bus departure_ ->
                 [ div [ class "ellipse active" ] [ text departure_.name ]

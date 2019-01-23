@@ -69,19 +69,19 @@ event slackEvent =
             Reaction person time emoji ->
                 [ div [] [ imageRound person.imageUrl ]
                 , div [ class "who" ] [ text person.firstName ]
-                , div [] [ text "reacted with " ]
+                , div [] [ text "reagerte med " ]
                 , div [] [ image emoji ]
                 ]
 
             Message person time ->
                 [ div [] [ imageRound person.imageUrl ]
                 , div [ class "who" ] [ text person.firstName ]
-                , div [] [ text "posted something new and very interesting" ]
+                , div [] [ text "skrev noe nytt og spennende " ]
                 , div [] []
                 ]
 
             UnknownSlackEvent ->
-                [ text "Who dis slack event" ]
+                [ text "Hmm, hva har jeg gjort på Slack....? \u{1F914}" ]
 
 
 square : Href -> Html Msg
@@ -102,7 +102,7 @@ footer slackInfo =
                     topEmojis slackInfo_.topEmojis
 
                 _ ->
-                    [ h4 [] [ text "No one is reacting 😲" ]
+                    [ h4 [] [ text "Ingen reagerer 😲" ]
                     ]
         ]
 

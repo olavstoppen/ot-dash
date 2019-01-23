@@ -121,6 +121,9 @@ getPageTitle page =
         Weather ->
             "Været"
 
+        Transit ->
+            "Kollektivt"
+
         _ ->
             toPascalCase <| getPageKey page
 
