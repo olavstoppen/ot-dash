@@ -33,7 +33,7 @@ title : Html Msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ h1 [] [ text "Transit" ]
+            [ h1 [] [ text "Kollektivt" ]
             ]
         ]
 
@@ -52,7 +52,7 @@ body publicTransport model =
         [ div [ class "animated fadeInDown faster" ]
             [ div [ class "departures" ] <|
                 List.map (departure model) <|
-                    List.take 8 publicTransport
+                    List.take 6 publicTransport
             ]
         ]
 

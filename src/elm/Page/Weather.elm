@@ -27,15 +27,6 @@ view model =
                 ]
 
 
-title : Html Msg
-title =
-    div [ class "title" ]
-        [ div [ class "animated fadeInDown faster" ]
-            [ h1 [] [ text "Transit" ]
-            ]
-        ]
-
-
 annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
