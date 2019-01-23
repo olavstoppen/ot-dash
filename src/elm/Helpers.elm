@@ -93,7 +93,7 @@ getPageKey page =
         Transit ->
             "transit"
 
-        Birthday ->
+        Birthday _ ->
             "birthday"
 
         Slack ->

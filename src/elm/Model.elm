@@ -1,4 +1,4 @@
-module Model exposing (Birthdays, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -25,6 +25,7 @@ type alias Model =
     , instagram : RemoteData (List InstagramPost)
     , lunchMenu : RemoteData (List LunchData)
     , weatherInfo : RemoteData WeatherInfo
+    , calendar : RemoteData (List CalendarEvent)
     }
 
 
@@ -56,7 +57,7 @@ type alias Pages =
 type Page
     = Transit
     | Slack
-    | Birthday
+    | Birthday Person
     | Weather
     | Instagram
     | Lunch
@@ -186,6 +187,27 @@ type alias LunchData =
     }
 
 
+
+-- Calendar
+
+
+type CalendarCategory
+    = Olavstoppen
+    | Bouvet
+    | UnknownCalendarCategory
+
+
+type alias CalendarEvent =
+    { description : String
+    , from : Posix
+    , to : Posix
+    , name : String
+    , url : String
+    , category : CalendarCategory
+    , color : String
+    }
+
+
 type Msg
     = OnUrlRequest UrlRequest
     | OnUrlChange Url
@@ -201,3 +223,5 @@ type Msg
     | UpdatePublicTransport (Result Http.Error (List (List Transport)))
     | UpdateSlackInfo (Result Http.Error SlackInfo)
     | UpdateLunchMenu (Result Http.Error (List LunchData))
+    | UpdateBirthdays (Result Http.Error (List Person))
+    | UpdateCalendar (Result Http.Error (List CalendarEvent))

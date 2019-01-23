@@ -87,6 +87,7 @@ init flags url key =
             , slackEvents = NotAsked
             , instagram = NotAsked
             , lunchMenu = NotAsked
+            , calendar = NotAsked
             }
     in
     ( model
@@ -124,7 +125,7 @@ getPage model =
         Slack ->
             Slack.view model
 
-        Birthday ->
+        Birthday _ ->
             case model.birthdays of
                 Success birthdays ->
                     case List.head birthdays of

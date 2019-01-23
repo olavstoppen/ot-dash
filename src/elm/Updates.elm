@@ -101,6 +101,9 @@ update message model =
                 , fetchPublicTransport UpdatePublicTransport model
                 , fetchSlackInfo UpdateSlackInfo model
                 , fetchLunchMenu UpdateLunchMenu model
+                , fetchLunchMenu UpdateLunchMenu model
+                , fetchBirthdays UpdateBirthdays model
+                , fetchCalendar UpdateCalendar model
                 ]
             )
 
@@ -113,6 +116,22 @@ update message model =
                     model
             in
             ( { model | pages = { pages | active = urlPage } }, Cmd.none )
+
+        UpdateCalendar res ->
+            case res of
+                Ok calendar ->
+                    ( { model | calendar = Success calendar }, Cmd.none )
+
+                Err err ->
+                    ( { model | calendar = Failure err }, Cmd.none )
+
+        UpdateBirthdays res ->
+            case res of
+                Ok birthdays ->
+                    ( { model | birthdays = Success birthdays }, Cmd.none )
+
+                Err err ->
+                    ( { model | birthdays = Failure err }, Cmd.none )
 
         UpdateSlackEvents res ->
             case res of
@@ -179,7 +198,6 @@ urlParser birthdays =
         [ UrlParser.map (birthdayUrlName birthdays) <|
             UrlParser.s "birthday"
                 </> UrlParser.string
-        , UrlParser.map Birthday <| UrlParser.s "birthday"
         , UrlParser.map Transit <| UrlParser.s "transit"
         , UrlParser.map Slack <| UrlParser.s "slack"
         , UrlParser.map Instagram <| UrlParser.s "instagram"
@@ -190,7 +208,7 @@ urlParser birthdays =
 
 birthdayUrlName : Birthdays -> String -> Page
 birthdayUrlName birthdays segment =
-    Birthday
+    Birthday <| Person "michael" "" ""
 
 
 nextPage : List Page -> Page -> Page

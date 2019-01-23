@@ -2,6 +2,7 @@ module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLu
 
 import Http
 import Json.Decode as Decode exposing (..)
+import Json.Decode.Extra as DecodeExtra exposing (withDefault)
 import Json.Decode.Pipeline exposing (..)
 import Model exposing (..)
 import Time exposing (..)
@@ -144,9 +145,49 @@ decodeWeatherData =
 -- Calendar
 
 
-fetchCalendar : (Result Http.Error (List SlackEvent) -> Msg) -> Cmd Msg
-fetchCalendar callback =
-    get "" "Calendar" callback <| list decodeLatestMessage
+fetchCalendar : (Result Http.Error (List CalendarEvent) -> Msg) -> Model -> Cmd Msg
+fetchCalendar callback { apiKey } =
+    get apiKey "Calendar" callback <| list decodeCalendar
+
+
+
+-- [
+--   {
+--     "description": null,
+--     "fromPosix": 1548343800,
+--     "toPosix": 1548360000,
+--     "name": "📣 OT Kick-off",
+--     "url": null,
+--     "category": "Olavstoppen",
+--     "color": "#00c2d6"
+--   }
+-- ]
+
+
+decodeCalendar : Decoder CalendarEvent
+decodeCalendar =
+    Decode.succeed CalendarEvent
+        |> required "description" (string |> withDefault "")
+        |> required "fromPosix" decodeTime
+        |> required "toPosix" decodeTime
+        |> required "name" (string |> withDefault "")
+        |> required "url" (string |> withDefault "")
+        |> required "category" decodeCategory
+        |> required "color" (string |> withDefault "")
+
+
+decodeCategory : Decoder CalendarCategory
+decodeCategory =
+    string
+        |> andThen
+            (\category ->
+                case category of
+                    "Olavstoppen" ->
+                        succeed Olavstoppen
+
+                    _ ->
+                        succeed UnknownCalendarCategory
+            )
 
 
 
@@ -174,9 +215,9 @@ decodeInstagram =
 -- Birthday
 
 
-fetchBirthdays : (Result Http.Error (List SlackEvent) -> Msg) -> Cmd Msg
-fetchBirthdays callback =
-    get "" "Calendar" callback <| list decodeLatestMessage
+fetchBirthdays : (Result Http.Error (List Person) -> Msg) -> Model -> Cmd Msg
+fetchBirthdays callback { apiKey } =
+    get apiKey "Birthdays" callback <| list decodePerson
 
 
 
