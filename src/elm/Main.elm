@@ -174,7 +174,18 @@ link activePage page =
         title =
             getPageTitle page
 
-        class =
+        class_ =
             "animated slideInDown faster"
     in
-    a [ href url, classList [ ( "active", activePage == page ) ] ] [ text title ]
+    a [ href url, classList [ ( "active", activePage == page ) ] ]
+        [ div [ class "link__title " ] [ text title ]
+        , linkFooter
+        ]
+
+
+linkFooter : Html Msg
+linkFooter =
+    div [ class "link__footer" ]
+        [ div [ class "animated slideInLeft link__footer__bit" ] []
+        , div [ class "animated slideInLeft faster link__footer__bit" ] []
+        ]

@@ -72,23 +72,60 @@ nav.sidebar {
   z-index: 100;
 
   a {
-    color: $grey-light;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-decoration: none;
     transform: rotate(90deg);
-    padding-bottom: .5vmax;
-    border-bottom: 2px solid $black-light;
     transition: all .3s;
+
+    .link__title {
+      margin-bottom: .5vmax;
+      color: $grey-light;
+
+    }
+
+    .link__footer {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+
+      .link__footer__bit {
+        height: .1vmax;
+        width: 1.5vmax;
+        max-width: 50%;
+        background: $black-light;
+
+        &:not(:first-child) {
+          margin-left: .5vmax;
+        }
+      }
+    }
 
     &.active {
       $color: $white;
-      color: $color;
-      border-bottom: 2px solid $color;
+
+      .link__title {
+        color: $color;
+      }
+
+      .link__footer__bit {
+        background: $color;
+      }
     }
 
     &:hover {
       $color: $blue-light;
-      color: $color;
-      border-bottom: 2px solid $color;
+
+      .link__title {
+        color: $color;
+      }
+
+      .link__footer__bit {
+        background: $blue-light;
+
+      }
     }
   }
 }
