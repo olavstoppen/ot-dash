@@ -9,8 +9,10 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
-// to extract the css as a separate file
+// CSS
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 var MODE =
   process.env.npm_lifecycle_event === "prod" ? "production" : "development";
@@ -112,9 +114,19 @@ if (MODE === "development") {
     }
   });
 }
+
 if (MODE === "production") {
   console.log("Building for Production...");
   module.exports = merge(common, {
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true
+        }),
+        new OptimizeCSSAssetsPlugin({})
+      ]
+    },
     plugins: [
       new elmMinify.WebpackPlugin(),
       new CleanWebpackPlugin(["dist"], {
@@ -149,6 +161,10 @@ if (MODE === "production") {
             "css-loader?url=false",
             "sass-loader"
           ]
+        },
+        {
+          test: /\.css$/,
+          use: [MiniCssExtractPlugin.loader, "css-loader"]
         }
       ]
     }
