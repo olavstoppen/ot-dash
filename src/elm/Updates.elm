@@ -89,6 +89,8 @@ update message model =
             ( model
             , Cmd.batch
                 [ fetchLunchMenu UpdateLunchMenu model
+                , fetchBirthdays UpdateBirthdays model
+                , fetchCalendar UpdateCalendar model
                 ]
             )
 
