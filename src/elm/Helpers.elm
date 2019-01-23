@@ -1,4 +1,4 @@
-module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, getPageKey, getPageTitle, sortTransport, toMonthNumber, toPascalCase)
+module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, fullName, getPageKey, getPageTitle, sortTransport, toMonthNumber, toPascalCase)
 
 import Browser exposing (UrlRequest(..))
 import Model exposing (..)
@@ -93,8 +93,8 @@ getPageKey page =
         Transit ->
             "transit"
 
-        Birthday _ ->
-            "birthday"
+        Birthday person ->
+            "birthday/" ++ person.firstName
 
         Slack ->
             "slack"
@@ -148,3 +148,8 @@ sortTransport departure1 departure2 =
                     0
     in
     compare (getDepartureTime departure1) (getDepartureTime departure2)
+
+
+fullName : Person -> String
+fullName { firstName, lastName } =
+    String.concat [ firstName, " ", lastName ]

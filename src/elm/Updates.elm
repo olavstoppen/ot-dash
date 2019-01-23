@@ -47,6 +47,14 @@ update message model =
         OnUrlRequest urlRequest ->
             ( model, handleUrlRequest model.key urlRequest )
 
+        OnUrlChange url ->
+            let
+                urlPage =
+                    Maybe.withDefault model.pages.active <|
+                        UrlParser.parse (urlParser model.birthdays) url
+            in
+            ( updateActivePage urlPage model, Cmd.none )
+
         EverySecond now ->
             let
                 updatedModel =
@@ -59,14 +67,12 @@ update message model =
                     pages.countdown - 1
             in
             if nextCountdown < 0 then
-                ( { updatedModel | pages = { pages | countdown = 30 } }
-                , Nav.pushUrl model.key <|
-                    getPageKey <|
-                        nextPage pages.available pages.active
+                ( updatePageCountdown 30 model
+                , Nav.replaceUrl model.key <| (++) "/" <| getPageKey <| nextPage pages.available pages.active
                 )
 
             else
-                ( { updatedModel | pages = { pages | countdown = nextCountdown } }, Cmd.none )
+                ( updatePageCountdown nextCountdown model, Cmd.none )
 
         EveryMinute _ ->
             ( model
@@ -109,16 +115,6 @@ update message model =
                 ]
             )
 
-        OnUrlChange url ->
-            let
-                urlPage =
-                    Maybe.withDefault model.pages.active <| UrlParser.parse (urlParser model.birthdays) url
-
-                { pages } =
-                    model
-            in
-            ( { model | pages = { pages | active = urlPage } }, Cmd.none )
-
         UpdateCalendar res ->
             case res of
                 Ok calendar ->
@@ -130,7 +126,20 @@ update message model =
         UpdateBirthdays res ->
             case res of
                 Ok birthdays ->
-                    ( { model | birthdays = Success birthdays }, Cmd.none )
+                    let
+                        updatedBirthdays =
+                            List.append birthdays
+                                [ Person "Olavstoppen" "Dashboard" ""
+                                ]
+
+                        updatedAvailable =
+                            List.map Birthday updatedBirthdays
+                                |> List.append model.pages.available
+                    in
+                    ( { model | birthdays = Success updatedBirthdays }
+                        |> updateAvailablePages updatedAvailable
+                    , Cmd.none
+                    )
 
                 Err err ->
                     ( { model | birthdays = Failure err }, Cmd.none )
@@ -197,20 +206,34 @@ handleUrlRequest key urlRequest =
 urlParser : Birthdays -> Parser (Page -> msg) msg
 urlParser birthdays =
     UrlParser.oneOf
-        [ UrlParser.map (birthdayUrlName birthdays) <|
-            UrlParser.s "birthday"
-                </> UrlParser.string
-        , UrlParser.map Transit <| UrlParser.s "transit"
+        [ UrlParser.map Transit <| UrlParser.s "transit"
         , UrlParser.map Slack <| UrlParser.s "slack"
         , UrlParser.map Instagram <| UrlParser.s "instagram"
         , UrlParser.map Weather <| UrlParser.s "weather"
         , UrlParser.map Lunch <| UrlParser.s "lunch"
+        , UrlParser.s "birthday" </> UrlParser.custom "" (birthdayUrlName birthdays)
         ]
 
 
-birthdayUrlName : Birthdays -> String -> Page
+birthdayUrlName : Birthdays -> String -> Maybe Page
 birthdayUrlName birthdays segment =
-    Birthday <| Person "michael" "" ""
+    let
+        person =
+            case birthdays of
+                Success birthdays_ ->
+                    birthdays_
+                        |> List.filter (\b -> b.firstName == segment)
+                        |> List.head
+
+                _ ->
+                    Nothing
+    in
+    case person of
+        Just person_ ->
+            Just (Birthday person_)
+
+        Nothing ->
+            Nothing
 
 
 nextPage : List Page -> Page -> Page
@@ -229,3 +252,38 @@ updateNow now model =
             Here now model.here.zone <|
                 toWeekday model.here.zone now
     }
+
+
+setPages : (Pages -> Pages) -> Model -> Model
+setPages fn model =
+    { model | pages = fn model.pages }
+
+
+setActivePage : Page -> Pages -> Pages
+setActivePage active pages =
+    { pages | active = active }
+
+
+setPageCountdown : Int -> Pages -> Pages
+setPageCountdown countdown pages =
+    { pages | countdown = countdown }
+
+
+setAvailablePages : List Page -> Pages -> Pages
+setAvailablePages available pages =
+    { pages | available = available }
+
+
+updateActivePage : Page -> Model -> Model
+updateActivePage page =
+    setPages <| setActivePage page
+
+
+updatePageCountdown : Int -> Model -> Model
+updatePageCountdown countdown =
+    setPages <| setPageCountdown countdown
+
+
+updateAvailablePages : List Page -> Model -> Model
+updateAvailablePages available =
+    setPages <| setAvailablePages available

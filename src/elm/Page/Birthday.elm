@@ -17,12 +17,10 @@ view person =
 
 
 body : Person -> Html Msg
-body { firstName } =
+body person =
     div [ class "content--middle" ]
         [ div [ class "animated fadeInDown faster " ]
-            [ div [ class "person" ]
-                [ h1 [] [ text <| "🎂 Gratulere med dagen " ++ firstName ++ "! 🎂" ]
-                ]
+            [ greetingFullName person
             ]
         ]
 
@@ -31,4 +29,18 @@ background : Href -> Html Msg
 background imageUrl =
     div [ class "full-page" ]
         [ div [ class "container" ] [ img [ src imageUrl, class "image" ] [] ]
+        ]
+
+
+greetingFullName : Person -> Html Msg
+greetingFullName person =
+    div [ class "person" ]
+        [ h1 [] [ text <| "🎂 Gratulere med dagen, " ++ fullName person ++ "! 🎂" ]
+        ]
+
+
+greetingFirstName : Person -> Html Msg
+greetingFirstName { firstName } =
+    div [ class "person" ]
+        [ h1 [] [ text <| "🎂 Gratulere med dagen, " ++ firstName ++ "! 🎂" ]
         ]

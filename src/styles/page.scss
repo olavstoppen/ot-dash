@@ -336,10 +336,15 @@
       width: 100%;
       height: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 3vmax;
       background: $white;
+
+      h1 {
+        font-size: 2.8vmax;
+      }
     }
 
     .gifts {

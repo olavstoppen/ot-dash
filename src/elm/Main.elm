@@ -2,7 +2,7 @@ module Main exposing (background, getPage, init, link, main, sidebar, subscripti
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (getPageKey, getPageTitle, sortTransport)
+import Helpers exposing (fullName, getPageKey, getPageTitle, sortTransport)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -125,15 +125,10 @@ getPage model =
         Slack ->
             Slack.view model
 
-        Birthday _ ->
+        Birthday person ->
             case model.birthdays of
                 Success birthdays ->
-                    case List.head birthdays of
-                        Nothing ->
-                            div [] []
-
-                        Just person ->
-                            Birthday.view person
+                    Birthday.view person
 
                 Failure err ->
                     Error.view err
@@ -174,18 +169,31 @@ link activePage page =
         title =
             getPageTitle page
 
-        class_ =
-            "animated slideInDown faster"
+        isActive =
+            case page of
+                Birthday person ->
+                    case activePage of
+                        Birthday personActive ->
+                            fullName person == fullName personActive
+
+                        _ ->
+                            activePage == page
+
+                _ ->
+                    activePage == page
     in
-    a [ href url, classList [ ( "active", activePage == page ) ] ]
-        [ div [ class "link__title " ] [ text title ]
-        , linkFooter
-        ]
+    if isActive then
+        a [ href url, class "active" ]
+            [ div [ class "link__title " ] [ text title ]
+            , linkFooter
+            ]
+
+    else
+        a [ href url ] [ div [ class "link__title " ] [ text title ] ]
 
 
 linkFooter : Html Msg
 linkFooter =
     div [ class "link__footer" ]
         [ div [ class "animated slideInLeft link__footer__bit" ] []
-        , div [ class "animated slideInLeft faster link__footer__bit" ] []
         ]
