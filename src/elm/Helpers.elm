@@ -113,7 +113,13 @@ getPageTitle : Page -> String
 getPageTitle page =
     case page of
         Lunch ->
-            "Lunchmenu"
+            "Lunsj"
+
+        Birthday _ ->
+            "Bursdag"
+
+        Weather ->
+            "Været"
 
         _ ->
             toPascalCase <| getPageKey page

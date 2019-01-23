@@ -2,7 +2,7 @@ module Main exposing (background, getPage, init, link, main, sidebar, subscripti
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (getPageKey, sortTransport)
+import Helpers exposing (getPageKey, getPageTitle, sortTransport)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -161,17 +161,20 @@ background model =
 
 
 sidebar : Model -> Html Msg
-sidebar model =
-    nav [ class "sidebar" ]
-        [ a [ href "/slack" ] [ text "Slack" ]
-        , a [ href "/weather" ] [ text "Weather" ]
-        , a [ href "/transit" ] [ text "Transit" ]
-        , a [ href "/instagram" ] [ text "Instagram" ]
-        , a [ href "/birthday" ] [ text "Birthday" ]
-        , a [ href "/lunch" ] [ text "Lunsjmeny" ]
-        ]
+sidebar { pages } =
+    nav [ class "sidebar" ] <| List.map (link pages.active) pages.available
 
 
-link : Page -> Page -> String -> String -> Html Msg
-link activePage page href_ title =
-    a [ classList [ ( "page", activePage == page ) ], href href_ ] [ text title ]
+link : Page -> Page -> Html Msg
+link activePage page =
+    let
+        url =
+            "/" ++ getPageKey page
+
+        title =
+            getPageTitle page
+
+        class =
+            "animated slideInDown faster"
+    in
+    a [ href url, classList [ ( "active", activePage == page ) ] ] [ text title ]
