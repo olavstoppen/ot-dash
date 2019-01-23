@@ -28,6 +28,9 @@ var common = {
   },
   plugins: [
     new Dotenv(),
+    new webpack.DefinePlugin({
+      "process.env.API_KEY": JSON.stringify(process.env.API_KEY)
+    }),
     new HTMLWebpackPlugin({
       template: "src/index.html",
       inject: "body"
