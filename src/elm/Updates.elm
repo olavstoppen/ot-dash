@@ -54,7 +54,10 @@ update message model =
                     Maybe.withDefault model.pages.active <|
                         UrlParser.parse (urlParser model.birthdays) url
             in
-            ( updateActivePage urlPage model, Cmd.none )
+            ( updateActivePage urlPage model
+                |> updatePageCountdown 30
+            , Cmd.none
+            )
 
         EverySecond now ->
             let
