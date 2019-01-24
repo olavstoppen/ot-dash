@@ -59,7 +59,8 @@ body instagramPost =
     div [ class "content" ]
         [ div [ class "animated fadeInDown faster" ] <|
             List.map paragraph <|
-                String.lines instagramPost.description
+                String.lines <|
+                    newLineOnFirstHash instagramPost.description
         ]
 
 

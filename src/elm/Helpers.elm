@@ -1,8 +1,9 @@
-module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDay, formatTime, formatWeekDayName, fullName, getPageKey, getPageTitle, getStringAt, sortTransport, toMonthNumber, toPascalCase)
+module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDay, formatTime, formatWeekDayName, fullName, getPageKey, getPageTitle, getStringAt, newLineOnFirstHash, sortTransport, toMonthNumber, toPascalCase)
 
 import Browser exposing (UrlRequest(..))
 import List.Extra as ListExtra
 import Model exposing (..)
+import Regex
 import String exposing (..)
 import Task
 import Time exposing (..)
@@ -214,3 +215,15 @@ getStringAt digit imgUrls =
     imgUrls
         |> ListExtra.getAt digit
         |> Maybe.withDefault ""
+
+
+newLineOnFirstHash : String -> String
+newLineOnFirstHash text =
+    Regex.splitAtMost 1 hash text
+        |> String.join "\n #"
+
+
+hash : Regex.Regex
+hash =
+    Maybe.withDefault Regex.never <|
+        Regex.fromString "#"
