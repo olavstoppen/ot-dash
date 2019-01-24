@@ -13,11 +13,22 @@ view : Model -> Html Msg
 view model =
     case model.calendar of
         Success calendarEvents ->
+            let
+                imageUrl =
+                    case model.instagram of
+                        Success instagramPosts ->
+                            instagramPosts
+                                |> List.map .imageUrl
+                                |> getStringAt (round <| toFloat model.media.digit / 2.5)
+
+                        _ ->
+                            ""
+            in
             div [ class "page page__calendar" ]
                 [ title
                 , annotation
                 , body calendarEvents model.here
-                , square model
+                , square imageUrl
                 ]
 
         _ ->
@@ -83,10 +94,10 @@ calendarEvent { zone } { name, from, to, category } =
         ]
 
 
-square : Model -> Html Msg
-square model =
+square : Href -> Html Msg
+square imageUrl =
     div [ class "square" ]
         [ div [ class "animated slideInLeft faster" ]
-            [ img [ class "", src "" ] []
+            [ img [ class "", src imageUrl ] []
             ]
         ]

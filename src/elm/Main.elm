@@ -91,7 +91,7 @@ init flags url key =
             , lunchMenu = NotAsked
             , calendar = NotAsked
             , media =
-                { digit = 0
+                { digit = 15
                 , slackImgs = []
                 , lunchImgs = []
                 }
