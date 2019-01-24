@@ -57,7 +57,7 @@ body lunchMenu { day } =
 
 
 lunchDay : Weekday -> LunchData -> Html Msg
-lunchDay todayWeekDay { dayName, maincourse, soup, day } =
+lunchDay todayWeekDay { dayName, maincourse, soup, day, maincourseEmojis, soupEmojis } =
     div [ class "lunchDay" ]
         [ div
             [ classList
@@ -71,8 +71,14 @@ lunchDay todayWeekDay { dayName, maincourse, soup, day } =
             , strong [] [ text "Suppe: " ]
             ]
         , div [ class "courses" ]
-            [ p [] [ text maincourse ]
-            , p [] [ text soup ]
+            [ div [ class "course" ]
+                [ div [] [ text maincourse ]
+                , div [ class "emojis" ] <| List.map emoji maincourseEmojis
+                ]
+            , div [ class "course" ]
+                [ div [] [ text soup ]
+                , div [ class "emojis" ] <| List.map emoji soupEmojis
+                ]
             ]
         ]
 
@@ -84,3 +90,8 @@ square { media } =
             [ img [ class "", src <| getStringAt media.digit media.lunchImgs ] []
             ]
         ]
+
+
+emoji : Href -> Html Msg
+emoji emojiUrl =
+    img [ class "image--small emoji", src emojiUrl ] []

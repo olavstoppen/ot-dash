@@ -193,6 +193,8 @@ type alias LunchData =
     , dayName : String
     , maincourse : String
     , soup : String
+    , maincourseEmojis : List Href
+    , soupEmojis : List Href
     }
 
 

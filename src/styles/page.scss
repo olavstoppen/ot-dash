@@ -400,6 +400,20 @@
             margin: 0;
           }
           margin-left: 2vmax;
+
+          .course {
+            display: flex;
+            align-items: center;
+
+            .emojis {
+              margin-left: 1vmax;
+
+              .emoji {
+                margin-left: .2vmax;
+              }
+            }
+          }
+
         }
 
       }
