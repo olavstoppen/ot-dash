@@ -78,7 +78,6 @@ init flags url key =
                     , Instagram
                     , Transit
                     , Weather
-                    , Lunch
                     ]
                 }
             , publicTransport = NotAsked
