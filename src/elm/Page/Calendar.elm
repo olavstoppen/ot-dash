@@ -88,14 +88,14 @@ calendarEvent { zone, time } { name, from, to, category, color } =
                 [ ( "day ellipse", True )
                 , ( "active", isActive )
                 ]
-            , style "border-color" color
-            , style "background-color"
-                (if isActive then
-                    color
 
-                 else
-                    ""
-                )
+            -- , style "border-color" color
+            -- , style "background-color"
+            --     (if isActive then
+            --         color
+            --      else
+            --         ""
+            --     )
             ]
             [ text <| String.slice 0 1 <| formatDay zone from ]
         , div [ class "event" ]
