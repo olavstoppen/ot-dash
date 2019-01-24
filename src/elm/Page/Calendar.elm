@@ -54,7 +54,7 @@ annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ h3 [] [ text "📅" ]
-        , h3 [] [ text "Hendelser" ]
+        , h3 [] [ text "Kalender" ]
         ]
 
 
