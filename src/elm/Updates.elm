@@ -67,12 +67,12 @@ update message model =
                     pages.countdown - 1
             in
             if nextCountdown < 0 then
-                ( updatePageCountdown 30 model
+                ( updatePageCountdown 30 updatedModel
                 , Nav.replaceUrl model.key <| (++) "/" <| getPageKey <| nextPage pages.available pages.active
                 )
 
             else
-                ( updatePageCountdown nextCountdown model, Cmd.none )
+                ( updatePageCountdown nextCountdown updatedModel, Cmd.none )
 
         EveryMinute _ ->
             ( model
