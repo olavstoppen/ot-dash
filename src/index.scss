@@ -187,11 +187,15 @@ nav.sidebar {
     line-height: calc(1.1em + 5vmax);
     font-size: calc(16px + 5vmax);
   }
+  @at-root #{&}--medium {
+    font-size: calc(16px + .8vmax);
+  }
 }
 
 .image {
   height: 3vmax;
   @at-root #{&}--round {
+    height: 4.5vmax;
     border-radius: 50%;
   }
   @at-root #{&}--small {

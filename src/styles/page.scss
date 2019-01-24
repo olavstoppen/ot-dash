@@ -144,15 +144,16 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        margin-bottom: 1vmax;
+        padding-bottom: .8vmax;
+        border-bottom: 1px solid $grey-light;
 
         > * {
-          margin-right: .5vmax;
-          margin-bottom: 1vmax;
+          margin-right: 1vmax;
         }
 
         .who {
           margin-right: .25vmax;
-
         }
       }
     }

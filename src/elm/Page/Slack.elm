@@ -55,16 +55,15 @@ event slackEvent =
         case slackEvent of
             Reaction person time emoji ->
                 [ div [] [ imageRound person.imageUrl ]
-                , div [ class "who" ] [ text person.firstName ]
-                , div [] [ text "reagerte med " ]
-                , div [] [ image emoji ]
+                , div [ class "who text--medium" ] [ text person.firstName ]
+                , div [ class "text--medium" ] [ text "reagerte med " ]
+                , image emoji
                 ]
 
             Message person time ->
                 [ div [] [ imageRound person.imageUrl ]
-                , div [ class "who" ] [ text person.firstName ]
-                , div [] [ text "skrev noe nytt og spennende " ]
-                , div [] []
+                , div [ class "who text--medium" ] [ text person.firstName ]
+                , div [ class "text--medium" ] [ text "skrev noe nytt og spennende " ]
                 ]
 
             UnknownSlackEvent ->
