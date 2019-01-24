@@ -17,6 +17,7 @@ import Page.Lunch as Lunch
 import Page.Slack as Slack
 import Page.Transit as Transit
 import Page.Weather as Weather
+import Random
 import Services exposing (..)
 import Task
 import Time exposing (..)
@@ -79,6 +80,7 @@ update message model =
             , Cmd.batch
                 [ fetchPublicTransport UpdatePublicTransport model
                 , fetchSlackEvents UpdateSlackEvents model
+                , Random.generate UpdateMediaDigit oneToThirty
                 ]
             )
 
@@ -112,8 +114,29 @@ update message model =
                 , fetchLunchMenu UpdateLunchMenu model
                 , fetchBirthdays UpdateBirthdays model
                 , fetchCalendar UpdateCalendar model
+                , fetchSlackImgs UpdateSlackImgs model
+                , fetchLunchImgs UpdateLunchImgs model
                 ]
             )
+
+        UpdateMediaDigit digit ->
+            ( (setMedia <| setDigit digit) model, Cmd.none )
+
+        UpdateSlackImgs res ->
+            case res of
+                Ok slackImgs ->
+                    ( (setMedia <| setSlackImgs slackImgs) model, Cmd.none )
+
+                Err err ->
+                    ( model, Cmd.none )
+
+        UpdateLunchImgs res ->
+            case res of
+                Ok lunchImgs ->
+                    ( (setMedia <| setLunchImgs lunchImgs) model, Cmd.none )
+
+                Err err ->
+                    ( model, Cmd.none )
 
         UpdateCalendar res ->
             case res of
@@ -193,6 +216,10 @@ update message model =
                     ( { model | lunchMenu = Failure err }, Cmd.none )
 
 
+
+-- Url Handling
+
+
 handleUrlRequest : Key -> UrlRequest -> Cmd Msg
 handleUrlRequest key urlRequest =
     case urlRequest of
@@ -211,6 +238,7 @@ urlParser birthdays =
         , UrlParser.map Instagram <| UrlParser.s "instagram"
         , UrlParser.map Weather <| UrlParser.s "weather"
         , UrlParser.map Lunch <| UrlParser.s "lunch"
+        , UrlParser.map Calendar <| UrlParser.s "calendar"
         , UrlParser.s "birthday" </> UrlParser.custom "" (birthdayUrlName birthdays)
         ]
 
@@ -234,6 +262,43 @@ birthdayUrlName birthdays segment =
 
         Nothing ->
             Nothing
+
+
+
+-- Random
+
+
+oneToThirty : Random.Generator Int
+oneToThirty =
+    Random.int 1 30
+
+
+
+-- Meda Handling
+
+
+setMedia : (Media -> Media) -> Model -> Model
+setMedia fn model =
+    { model | media = fn model.media }
+
+
+setSlackImgs : List Href -> Media -> Media
+setSlackImgs imgs media =
+    { media | slackImgs = imgs }
+
+
+setLunchImgs : List Href -> Media -> Media
+setLunchImgs imgs media =
+    { media | lunchImgs = imgs }
+
+
+setDigit : Int -> Media -> Media
+setDigit digit media =
+    { media | digit = digit }
+
+
+
+-- Page handling
 
 
 nextPage : List Page -> Page -> Page

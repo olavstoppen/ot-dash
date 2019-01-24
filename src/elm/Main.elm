@@ -11,6 +11,7 @@ import Json.Decode as Decode
 import List exposing (..)
 import Model exposing (..)
 import Page.Birthday as Birthday
+import Page.Calendar as Calendar
 import Page.Error as Error
 import Page.Instagram as Instagram
 import Page.Lunch as Lunch
@@ -76,6 +77,7 @@ init flags url key =
                     [ Lunch
                     , Slack
                     , Instagram
+                    , Calendar
                     , Transit
                     , Weather
                     ]
@@ -88,6 +90,11 @@ init flags url key =
             , instagram = NotAsked
             , lunchMenu = NotAsked
             , calendar = NotAsked
+            , media =
+                { digit = 0
+                , slackImgs = []
+                , lunchImgs = []
+                }
             }
     in
     ( model
@@ -144,6 +151,9 @@ getPage model =
 
         Lunch ->
             Lunch.view model
+
+        Calendar ->
+            Calendar.view model
 
 
 background : Model -> Html Msg

@@ -1,4 +1,4 @@
-module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLunchMenu, fetchPublicTransport, fetchSlackEvents, fetchSlackInfo, fetchWeather)
+module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLunchImgs, fetchLunchMenu, fetchPublicTransport, fetchSlackEvents, fetchSlackImgs, fetchSlackInfo, fetchWeather)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -8,22 +8,75 @@ import Model exposing (..)
 import Time exposing (..)
 
 
-baseUrl : String -> String
-baseUrl path =
+pingubotUrl : String -> String
+pingubotUrl path =
     "https://pingubot-server.herokuapp.com/" ++ path
 
 
-get : String -> String -> (Result Http.Error a -> Msg) -> Decoder a -> Cmd Msg
-get apiKey path callback decoder =
+pingubotHeaders : String -> List Http.Header
+pingubotHeaders apiKey =
+    [ Http.header "x-api-key" apiKey ]
+
+
+tenorUrl : String
+tenorUrl =
+    let
+        limit =
+            "30"
+    in
+    "https://api.tenor.com/v1/random?key=B81HIUQSPE5Q&limit=" ++ limit ++ "&contentfilter=high&q=typing"
+
+
+unslpashUrl : String
+unslpashUrl =
+    let
+        limit =
+            "30"
+    in
+    "https://api.unsplash.com/photos/random?collections=202618,575196&count=" ++ limit
+
+
+unslpashHeaders : List Http.Header
+unslpashHeaders =
+    [ Http.header
+        "Authorization"
+        "Client-ID a15e8f9c25d93d6985245b161feba5eec1185b2eb7b62b478d8d0c0f1c43ec21"
+    ]
+
+
+get : List Http.Header -> String -> (Result Http.Error a -> Msg) -> Decoder a -> Cmd Msg
+get headers url callback decoder =
     Http.request
         { method = "GET"
-        , headers = [ Http.header "x-api-key" apiKey ]
-        , url = baseUrl path
+        , headers = headers
+        , url = url
         , body = Http.emptyBody
         , expect = Http.expectJson callback decoder
         , timeout = Nothing
         , tracker = Nothing
         }
+
+
+
+-- Global decoders
+
+
+decodePerson : Decoder Person
+decodePerson =
+    Decode.succeed Person
+        |> required "firstName" string
+        |> required "lastName" string
+        |> optional "imageUrl" string ""
+
+
+decodeTime : Decoder Posix
+decodeTime =
+    map toPosix int
+
+
+toPosix : Int -> Posix
+toPosix number =
+    millisToPosix <| number * 1000
 
 
 
@@ -35,7 +88,7 @@ fetchSlackEvents :
     -> Model
     -> Cmd Msg
 fetchSlackEvents callback { apiKey } =
-    get apiKey "LatestMessages" callback <| list decodeLatestMessage
+    get (pingubotHeaders apiKey) (pingubotUrl "LatestMessages") callback <| list decodeLatestMessage
 
 
 decodeLatestMessage : Decoder SlackEvent
@@ -71,7 +124,7 @@ fetchSlackInfo :
     -> Model
     -> Cmd Msg
 fetchSlackInfo callback { apiKey } =
-    get apiKey "Emojistats" callback <| decodeSlackInfo
+    get (pingubotHeaders apiKey) (pingubotUrl "Emojistats") callback <| decodeSlackInfo
 
 
 decodeSlackInfo : Decoder SlackInfo
@@ -85,7 +138,7 @@ decodeSlackInfo =
 
 fetchWeather : (Result Http.Error WeatherInfo -> Msg) -> Model -> Cmd Msg
 fetchWeather callback { apiKey } =
-    get apiKey "Weather" callback <| decodeWeatherInfo
+    get (pingubotHeaders apiKey) (pingubotUrl "Weather") callback <| decodeWeatherInfo
 
 
 decodeWeatherInfo : Decoder WeatherInfo
@@ -147,21 +200,7 @@ decodeWeatherData =
 
 fetchCalendar : (Result Http.Error (List CalendarEvent) -> Msg) -> Model -> Cmd Msg
 fetchCalendar callback { apiKey } =
-    get apiKey "Calendar" callback <| list decodeCalendar
-
-
-
--- [
---   {
---     "description": null,
---     "fromPosix": 1548343800,
---     "toPosix": 1548360000,
---     "name": "📣 OT Kick-off",
---     "url": null,
---     "category": "Olavstoppen",
---     "color": "#00c2d6"
---   }
--- ]
+    get (pingubotHeaders apiKey) (pingubotUrl "Calendar") callback <| list decodeCalendar
 
 
 decodeCalendar : Decoder CalendarEvent
@@ -196,7 +235,7 @@ decodeCategory =
 
 fetchInstagram : (Result Http.Error (List InstagramPost) -> Msg) -> Model -> Cmd Msg
 fetchInstagram callback { apiKey } =
-    get apiKey "Instagram" callback <| list decodeInstagram
+    get (pingubotHeaders apiKey) (pingubotUrl "Instagram") callback <| list decodeInstagram
 
 
 decodeInstagram : Decoder InstagramPost
@@ -217,28 +256,16 @@ decodeInstagram =
 
 fetchBirthdays : (Result Http.Error (List Person) -> Msg) -> Model -> Cmd Msg
 fetchBirthdays callback { apiKey } =
-    get apiKey "Birthdays" callback <| list decodePerson
+    get (pingubotHeaders apiKey) (pingubotUrl "Birthdays") callback <| list decodePerson
 
 
 
--- [
---   {
---     "firstName": "Stian",
---     "lastName": "Bakkenator",
---     "imageUrl": "https://secure.gravatar.com/avatar/db4defee9f1940fdb5d5f48718dffc4d.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0021-512.png"
---   },
---   {
---     "firstName": "Stian",
---     "lastName": "Bakken Batman",
---     "imageUrl": "https://secure.gravatar.com/avatar/048195daf5327cef0444ac61ad958c3a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0002-512.png"
---   }
--- ]
 -- Public Transport
 
 
 fetchPublicTransport : (Result Http.Error (List (List Transport)) -> Msg) -> Model -> Cmd Msg
 fetchPublicTransport callback { apiKey } =
-    get apiKey "PublicTransport" callback <| list decodeDepartures
+    get (pingubotHeaders apiKey) (pingubotUrl "PublicTransport") callback <| list decodeDepartures
 
 
 decodeDepartures : Decoder (List Transport)
@@ -284,7 +311,7 @@ decodeTrain =
 
 fetchLunchMenu : (Result Http.Error (List LunchData) -> Msg) -> Model -> Cmd Msg
 fetchLunchMenu callback { apiKey } =
-    get apiKey "LunchMenu" callback <| list decodeLunch
+    get (pingubotHeaders apiKey) (pingubotUrl "LunchMenu") callback <| list decodeLunch
 
 
 decodeLunch : Decoder LunchData
@@ -341,22 +368,36 @@ toWeekday day =
 
 
 
--- Global
+-- Tenor
 
 
-decodePerson : Decoder Person
-decodePerson =
-    Decode.succeed Person
-        |> required "firstName" string
-        |> required "lastName" string
-        |> optional "imageUrl" string ""
+fetchSlackImgs : (Result Http.Error (List Href) -> Msg) -> Model -> Cmd Msg
+fetchSlackImgs callback model =
+    get [] tenorUrl callback <| decodeTenor
 
 
-decodeTime : Decoder Posix
-decodeTime =
-    map toPosix int
+decodeTenor : Decoder (List Href)
+decodeTenor =
+    field "results"
+        (list <| field "media" (list <| at [ "mediumgif", "url" ] string))
+        |> andThen
+            flatHref
 
 
-toPosix : Int -> Posix
-toPosix number =
-    millisToPosix <| number * 1000
+flatHref : List (List Href) -> Decoder (List Href)
+flatHref lists =
+    succeed <| List.concat lists
+
+
+
+-- Unsplash
+
+
+fetchLunchImgs : (Result Http.Error (List Href) -> Msg) -> Model -> Cmd Msg
+fetchLunchImgs callback model =
+    get unslpashHeaders unslpashUrl callback <| decodeUnslpash
+
+
+decodeUnslpash : Decoder (List Href)
+decodeUnslpash =
+    list <| at [ "urls", "regular" ] string

@@ -21,7 +21,7 @@ view model =
             div [ class "page page__weather" ]
                 [ div [ class "content" ]
                     [ div [ class "animated fadeInDown faster today" ]
-                        [ div [] [ text "Mangler data" ]
+                        [ div [] [ text "Været er borte vekk idag ☘️" ]
                         ]
                     ]
                 ]

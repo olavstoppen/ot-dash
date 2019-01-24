@@ -406,4 +406,37 @@
     }
 
   }
+  @at-root #{&}__calendar {
+    .calendar {
+      display: flex;
+      flex-direction: column;
+
+      .calendarEvent {
+        display: flex;
+        align-items: center;
+        padding-bottom: 1vmax;
+
+        border-bottom: 1px solid $grey-light;
+
+        &:not(:first-child) {
+          margin-top: 1vmax;
+        }
+
+        .event {
+          p,
+          strong {
+            display: block;
+            margin: 0;
+          }
+          margin-left: 2vmax;
+
+          .dates {
+            color: $grey;
+          }
+        }
+
+      }
+    }
+
+  }
 }

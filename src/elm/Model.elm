@@ -1,4 +1,4 @@
-module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -26,6 +26,7 @@ type alias Model =
     , lunchMenu : RemoteData (List LunchData)
     , weatherInfo : RemoteData WeatherInfo
     , calendar : RemoteData (List CalendarEvent)
+    , media : Media
     }
 
 
@@ -50,6 +51,13 @@ type alias Pages =
     }
 
 
+type alias Media =
+    { digit : Int
+    , slackImgs : List Href
+    , lunchImgs : List Href
+    }
+
+
 
 -- Global
 
@@ -61,6 +69,7 @@ type Page
     | Weather
     | Instagram
     | Lunch
+    | Calendar
 
 
 type alias Href =
@@ -194,6 +203,8 @@ type alias LunchData =
 type CalendarCategory
     = Olavstoppen
     | Bouvet
+    | Holiday
+    | ExternalCalendar
     | UnknownCalendarCategory
 
 
@@ -225,3 +236,6 @@ type Msg
     | UpdateLunchMenu (Result Http.Error (List LunchData))
     | UpdateBirthdays (Result Http.Error (List Person))
     | UpdateCalendar (Result Http.Error (List CalendarEvent))
+    | UpdateSlackImgs (Result Http.Error (List Href))
+    | UpdateLunchImgs (Result Http.Error (List Href))
+    | UpdateMediaDigit Int

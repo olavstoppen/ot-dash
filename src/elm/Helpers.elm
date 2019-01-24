@@ -1,6 +1,7 @@
-module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, fullName, getPageKey, getPageTitle, sortTransport, toMonthNumber, toPascalCase)
+module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDay, formatTime, formatWeekDayName, fullName, getPageKey, getPageTitle, getStringAt, sortTransport, toMonthNumber, toPascalCase)
 
 import Browser exposing (UrlRequest(..))
+import List.Extra as ListExtra
 import Model exposing (..)
 import String exposing (..)
 import Task
@@ -32,6 +33,50 @@ formatDateTime zone time =
         , "."
         , fromInt (toYear zone time)
         ]
+
+
+formatTime : Zone -> Posix -> String
+formatTime zone time =
+    concat
+        [ padLeft 2 '0' <| fromInt (toHour zone time)
+        , ":"
+        , padLeft 2 '0' <| fromInt (toMinute zone time)
+        ]
+
+
+formatDay : Zone -> Posix -> String
+formatDay zone time =
+    fromInt <| toDay zone time
+
+
+formatWeekDayName : Zone -> Posix -> String
+formatWeekDayName zone time =
+    getWeekDayName <| toWeekday zone time
+
+
+getWeekDayName : Weekday -> String
+getWeekDayName weekday =
+    case weekday of
+        Mon ->
+            "Mandag"
+
+        Tue ->
+            "Tirsdag"
+
+        Wed ->
+            "Onsdag"
+
+        Thu ->
+            "Torsdag"
+
+        Fri ->
+            "Fredag"
+
+        Sat ->
+            "Lørdag"
+
+        Sun ->
+            "Søndag"
 
 
 formatDateDiffMinutes : Zone -> Posix -> Posix -> String
@@ -108,6 +153,9 @@ getPageKey page =
         Lunch ->
             "lunch"
 
+        Calendar ->
+            "calendar"
+
 
 getPageTitle : Page -> String
 getPageTitle page =
@@ -123,6 +171,9 @@ getPageTitle page =
 
         Transit ->
             "Kollektivt"
+
+        Calendar ->
+            "Hendelser"
 
         _ ->
             toPascalCase <| getPageKey page
@@ -156,3 +207,10 @@ sortTransport departure1 departure2 =
 fullName : Person -> String
 fullName { firstName, lastName } =
     String.concat [ firstName, " ", lastName ]
+
+
+getStringAt : Int -> List Href -> String
+getStringAt digit imgUrls =
+    imgUrls
+        |> ListExtra.getAt digit
+        |> Maybe.withDefault ""
