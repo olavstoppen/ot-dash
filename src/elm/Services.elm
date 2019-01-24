@@ -200,7 +200,7 @@ decodeWeatherData =
 
 fetchCalendar : (Result Http.Error (List CalendarEvent) -> Msg) -> Model -> Cmd Msg
 fetchCalendar callback { apiKey } =
-    get (pingubotHeaders apiKey) (pingubotUrl "Calendar") callback <| list decodeCalendar
+    get (pingubotHeaders apiKey) (pingubotUrl "Calendar/upcoming-events?amount=5") callback <| list decodeCalendar
 
 
 decodeCalendar : Decoder CalendarEvent
@@ -321,6 +321,8 @@ decodeLunch =
         |> required "name" string
         |> required "dishes" decodeHeadList
         |> required "soups" decodeHeadList
+        |> required "dishEmojis" (list string)
+        |> required "soupEmojis" (list string)
 
 
 decodeHeadList : Decoder String
