@@ -19,7 +19,7 @@ view model =
                         Success instagramPosts ->
                             instagramPosts
                                 |> List.map .imageUrl
-                                |> getStringAt (round <| toFloat model.media.digit / 2.5)
+                                |> getStringAt (round <| toFloat model.media.digit / 3)
 
                         _ ->
                             ""

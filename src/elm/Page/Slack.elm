@@ -3,6 +3,7 @@ module Page.Slack exposing (view)
 import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Icons exposing (..)
 import Model exposing (..)
 
 
@@ -29,7 +30,7 @@ title =
 annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
-        [ img [ class "icon--med", src "/icons/slack.png" ] []
+        [ slackIcon
         , h3 [] [ text "Slack i dag" ]
         ]
 

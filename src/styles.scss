@@ -176,6 +176,10 @@ nav.sidebar {
     height: 1.3vmax;
     width: 1.3vmax;
   }
+  @at-root #{&}--large {
+    height: 2vmax;
+    width: 2vmax;
+  }
 }
 
 .text {
@@ -195,5 +199,25 @@ nav.sidebar {
   }
   @at-root #{&}--large {
     height: 3vmax;
+  }
+}
+
+.slack-icon {
+  margin-right: .8vmax !important;
+
+  .st0 {
+    fill: #E01E5A;
+  }
+
+  .st1 {
+    fill: #36C5F0;
+  }
+
+  .st2 {
+    fill: #2EB67D;
+  }
+
+  .st3 {
+    fill: #ECB22E;
   }
 }

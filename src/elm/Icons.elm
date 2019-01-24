@@ -1,8 +1,8 @@
-module Icons exposing (busIcon, chatIcon, likeIcon, metIcon, trainIcon)
+module Icons exposing (busIcon, chatIcon, likeIcon, metIcon, slackIcon, trainIcon)
 
 import Html exposing (..)
-import Svg exposing (Svg, path, polyline, svg)
-import Svg.Attributes exposing (class, d, fill, height, points, viewBox, width)
+import Svg exposing (Svg, g, path, polyline, svg)
+import Svg.Attributes exposing (class, d, fill, height, id, points, style, version, viewBox, width, x, y)
 
 
 busIcon =
@@ -32,4 +32,27 @@ metIcon =
             ]
             []
         , polyline [ points "24.7819469 50.8858685 18.7895575 44.8975925 12.7961062 50.8858685 6.80230088 44.8975925 1.56283186 50.1326006 0.0561061947 48.6280114 6.80230088 41.888237 12.7961062 47.8738588 18.7895575 41.888237 24.780177 47.8738588 30.0132743 42.6388506 31.5212389 44.146625 24.7819469 50.8858685" ] []
+        ]
+
+
+slackIcon =
+    svg [ class "icon--large slack-icon", version "1.1", id "Layer_1", x "0px", y "0px", viewBox "0 0 270 270" ]
+        [ g []
+            [ g []
+                [ Svg.path [ class "st0", d "M99.4,151.2c0,7.1-5.8,12.9-12.9,12.9c-7.1,0-12.9-5.8-12.9-12.9c0-7.1,5.8-12.9,12.9-12.9h12.9V151.2z" ] []
+                , Svg.path [ class "st0", d "M105.9,151.2c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v32.3c0,7.1-5.8,12.9-12.9,12.9 s-12.9-5.8-12.9-12.9V151.2z" ] []
+                ]
+            , g []
+                [ Svg.path [ class "st1", d "M118.8,99.4c-7.1,0-12.9-5.8-12.9-12.9c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v12.9H118.8z" ] []
+                , Svg.path [ class "st1", d "M118.8,105.9c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H86.5c-7.1,0-12.9-5.8-12.9-12.9 s5.8-12.9,12.9-12.9H118.8z" ] []
+                ]
+            , g []
+                [ Svg.path [ class "st2", d "M170.6,118.8c0-7.1,5.8-12.9,12.9-12.9c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9h-12.9V118.8z" ] []
+                , Svg.path [ class "st2", d "M164.1,118.8c0,7.1-5.8,12.9-12.9,12.9c-7.1,0-12.9-5.8-12.9-12.9V86.5c0-7.1,5.8-12.9,12.9-12.9 c7.1,0,12.9,5.8,12.9,12.9V118.8z" ] []
+                ]
+            , g []
+                [ Svg.path [ class "st3", d "M151.2,170.6c7.1,0,12.9,5.8,12.9,12.9c0,7.1-5.8,12.9-12.9,12.9c-7.1,0-12.9-5.8-12.9-12.9v-12.9H151.2z" ] []
+                , Svg.path [ class "st3", d "M151.2,164.1c-7.1,0-12.9-5.8-12.9-12.9c0-7.1,5.8-12.9,12.9-12.9h32.3c7.1,0,12.9,5.8,12.9,12.9 c0,7.1-5.8,12.9-12.9,12.9H151.2z" ] []
+                ]
+            ]
         ]

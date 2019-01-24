@@ -116,6 +116,7 @@ update message model =
                 , fetchCalendar UpdateCalendar model
                 , fetchSlackImgs UpdateSlackImgs model
                 , fetchLunchImgs UpdateLunchImgs model
+                , Random.generate UpdateMediaDigit oneToThirty
                 ]
             )
 
