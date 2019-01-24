@@ -224,6 +224,15 @@ decodeCategory =
                     "Olavstoppen" ->
                         succeed Olavstoppen
 
+                    "Bouvet" ->
+                        succeed Bouvet
+
+                    "Ferie" ->
+                        succeed Holiday
+
+                    "Ekstern" ->
+                        succeed ExternalCalendar
+
                     _ ->
                         succeed UnknownCalendarCategory
             )

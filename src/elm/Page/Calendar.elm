@@ -68,7 +68,7 @@ body calendarEvents here =
 
 
 calendarEvent : Here -> CalendarEvent -> Html Msg
-calendarEvent { zone } { name, from, to, category } =
+calendarEvent { zone, time } { name, from, to, category, color } =
     let
         dates =
             String.concat
@@ -78,13 +78,24 @@ calendarEvent { zone } { name, from, to, category } =
                 , " - "
                 , formatTime zone to
                 ]
+
+        isActive =
+            formatDate zone time == formatDate zone from
     in
     div [ class "calendarEvent" ]
         [ div
             [ classList
                 [ ( "day ellipse", True )
-                , ( "active", False )
+                , ( "active", isActive )
                 ]
+            , style "border-color" color
+            , style "background-color"
+                (if isActive then
+                    color
+
+                 else
+                    ""
+                )
             ]
             [ text <| String.slice 0 1 <| formatDay zone from ]
         , div [ class "event" ]
