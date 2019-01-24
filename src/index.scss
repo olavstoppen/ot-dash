@@ -160,7 +160,7 @@ nav.sidebar {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid $black;
+  border: .1vmax solid $black;
 
   &.active {
     background: $black;

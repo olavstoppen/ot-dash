@@ -1,4 +1,4 @@
-import "./styles.scss";
+import "./index.scss";
 import { Elm } from "./elm/Main";
 
 var app = Elm.Main.init({ flags: { apiKey: process.env.API_KEY } });
