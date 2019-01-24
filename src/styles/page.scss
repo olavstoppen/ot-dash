@@ -406,13 +406,27 @@
             display: flex;
             align-items: center;
 
-            .emojis {
-              margin-left: 1vmax;
+            .label {
+              align-self: flex-start;
+              margin-right: .5vmax;
+            }
 
-              .emoji {
-                margin-left: .2vmax;
+            .description {
+              display: flex;
+              align-items: center;
+              flex-wrap: wrap;
+
+              .dish {
+                margin-right: .1vmax;
+              }
+
+              .emojis {
+                .emoji {
+                  margin-left: .2vmax;
+                }
               }
             }
+
           }
 
         }

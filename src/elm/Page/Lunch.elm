@@ -66,18 +66,20 @@ lunchDay todayWeekDay { dayName, maincourse, soup, day, maincourseEmojis, soupEm
                 ]
             ]
             [ text <| String.slice 0 1 dayName ]
-        , div [ class "labels" ]
-            [ strong [] [ text "Varmrett: " ]
-            , strong [] [ text "Suppe: " ]
-            ]
         , div [ class "courses" ]
             [ div [ class "course" ]
-                [ div [] [ text maincourse ]
-                , div [ class "emojis" ] <| List.map emoji maincourseEmojis
+                [ strong [ class "label" ] [ text "Varmrett: " ]
+                , div [ class "description" ]
+                    [ div [ class "dish" ] [ text maincourse ]
+                    , div [ class "emojis" ] <| List.map emoji maincourseEmojis
+                    ]
                 ]
             , div [ class "course" ]
-                [ div [] [ text soup ]
-                , div [ class "emojis" ] <| List.map emoji soupEmojis
+                [ strong [ class "label" ] [ text "Suppe: " ]
+                , div [ class "description" ]
+                    [ div [ class "dish" ] [ text soup ]
+                    , div [ class "emojis" ] <| List.map emoji soupEmojis
+                    ]
                 ]
             ]
         ]
