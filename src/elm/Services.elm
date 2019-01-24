@@ -319,26 +319,21 @@ decodeLunch =
     Decode.succeed LunchData
         |> required "name" decodeDay
         |> required "name" string
-        |> required "dishes" decodeHeadList
-        |> required "soups" decodeHeadList
+        |> required "dishes" decodeConcatList
+        |> required "soups" decodeConcatList
         |> required "dishEmojis" (list string)
         |> required "soupEmojis" (list string)
 
 
-decodeHeadList : Decoder String
-decodeHeadList =
+decodeConcatList : Decoder String
+decodeConcatList =
     list string
-        |> andThen getHead
+        |> andThen concat
 
 
-getHead : List String -> Decoder String
-getHead strings =
-    case List.head strings of
-        Nothing ->
-            succeed ""
-
-        Just head ->
-            succeed head
+concat : List String -> Decoder String
+concat strings =
+    succeed <| String.join " " strings
 
 
 decodeDay : Decoder Weekday
