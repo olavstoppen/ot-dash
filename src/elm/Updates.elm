@@ -154,16 +154,11 @@ update message model =
             case res of
                 Ok birthdays ->
                     let
-                        updatedBirthdays =
-                            List.append birthdays
-                                [ Person "Olavstoppen" "Dashboard" ""
-                                ]
-
                         updatedAvailable =
-                            List.map Birthday updatedBirthdays
+                            List.map Birthday birthdays
                                 |> List.append model.pages.available
                     in
-                    ( { model | birthdays = Success updatedBirthdays }
+                    ( { model | birthdays = Success birthdays }
                         |> updateAvailablePages updatedAvailable
                     , Cmd.none
                     )
