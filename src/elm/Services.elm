@@ -328,16 +328,10 @@ decodeLunch =
     Decode.succeed LunchData
         |> required "name" decodeDay
         |> required "name" string
-        |> required "dishes" decodeConcatList
-        |> required "soups" decodeConcatList
+        |> required "dishes" string
+        |> required "soups" string
         |> required "dishEmojis" (list string)
         |> required "soupEmojis" (list string)
-
-
-decodeConcatList : Decoder String
-decodeConcatList =
-    list string
-        |> andThen concat
 
 
 concat : List String -> Decoder String
