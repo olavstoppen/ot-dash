@@ -72,7 +72,7 @@ init flags url key =
             , here = Here (millisToPosix 0) Time.utc Mon
             , pages =
                 { active = urlPage
-                , countdown = 30
+                , countdown = 60
                 , available =
                     [ Lunch
                     , Slack
