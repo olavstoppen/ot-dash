@@ -65,7 +65,7 @@ lunchDay todayWeekDay { dayName, maincourse, soup, day, maincourseEmojis, soupEm
                 , ( "active", todayWeekDay == day )
                 ]
             ]
-            [ text <| String.slice 0 1 dayName ]
+            [ text <| String.slice 0 2 dayName ]
         , div [ class "courses" ]
             [ div [ class "course" ]
                 [ strong [ class "label" ] [ text "Varmrett: " ]

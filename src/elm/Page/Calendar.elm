@@ -97,7 +97,7 @@ calendarEvent { zone, time } { name, from, to, category, color } =
             --         ""
             --     )
             ]
-            [ text <| String.slice 0 1 <| formatDay zone from ]
+            [ text <| String.slice 0 2 <| formatWeekDayName zone from ]
         , div [ class "event" ]
             [ p [] [ text name ]
             , p [ class "dates" ] [ text dates ]
