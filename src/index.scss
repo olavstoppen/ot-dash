@@ -190,6 +190,10 @@ nav.sidebar {
   @at-root #{&}--medium {
     font-size: calc(16px + .8vmax);
   }
+  @at-root #{&}--small {
+    line-height: calc(1.1em + .6vmax);
+    font-size: calc(16px + .6vmax);
+  }
 }
 
 .image {

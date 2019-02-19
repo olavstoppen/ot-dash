@@ -105,11 +105,11 @@ forecast { symbolUrl, temperature, day } =
     in
     div [ class "forecast" ]
         [ div [ class "symbol" ] [ img [ src symbolUrl ] [] ]
-        , div [ class "temperature" ]
+        , div [ class "temperature text--small" ]
             [ div [] [ text highTemp ]
             , div [ class "fade-out" ] [ text lowTemp ]
             ]
-        , div [ class "day" ] [ text day ]
+        , div [ class "day text--small" ] [ text day ]
         ]
 
 

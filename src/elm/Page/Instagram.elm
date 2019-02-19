@@ -81,7 +81,7 @@ footer { zone } instagramPost =
                 [ chatIcon
                 , text <| String.fromInt instagramPost.comments
                 ]
-            , div [ class "stat" ] [ text <| formatDate zone instagramPost.time ]
+            , div [ class "stat text--medium" ] [ text <| formatDate zone instagramPost.time ]
             ]
         ]
 

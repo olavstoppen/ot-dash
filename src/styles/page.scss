@@ -302,8 +302,6 @@
         .temperature {
           display: flex;
           margin-top: 1vmax;
-          line-height: calc(1.1em + .1vmax);
-          font-size: calc(16px + .1vmax);
 
           > *:first-child {
             margin-right: 1vmax;
@@ -314,8 +312,6 @@
           display: flex;
           justify-content: center;
           margin-top: .5vmax;
-          line-height: calc(1.1em + .1vmax);
-          font-size: calc(16px + .1vmax);
         }
       }
 
@@ -469,4 +465,5 @@
     }
 
   }
+
 }

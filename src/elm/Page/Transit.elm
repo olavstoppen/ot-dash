@@ -77,11 +77,6 @@ departure { here } transport =
                 ]
 
 
-livemap : Model -> Html Msg
-livemap model =
-    iframe [ class "transit__map", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
-
-
 square : Model -> Html Msg
 square model =
     div [ class "square " ]
