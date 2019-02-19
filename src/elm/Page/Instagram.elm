@@ -4,6 +4,7 @@ import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Icons exposing (..)
+import List.Extra as ListExtra
 import Model exposing (..)
 import Page.Error as Error
 import Time exposing (Zone)
@@ -13,7 +14,12 @@ view : Model -> Html Msg
 view model =
     case model.instagram of
         Success instagramPosts ->
-            case List.head instagramPosts of
+            let
+                instagramPost_ =
+                    instagramPosts
+                        |> ListExtra.getAt (round <| toFloat model.media.digit / 10)
+            in
+            case instagramPost_ of
                 Nothing ->
                     div [ class "page page__instagram" ]
                         [ title
