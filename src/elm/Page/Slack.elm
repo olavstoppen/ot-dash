@@ -107,5 +107,5 @@ topEmojis : List String -> List (Html Msg)
 topEmojis emojis =
     List.concat
         [ [ h4 [] [ text "Topp emojis" ] ]
-        , List.map image emojis
+        , List.map image <| List.filter (String.isEmpty >> not) emojis
         ]

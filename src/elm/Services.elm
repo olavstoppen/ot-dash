@@ -129,7 +129,7 @@ fetchSlackInfo callback { apiKey } =
 
 decodeSlackInfo : Decoder SlackInfo
 decodeSlackInfo =
-    map SlackInfo (list string)
+    map SlackInfo (list (oneOf [ string, null "" ]))
 
 
 
