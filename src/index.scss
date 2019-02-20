@@ -191,8 +191,8 @@ nav.sidebar {
     font-size: calc(16px + .8vmax);
   }
   @at-root #{&}--small {
-    line-height: calc(1.1em + .6vmax);
-    font-size: calc(16px + .6vmax);
+    line-height: calc(1.1em + .3vmax);
+    font-size: calc(16px + .3vmax);
   }
 }
 
