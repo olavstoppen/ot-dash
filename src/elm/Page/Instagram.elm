@@ -8,16 +8,40 @@ import List.Extra as ListExtra
 import Model exposing (..)
 import Page.Error as Error
 import Time exposing (Zone)
+import Time.Extra exposing (Interval(..), diff)
+
+
+dayAge : Int
+dayAge =
+    3
+
+
+getInstagramPost : Int -> Here -> List InstagramPost -> Maybe InstagramPost
+getInstagramPost digit here instagramPosts =
+    let
+        shouldHighlight : InstagramPost -> Bool
+        shouldHighlight instagramPost =
+            diff Day here.zone instagramPost.time here.time < dayAge
+
+        highlighted =
+            instagramPosts
+                |> List.filter shouldHighlight
+    in
+    if List.isEmpty highlighted then
+        instagramPosts
+            |> ListExtra.getAt (round <| toFloat digit / 10)
+
+    else
+        List.head highlighted
 
 
 view : Model -> Html Msg
-view model =
-    case model.instagram of
+view { media, here, instagram } =
+    case instagram of
         Success instagramPosts ->
             let
                 instagramPost_ =
-                    instagramPosts
-                        |> ListExtra.getAt (round <| toFloat model.media.digit / 10)
+                    getInstagramPost media.digit here instagramPosts
             in
             case instagramPost_ of
                 Nothing ->
@@ -31,7 +55,7 @@ view model =
                     div [ class "page page__instagram" ]
                         [ title
                         , annotation
-                        , footer model.here instagramPost
+                        , footer here instagramPost
                         , body instagramPost
                         , square instagramPost
                         ]
