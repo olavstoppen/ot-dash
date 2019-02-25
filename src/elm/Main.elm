@@ -1,4 +1,4 @@
-module Main exposing (background, getPage, init, link, main, sidebar, subscriptions, view)
+module Main exposing (main)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -6,13 +6,11 @@ import Helpers exposing (fullName, getPageKey, getPageTitle, sortTransport)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Http exposing (Error(..))
 import Json.Decode as Decode
 import List exposing (..)
 import Model exposing (..)
 import Page.Birthday as Birthday
 import Page.Calendar as Calendar
-import Page.Error as Error
 import Page.Instagram as Instagram
 import Page.Lunch as Lunch
 import Page.Slack as Slack
@@ -25,6 +23,7 @@ import Tuple exposing (..)
 import Updates exposing (update, urlParser)
 import Url exposing (Url)
 import Url.Parser as UrlParser exposing ((</>), Parser)
+import Views exposing (viewRemoteData)
 
 
 
@@ -115,49 +114,49 @@ init flags url key =
 view : Model -> Html Msg
 view model =
     main_ []
-        [ background model
+        [ viewBackground model
         , div [ class "layout" ]
-            [ getPage model
-            , sidebar model
+            [ viewPage model
+            , viewSidebar model
             ]
         ]
 
 
-getPage : Model -> Html Msg
-getPage model =
+viewPage : Model -> Html Msg
+viewPage model =
     case model.pages.active of
         Transit ->
-            Transit.view model
+            viewRemoteData model .publicTransport Transit.view
 
         Slack ->
-            Slack.view model
+            viewRemoteData model .slackEvents Slack.view
 
         Birthday person ->
             case model.birthdays of
                 Success birthdays ->
                     Birthday.view person
 
-                Failure err ->
-                    Error.view err
-
                 _ ->
-                    div [] [ text "loading" ]
+                    div [ style "padding" "5vmax", style "display" "flex" ]
+                        [ div [] [ text "⌛" ]
+                        , div [] [ text "Laster..." ]
+                        ]
 
         Weather ->
-            Weather.view model
+            viewRemoteData model .weatherInfo Weather.view
 
         Instagram ->
-            Instagram.view model
+            viewRemoteData model .instagram Instagram.view
 
         Lunch ->
-            Lunch.view model
+            viewRemoteData model .lunchMenu Lunch.view
 
         Calendar ->
-            Calendar.view model
+            viewRemoteData model .calendar Calendar.view
 
 
-background : Model -> Html Msg
-background model =
+viewBackground : Model -> Html Msg
+viewBackground model =
     div [ class "background" ]
         [ div [ class "background__page" ] []
         , div [ class "background__divider" ] []
@@ -165,13 +164,13 @@ background model =
         ]
 
 
-sidebar : Model -> Html Msg
-sidebar { pages } =
-    nav [ class "sidebar" ] <| List.map (link pages.active) pages.available
+viewSidebar : Model -> Html Msg
+viewSidebar { pages } =
+    nav [ class "sidebar" ] <| List.map (viewLink pages.active) pages.available
 
 
-link : Page -> Page -> Html Msg
-link activePage page =
+viewLink : Page -> Page -> Html Msg
+viewLink activePage page =
     let
         url =
             "/" ++ getPageKey page
@@ -195,15 +194,15 @@ link activePage page =
     if isActive then
         a [ href url, class "active" ]
             [ div [ class "link__title " ] [ text title ]
-            , linkFooter
+            , viewLinkFooter
             ]
 
     else
         a [ href url ] [ div [ class "link__title " ] [ text title ] ]
 
 
-linkFooter : Html Msg
-linkFooter =
+viewLinkFooter : Html Msg
+viewLinkFooter =
     div [ class "link__footer" ]
         [ div [ class "animated slideInLeft link__footer__bit" ] []
         ]

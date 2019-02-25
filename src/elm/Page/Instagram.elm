@@ -6,7 +6,6 @@ import Html.Attributes exposing (..)
 import Icons exposing (..)
 import List.Extra as ListExtra
 import Model exposing (..)
-import Page.Error as Error
 import Time exposing (Zone)
 import Time.Extra exposing (Interval(..), diff)
 
@@ -59,9 +58,6 @@ view { media, here, instagram } =
                         , body instagramPost
                         , square instagramPost
                         ]
-
-        Failure err ->
-            Error.view err
 
         _ ->
             div [] [ text "loading" ]
