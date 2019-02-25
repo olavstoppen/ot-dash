@@ -405,12 +405,14 @@
             .label {
               align-self: flex-start;
               margin-right: .5vmax;
+              min-width: 8vmax;
+              width: 8vmax;
             }
 
             .description {
-              display: flex;
-              align-items: center;
-              flex-wrap: wrap;
+              > * {
+                display: inline;
+              }
 
               .dish {
                 margin-right: .1vmax;
