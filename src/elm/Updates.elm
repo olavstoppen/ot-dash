@@ -55,7 +55,7 @@ update message model =
                         UrlParser.parse (urlParser model.birthdays) url
             in
             ( updateActivePage urlPage model
-                |> updatePageCountdown 30
+                |> updatePageCountdown defaultCountdown
             , Cmd.none
             )
 
@@ -71,7 +71,7 @@ update message model =
                     pages.countdown - 1
             in
             if nextCountdown < 0 then
-                ( updatePageCountdown 60 updatedModel
+                ( updatePageCountdown defaultCountdown updatedModel
                 , Nav.replaceUrl model.key <| (++) "/" <| getPageKey <| nextPage pages.available pages.active
                 )
 
