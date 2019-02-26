@@ -106,7 +106,16 @@ update message model =
             )
 
         FetchAllData _ ->
-            ( model
+            ( { model
+                | publicTransport = Loading
+                , weatherInfo = Loading
+                , birthdays = Loading
+                , slackInfo = Loading
+                , slackEvents = Loading
+                , instagram = Loading
+                , lunchMenu = Loading
+                , calendar = Loading
+              }
             , Cmd.batch
                 [ fetchSlackEvents UpdateSlackEvents model
                 , fetchWeather UpdateWeather model
