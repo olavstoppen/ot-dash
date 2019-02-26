@@ -2,7 +2,7 @@ port module Updates exposing (update, urlParser)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (getPageKey, sortTransport)
+import Helpers exposing (fromResult, getPageKey, sortTransport)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -152,12 +152,7 @@ update message model =
                     ( model, Cmd.none )
 
         UpdateCalendar res ->
-            case res of
-                Ok calendar ->
-                    ( { model | calendar = Success calendar }, Cmd.none )
-
-                Err err ->
-                    ( { model | calendar = Failure err }, Cmd.none )
+            ( { model | calendar = fromResult res }, Cmd.none )
 
         UpdateBirthdays res ->
             case res of
@@ -176,28 +171,13 @@ update message model =
                     ( { model | birthdays = Failure err }, Cmd.none )
 
         UpdateSlackEvents res ->
-            case res of
-                Ok events ->
-                    ( { model | slackEvents = Success events }, Cmd.none )
-
-                Err err ->
-                    ( { model | slackEvents = Failure err }, Cmd.none )
+            ( { model | slackEvents = fromResult res }, Cmd.none )
 
         UpdateWeather res ->
-            case res of
-                Ok weatherInfo ->
-                    ( { model | weatherInfo = Success weatherInfo }, Cmd.none )
-
-                Err err ->
-                    ( { model | weatherInfo = Failure err }, Cmd.none )
+            ( { model | weatherInfo = fromResult res }, Cmd.none )
 
         UpdateInstagram res ->
-            case res of
-                Ok instagram ->
-                    ( { model | instagram = Success instagram }, Cmd.none )
-
-                Err err ->
-                    ( { model | instagram = Failure err }, Cmd.none )
+            ( { model | instagram = fromResult res }, Cmd.none )
 
         UpdatePublicTransport res ->
             case res of
@@ -208,20 +188,10 @@ update message model =
                     ( { model | publicTransport = Failure err }, Cmd.none )
 
         UpdateSlackInfo res ->
-            case res of
-                Ok slackInfo ->
-                    ( { model | slackInfo = Success slackInfo }, Cmd.none )
-
-                Err err ->
-                    ( { model | slackInfo = Failure err }, Cmd.none )
+            ( { model | slackInfo = fromResult res }, Cmd.none )
 
         UpdateLunchMenu res ->
-            case res of
-                Ok lunchMenu ->
-                    ( { model | lunchMenu = Success lunchMenu }, Cmd.none )
-
-                Err err ->
-                    ( { model | lunchMenu = Failure err }, Cmd.none )
+            ( { model | lunchMenu = fromResult res }, Cmd.none )
 
 
 

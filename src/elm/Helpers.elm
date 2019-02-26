@@ -1,6 +1,7 @@
-module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDay, formatTime, formatWeekDayName, fullName, getPageKey, getPageTitle, getStringAt, newLineOnFirstHash, sortTransport, toMonthNumber, toPascalCase)
+module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDay, formatTime, formatWeekDayName, fromResult, fullName, getPageKey, getPageTitle, getStringAt, getWeekDayName, hash, newLineOnFirstHash, sortTransport, toMonthNumber, toPascalCase)
 
 import Browser exposing (UrlRequest(..))
+import Http exposing (Error(..))
 import List.Extra as ListExtra
 import Model exposing (..)
 import Regex
@@ -227,3 +228,13 @@ hash : Regex.Regex
 hash =
     Maybe.withDefault Regex.never <|
         Regex.fromString "#"
+
+
+fromResult : Result Http.Error a -> RemoteData a
+fromResult result =
+    case result of
+        Err err ->
+            Failure err
+
+        Ok data ->
+            Success data
