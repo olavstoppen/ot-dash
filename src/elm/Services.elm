@@ -18,21 +18,18 @@ pingubotHeaders apiKey =
     [ Http.header "x-api-key" apiKey ]
 
 
+limit : String
+limit =
+    "30"
+
+
 tenorUrl : String
 tenorUrl =
-    let
-        limit =
-            "30"
-    in
-    "https://api.tenor.com/v1/random?key=B81HIUQSPE5Q&limit=" ++ limit ++ "&contentfilter=high&q=typing"
+    "https://api.tenor.com/v1/random?key=B81HIUQSPE5Q&limit=" ++ limit ++ "&contentfilter=high&q=writing"
 
 
 unslpashUrl : String
 unslpashUrl =
-    let
-        limit =
-            "30"
-    in
     "https://api.unsplash.com/photos/random?collections=202618,575196&count=" ++ limit
 
 
