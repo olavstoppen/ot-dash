@@ -77,7 +77,7 @@ type alias Href =
 
 
 type alias Emoji =
-    Href
+    Maybe Href
 
 
 type alias Birthdays =

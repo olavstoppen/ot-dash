@@ -79,6 +79,11 @@ toPosix number =
     millisToPosix <| number * 1000
 
 
+decodeEmoji : Decoder Emoji
+decodeEmoji =
+    maybe string
+
+
 
 -- Slack
 
@@ -104,7 +109,7 @@ decodeSlackEvent message =
             Decode.succeed Reaction
                 |> required "user" decodePerson
                 |> required "posix" decodeTime
-                |> required "emojiUrl" string
+                |> optional "emojiUrl" decodeEmoji Nothing
 
         "message" ->
             Decode.succeed Message
@@ -129,7 +134,7 @@ fetchSlackInfo callback { apiKey } =
 
 decodeSlackInfo : Decoder SlackInfo
 decodeSlackInfo =
-    map SlackInfo (list (oneOf [ string, null "" ]))
+    map SlackInfo (list decodeEmoji)
 
 
 
