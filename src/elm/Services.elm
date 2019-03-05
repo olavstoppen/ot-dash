@@ -25,7 +25,7 @@ limit =
 
 tenorUrl : String
 tenorUrl =
-    "https://api.tenor.com/v1/random?key=B81HIUQSPE5Q&limit=" ++ limit ++ "&contentfilter=high&q=writing"
+    "https://api.tenor.com/v1/random?key=B81HIUQSPE5Q&limit=" ++ limit ++ "&contentfilter=high&q=typing"
 
 
 unslpashUrl : String
