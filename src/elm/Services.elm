@@ -10,7 +10,7 @@ import Time exposing (..)
 
 pingubotUrl : String -> String
 pingubotUrl path =
-    "https://pingubot-server.herokuapp.com/" ++ path
+    "https://ot-pingu-server.azurewebsites.net/" ++ path
 
 
 pingubotHeaders : String -> List Http.Header
