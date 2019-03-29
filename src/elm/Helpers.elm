@@ -158,6 +158,9 @@ getPageKey page =
         Calendar ->
             "calendar"
 
+        Video ->
+            "video"
+
 
 getPageTitle : Page -> String
 getPageTitle page =

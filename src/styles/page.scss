@@ -69,6 +69,10 @@
       grid-column: 2 / span 17;
       grid-row: 9 / span 4;
     }
+    @at-root #{&}--big {
+      grid-column: 2 / span 18;
+      grid-row: 5 / span 13;
+    }
     overflow: hidden;
 
     > * {
@@ -466,6 +470,16 @@
       }
     }
 
+  }
+  @at-root #{&}__video {
+    .content--wide {}
+
+    #video,
+    .video {
+      width: 100%;
+      height: 100%;
+
+    }
   }
 
 }

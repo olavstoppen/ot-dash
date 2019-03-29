@@ -70,6 +70,7 @@ type Page
     | Instagram
     | Lunch
     | Calendar
+    | Video
 
 
 type alias Href =

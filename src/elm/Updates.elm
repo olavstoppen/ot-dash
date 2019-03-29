@@ -217,6 +217,7 @@ urlParser birthdays =
         , UrlParser.map Weather <| UrlParser.s "weather"
         , UrlParser.map Lunch <| UrlParser.s "lunch"
         , UrlParser.map Calendar <| UrlParser.s "calendar"
+        , UrlParser.map Video <| UrlParser.s "video"
         , UrlParser.s "birthday" </> UrlParser.custom "" (birthdayUrlName birthdays)
         ]
 
