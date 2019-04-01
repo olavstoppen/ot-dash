@@ -18,7 +18,8 @@ view model =
 annotation : Html Msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
-        [ h3 [] [ text "Jåttå, www.aftenbladet.no" ]
+        [ img [ class "icon--med", src "/icons/sa-icon.png" ] []
+        , h3 [] [ text "Jåttå, retning Jåttåvågen (øst)" ]
         ]
 
 
