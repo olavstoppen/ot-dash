@@ -247,4 +247,4 @@ type Msg
 
 defaultCountdown : Int
 defaultCountdown =
-    60000
+    60
