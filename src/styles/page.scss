@@ -472,10 +472,16 @@
 
   }
   @at-root #{&}__video {
-    .content--wide {}
-
     #video,
     .video {
+      width: 100%;
+      height: 100%;
+
+    }
+  }
+  @at-root #{&}__traffic {
+    #traffic,
+    .traffic {
       width: 100%;
       height: 100%;
 

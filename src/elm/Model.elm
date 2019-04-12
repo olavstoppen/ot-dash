@@ -71,6 +71,7 @@ type Page
     | Lunch
     | Calendar
     | Video
+    | Traffic
 
 
 type alias Href =
@@ -246,4 +247,4 @@ type Msg
 
 defaultCountdown : Int
 defaultCountdown =
-    60
+    60000

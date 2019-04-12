@@ -161,6 +161,9 @@ getPageKey page =
         Video ->
             "video"
 
+        Traffic ->
+            "traffic"
+
 
 getPageTitle : Page -> String
 getPageTitle page =

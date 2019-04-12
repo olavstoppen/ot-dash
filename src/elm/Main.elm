@@ -14,6 +14,7 @@ import Page.Calendar as Calendar
 import Page.Instagram as Instagram
 import Page.Lunch as Lunch
 import Page.Slack as Slack
+import Page.Traffic as Traffic
 import Page.Transit as Transit
 import Page.Video as Video
 import Page.Weather as Weather
@@ -157,6 +158,9 @@ viewPage model =
 
         Video ->
             viewRemoteData model .publicTransport Video.view
+
+        Traffic ->
+            viewRemoteData model .publicTransport Traffic.view
 
 
 viewBackground : Model -> Html Msg
