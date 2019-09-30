@@ -2,13 +2,17 @@ module Main exposing (main)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (fullName, getPageKey, getPageTitle, sortTransport)
+import Helpers exposing (fullName, getPageKey, getPageTitle)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Json.Decode as Decode
-import List exposing (..)
 import Model exposing (..)
+import Url exposing (Url)
+import Url.Parser as UrlParser
+import List
+import Task
+import Time
+
 import Page.Birthday as Birthday
 import Page.Calendar as Calendar
 import Page.Instagram as Instagram
@@ -18,13 +22,7 @@ import Page.Traffic as Traffic
 import Page.Transit as Transit
 import Page.Video as Video
 import Page.Weather as Weather
-import Services exposing (..)
-import Task
-import Time exposing (..)
-import Tuple exposing (..)
 import Updates exposing (update, urlParser)
-import Url exposing (Url)
-import Url.Parser as UrlParser exposing ((</>), Parser)
 import Views exposing (viewRemoteData)
 
 
@@ -51,12 +49,12 @@ main =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.batch
-        [ every 1000 EverySecond
-        , every (1000 * 60) EveryMinute
-        , every (1000 * 60 * 60) EveryHour
-        , every (1000 * 60 * 60 * 24) EveryDay
+        [ Time.every 1000 EverySecond
+        , Time.every (1000 * 60) EveryMinute
+        , Time.every (1000 * 60 * 60) EveryHour
+        , Time.every (1000 * 60 * 60 * 24) EveryDay
         ]
 
 
@@ -64,20 +62,19 @@ init : Flags -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         urlPage =
-            Maybe.withDefault Lunch <|
+            Maybe.withDefault Instagram <|
                 UrlParser.parse (urlParser NotAsked) url
 
         model =
             { key = key
             , apiKey = flags.apiKey
-            , here = Here (millisToPosix 0) Time.utc Mon
+            , here = Here (Time.millisToPosix 0) Time.utc Time.Mon
             , pages =
                 { active = urlPage
                 , countdown = defaultCountdown
                 , available =
-                    [ Lunch
-                    , Slack
-                    , Instagram
+                    [
+                     Instagram
                     , Calendar
                     , Transit
                     , Weather
@@ -135,7 +132,7 @@ viewPage model =
 
         Birthday person ->
             case model.birthdays of
-                Success birthdays ->
+                Success _ ->
                     Birthday.view person
 
                 _ ->
@@ -164,7 +161,7 @@ viewPage model =
 
 
 viewBackground : Model -> Html Msg
-viewBackground model =
+viewBackground _ =
     div [ class "background" ]
         [ div [ class "background__page" ] []
         , div [ class "background__divider" ] []

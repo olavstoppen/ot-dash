@@ -2,7 +2,7 @@ module Icons exposing (busIcon, chatIcon, likeIcon, metIcon, slackIcon, trainIco
 
 import Html exposing (..)
 import Svg exposing (Svg, g, path, polyline, svg)
-import Svg.Attributes exposing (class, d, fill, height, id, points, style, version, viewBox, width, x, y)
+import Svg.Attributes exposing (class, d, fill, height, id, points, version, viewBox, width, x, y)
 
 
 busIcon =

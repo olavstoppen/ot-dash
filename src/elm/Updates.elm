@@ -140,7 +140,7 @@ update message model =
                 Ok slackImgs ->
                     ( (setMedia <| setSlackImgs slackImgs) model, Cmd.none )
 
-                Err err ->
+                Err _ ->
                     ( model, Cmd.none )
 
         UpdateLunchImgs res ->
@@ -148,7 +148,7 @@ update message model =
                 Ok lunchImgs ->
                     ( (setMedia <| setLunchImgs lunchImgs) model, Cmd.none )
 
-                Err err ->
+                Err _ ->
                     ( model, Cmd.none )
 
         UpdateCalendar res ->

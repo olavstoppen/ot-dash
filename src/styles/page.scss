@@ -306,9 +306,11 @@
         .temperature {
           display: flex;
           margin-top: 1vmax;
+          width:100%;
+          justify-content: center;
 
           > *:first-child {
-            margin-right: 1vmax;
+            margin-right: 0.5vmax;
           }
         }
 
