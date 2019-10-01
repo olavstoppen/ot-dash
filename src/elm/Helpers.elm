@@ -6,7 +6,6 @@ import List.Extra as ListExtra
 import Model exposing (..)
 import Regex
 import String exposing (..)
-import Task
 import Time exposing (..)
 import Time.Extra exposing (..)
 

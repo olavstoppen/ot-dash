@@ -2,17 +2,12 @@ module Main exposing (main)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (fullName, getPageKey, getPageTitle)
+import Helpers exposing (formatTime, fullName, getPageKey, getPageTitle, getWeekDayName)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Model exposing (..)
-import Url exposing (Url)
-import Url.Parser as UrlParser
 import List
-import Task
-import Time
-
+import Model exposing (..)
 import Page.Birthday as Birthday
 import Page.Calendar as Calendar
 import Page.Instagram as Instagram
@@ -22,7 +17,11 @@ import Page.Traffic as Traffic
 import Page.Transit as Transit
 import Page.Video as Video
 import Page.Weather as Weather
+import Task
+import Time
 import Updates exposing (update, urlParser)
+import Url exposing (Url)
+import Url.Parser as UrlParser
 import Views exposing (viewRemoteData)
 
 
@@ -73,8 +72,7 @@ init flags url key =
                 { active = urlPage
                 , countdown = defaultCountdown
                 , available =
-                    [
-                     Instagram
+                    [ Instagram
                     , Calendar
                     , Transit
                     , Weather
@@ -161,11 +159,25 @@ viewPage model =
 
 
 viewBackground : Model -> Html Msg
-viewBackground _ =
+viewBackground { here } =
     div [ class "background" ]
         [ div [ class "background__page" ] []
-        , div [ class "background__divider" ] []
+        , div [ class "background__divider" ]
+            [ viewClock here
+            ]
         , div [ class "background__sidebar" ] []
+        ]
+
+
+viewClock : Here -> Html Msg
+viewClock { zone, time, day } =
+    div [ class "clock text--small" ]
+        [ text <|
+            String.concat
+                [ getWeekDayName day
+                , ", kl. "
+                , formatTime zone time
+                ]
         ]
 
 
