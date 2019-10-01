@@ -61,7 +61,7 @@ init : Flags -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         urlPage =
-            Maybe.withDefault Instagram <|
+            Maybe.withDefault Slack <|
                 UrlParser.parse (urlParser NotAsked) url
 
         model =
@@ -72,7 +72,8 @@ init flags url key =
                 { active = urlPage
                 , countdown = defaultCountdown
                 , available =
-                    [ Instagram
+                    [ Slack
+                    , Instagram
                     , Calendar
                     , Transit
                     , Weather
