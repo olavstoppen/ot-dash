@@ -172,7 +172,7 @@ viewBackground { here } =
 
 viewClock : Here -> Html Msg
 viewClock { zone, time, day } =
-    div [ class "clock text--small" ]
+    div [ class "clock" ]
         [ text <|
             String.concat
                 [ getWeekDayName day
