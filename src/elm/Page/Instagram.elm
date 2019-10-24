@@ -1,12 +1,11 @@
 module Page.Instagram exposing (view)
 
-import Helpers exposing (..)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Icons exposing (..)
+import Helpers exposing (formatDate, newLineOnFirstHash)
+import Html exposing (Html, div, h1, h3, img, p, text)
+import Html.Attributes exposing (class, src)
+import Icons exposing (chatIcon, likeIcon)
 import List.Extra as ListExtra
-import Model exposing (..)
-import Time exposing (Zone)
+import Model exposing (Here, InstagramPost, Model, RemoteData(..))
 import Time.Extra exposing (Interval(..), diff)
 
 
@@ -34,7 +33,7 @@ getInstagramPost digit here instagramPosts =
         List.head highlighted
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view { media, here, instagram } =
     case instagram of
         Success instagramPosts ->
@@ -44,14 +43,14 @@ view { media, here, instagram } =
             in
             case instagramPost_ of
                 Nothing ->
-                    div [ class "page page__instagram" ]
+                    div [ class "page instagram-page" ]
                         [ title
                         , annotation
                         , div [ class "content" ] [ text "No new posts on Instagram" ]
                         ]
 
                 Just instagramPost ->
-                    div [ class "page page__instagram" ]
+                    div [ class "page instagram-page" ]
                         [ title
                         , annotation
                         , footer here instagramPost
@@ -63,7 +62,7 @@ view { media, here, instagram } =
             div [] [ text "loading" ]
 
 
-title : Html Msg
+title : Html msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -72,7 +71,7 @@ title =
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ img [ class "icon--med", src "/icons/instagram.png" ] []
@@ -80,7 +79,7 @@ annotation =
         ]
 
 
-body : InstagramPost -> Html Msg
+body : InstagramPost -> Html msg
 body instagramPost =
     div [ class "content" ]
         [ div [ class "animated fadeInDown faster" ] <|
@@ -90,29 +89,29 @@ body instagramPost =
         ]
 
 
-paragraph : String -> Html Msg
+paragraph : String -> Html msg
 paragraph s =
     p [] [ text s ]
 
 
-footer : Here -> InstagramPost -> Html Msg
+footer : Here -> InstagramPost -> Html msg
 footer { zone } instagramPost =
     div [ class "footer animated fadeIn faster" ]
-        [ div [ class "stats" ]
-            [ div [ class "stat" ]
+        [ div [ class "instagram-stats" ]
+            [ div [ class "instagram-stat" ]
                 [ likeIcon
                 , text <| String.fromInt instagramPost.likes
                 ]
-            , div [ class "stat" ]
+            , div [ class "instagram-stat" ]
                 [ chatIcon
                 , text <| String.fromInt instagramPost.comments
                 ]
-            , div [ class "stat text--medium" ] [ text <| formatDate zone instagramPost.time ]
+            , div [ class "instagram-stat text--medium" ] [ text <| formatDate zone instagramPost.time ]
             ]
         ]
 
 
-square : InstagramPost -> Html Msg
+square : InstagramPost -> Html msg
 square instagramPost =
     div [ class "square " ]
         [ div [ class "animated slideInLeft faster" ]

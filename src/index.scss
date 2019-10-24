@@ -1,8 +1,14 @@
-@import '~modern-normalize/modern-normalize.css';
-@import '~animate.css/animate.css';
+@import "~modern-normalize/modern-normalize.css";
+@import "~animate.css/animate.css";
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400");
 @import "styles/colors";
+
+// Pages
 @import "styles/page";
+@import "styles/page/birthday";
+@import "styles/page/calendar";
+@import "styles/page/instagram";
+@import "styles/page/lunch";
 
 body {
   background: $white;
@@ -23,7 +29,6 @@ main {
 
 iframe {
   border: 0 none;
-
 }
 
 header {
@@ -77,12 +82,11 @@ nav.sidebar {
     justify-content: center;
     text-decoration: none;
     transform: rotate(90deg);
-    transition: all .3s;
+    transition: all 0.3s;
 
     .link__title {
-      margin-bottom: .5vmax;
+      margin-bottom: 0.5vmax;
       color: $grey-light;
-
     }
 
     .link__footer {
@@ -92,13 +96,13 @@ nav.sidebar {
       position: relative;
 
       .link__footer__bit {
-        height: .1vmax;
+        height: 0.1vmax;
         width: 1.5vmax;
         max-width: 50%;
         background: $black-light;
 
         &:not(:first-child) {
-          margin-left: .5vmax;
+          margin-left: 0.5vmax;
         }
       }
     }
@@ -124,7 +128,6 @@ nav.sidebar {
 
       .link__footer__bit {
         background: $blue-light;
-
       }
     }
   }
@@ -160,7 +163,7 @@ nav.sidebar {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: .1vmax solid $black;
+  border: 0.1vmax solid $black;
 
   &.active {
     background: $black;
@@ -188,11 +191,11 @@ nav.sidebar {
     font-size: calc(16px + 5vmax);
   }
   @at-root #{&}--medium {
-    font-size: calc(16px + .8vmax);
+    font-size: calc(16px + 0.8vmax);
   }
   @at-root #{&}--small {
-    line-height: calc(1.1em + .3vmax);
-    font-size: calc(16px + .3vmax);
+    line-height: calc(1.1em + 0.3vmax);
+    font-size: calc(16px + 0.3vmax);
   }
 }
 
@@ -211,26 +214,26 @@ nav.sidebar {
 }
 
 .slack-icon {
-  margin-right: .8vmax !important;
+  margin-right: 0.8vmax !important;
 
   .st0 {
-    fill: #E01E5A;
+    fill: #e01e5a;
   }
 
   .st1 {
-    fill: #36C5F0;
+    fill: #36c5f0;
   }
 
   .st2 {
-    fill: #2EB67D;
+    fill: #2eb67d;
   }
 
   .st3 {
-    fill: #ECB22E;
+    fill: #ecb22e;
   }
 }
 
 .clock {
   color: $grey-light;
-  margin: .5vmax 1vmax;
+  margin: 0.5vmax 1vmax;
 }

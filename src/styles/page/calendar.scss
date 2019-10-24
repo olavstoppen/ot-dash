@@ -1,0 +1,32 @@
+.calendar-page {
+  .calendar {
+    display: flex;
+    flex-direction: column;
+
+    .calendar-event {
+      display: flex;
+      align-items: center;
+      padding-bottom: 1vmax;
+
+      border-bottom: 1px solid $grey-light;
+
+      &:not(:first-child) {
+        margin-top: 1vmax;
+      }
+
+      .event-description {
+        margin-left: 1.2vmax;
+
+        p {
+          display: block;
+          margin: 0;
+        }
+
+        .event-dates {
+          color: $black;
+          font-weight: 100;
+        }
+      }
+    }
+  }
+}

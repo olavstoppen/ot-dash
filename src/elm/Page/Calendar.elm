@@ -1,15 +1,12 @@
 module Page.Calendar exposing (view)
 
-import Helpers exposing (..)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Icons exposing (..)
-import Model exposing (..)
-import Time exposing (..)
+import Helpers exposing (formatDate, formatTime, formatWeekDayName, getStringAt)
+import Html exposing (Html, div, h1, h3, img, p, text)
+import Html.Attributes exposing (class, classList, src)
+import Model exposing (CalendarEvent, Here, Href, Model, RemoteData(..))
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view model =
     case model.calendar of
         Success calendarEvents ->
@@ -24,7 +21,7 @@ view model =
                         _ ->
                             ""
             in
-            div [ class "page page__calendar" ]
+            div [ class "page calendar-page" ]
                 [ title
                 , annotation
                 , body calendarEvents model.here
@@ -32,7 +29,7 @@ view model =
                 ]
 
         _ ->
-            div [ class "page page__calendar" ]
+            div [ class "page calendar-page" ]
                 [ div [ class "content" ]
                     [ div [ class "animated fadeInDown faster" ]
                         [ div [] [ text "Where has the calendar gone? 😱" ]
@@ -41,7 +38,7 @@ view model =
                 ]
 
 
-title : Html Msg
+title : Html msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -50,7 +47,7 @@ title =
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ h3 [] [ text "📅" ]
@@ -58,7 +55,7 @@ annotation =
         ]
 
 
-body : List CalendarEvent -> Here -> Html Msg
+body : List CalendarEvent -> Here -> Html msg
 body calendarEvents here =
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -67,8 +64,8 @@ body calendarEvents here =
         ]
 
 
-calendarEvent : Here -> CalendarEvent -> Html Msg
-calendarEvent { zone, time } { name, from, to, category, color } =
+calendarEvent : Here -> CalendarEvent -> Html msg
+calendarEvent { zone, time } { name, from, to } =
     let
         dates =
             String.concat
@@ -82,30 +79,22 @@ calendarEvent { zone, time } { name, from, to, category, color } =
         isActive =
             formatDate zone time == formatDate zone from
     in
-    div [ class "calendarEvent" ]
+    div [ class "calendar-event" ]
         [ div
             [ classList
-                [ ( "day ellipse", True )
+                [ ( "ellipse", True )
                 , ( "active", isActive )
                 ]
-
-            -- , style "border-color" color
-            -- , style "background-color"
-            --     (if isActive then
-            --         color
-            --      else
-            --         ""
-            --     )
             ]
             [ text <| String.slice 0 2 <| formatWeekDayName zone from ]
-        , div [ class "event" ]
+        , div [ class "event-description" ]
             [ p [] [ text name ]
-            , p [ class "dates" ] [ text dates ]
+            , p [ class "event-dates" ] [ text dates ]
             ]
         ]
 
 
-square : Href -> Html Msg
+square : Href -> Html msg
 square imageUrl =
     div [ class "square" ]
         [ div [ class "animated slideInLeft faster" ]

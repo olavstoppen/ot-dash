@@ -1,0 +1,24 @@
+.instagram-page {
+  .instagram-stats {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .instagram-stat {
+      margin-right: 1vmax;
+      margin-bottom: 1vmax;
+      display: flex;
+      align-items: center;
+
+      > * {
+        margin-right: 0.3vmax;
+      }
+
+      &:last-child {
+        margin-right: 0;
+        margin-left: auto;
+        justify-self: flex-end;
+      }
+    }
+  }
+}

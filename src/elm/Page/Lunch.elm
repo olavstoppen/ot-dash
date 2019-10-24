@@ -1,19 +1,17 @@
 module Page.Lunch exposing (view)
 
-import Helpers exposing (..)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Icons exposing (..)
-import Model exposing (..)
-import Time exposing (..)
+import Helpers exposing (getStringAt)
+import Html exposing (Html, div, h1, h3, img, strong, text)
+import Html.Attributes exposing (class, classList, src)
+import Model exposing (Here, Href, LunchData, Model, RemoteData(..))
+import Time exposing (Weekday)
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view model =
     case model.lunchMenu of
         Success lunchMenu ->
-            div [ class "page page__lunch" ]
+            div [ class "page lunch-page" ]
                 [ title
                 , annotation
                 , body lunchMenu model.here
@@ -21,7 +19,7 @@ view model =
                 ]
 
         _ ->
-            div [ class "page page__lunch" ]
+            div [ class "page lunch-page" ]
                 [ div [ class "content" ]
                     [ div [ class "animated fadeInDown faster today" ]
                         [ div [] [ text "Where has the lunch gone? 😱" ]
@@ -30,7 +28,7 @@ view model =
                 ]
 
 
-title : Html Msg
+title : Html msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -39,7 +37,7 @@ title =
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ h3 [] [ text "🍽️" ]
@@ -47,7 +45,7 @@ annotation =
         ]
 
 
-body : List LunchData -> Here -> Html Msg
+body : List LunchData -> Here -> Html msg
 body lunchMenu { day } =
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -56,44 +54,43 @@ body lunchMenu { day } =
         ]
 
 
-lunchDay : Weekday -> LunchData -> Html Msg
+lunchDay : Weekday -> LunchData -> Html msg
 lunchDay todayWeekDay { dayName, maincourse, soup, day, maincourseEmojis, soupEmojis } =
-    div [ class "lunchDay" ]
+    div [ class "lunch-day" ]
         [ div
             [ classList
-                [ ( "day ellipse", True )
+                [ ( "ellipse", True )
                 , ( "active", todayWeekDay == day )
                 ]
             ]
             [ text <| String.slice 0 2 dayName ]
-        , div [ class "courses" ]
-            [ div [ class "course" ]
-                [ strong [ class "label" ] [ text "Varmrett: " ]
-                , div [ class "description" ]
-                    [ div [ class "dish" ] [ text maincourse ]
-                    , div [ class "emojis" ] <| List.map emoji maincourseEmojis
-                    ]
-                ]
-            , div [ class "course" ]
-                [ strong [ class "label" ] [ text "Suppe: " ]
-                , div [ class "description" ]
-                    [ div [ class "dish" ] [ text soup ]
-                    , div [ class "emojis" ] <| List.map emoji soupEmojis
-                    ]
-                ]
+        , div [ class "lunch-courses" ]
+            [ course "Varmrett: " maincourse maincourseEmojis
+            , course "Suppe: " soup soupEmojis
             ]
         ]
 
 
-square : Model -> Html Msg
+square : Model -> Html msg
 square { media } =
     div [ class "square" ]
         [ div [ class "animated slideInLeft faster" ]
-            [ img [ class "", src <| getStringAt media.digit media.lunchImgs ] []
+            [ img [ src <| getStringAt media.digit media.lunchImgs ] []
             ]
         ]
 
 
-emoji : Href -> Html Msg
+course : String -> String -> List Href -> Html msg
+course label name emojis =
+    div [ class "lunch-course" ]
+        [ strong [ class "course-label" ] [ text label ]
+        , div [ class "course-dish" ]
+            [ div [] [ text name ]
+            , div [] <| List.map emoji emojis
+            ]
+        ]
+
+
+emoji : Href -> Html msg
 emoji emojiUrl =
-    img [ class "image--small emoji", src emojiUrl ] []
+    img [ class "image--small dish-emoji", src emojiUrl ] []
