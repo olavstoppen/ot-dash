@@ -1,28 +1,16 @@
-port module Updates exposing (update, urlParser)
+module Updates exposing (update, urlParser)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
 import Helpers exposing (fromResult, getPageKey, sortTransport)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import Http exposing (Error(..))
-import Json.Decode as Decode
-import List exposing (..)
+import List
 import List.Extra as ListExtra
-import Model exposing (..)
-import Page.Birthday as Birthday
-import Page.Instagram as Instagram
-import Page.Lunch as Lunch
-import Page.Slack as Slack
-import Page.Transit as Transit
-import Page.Weather as Weather
+import Model exposing (Birthdays, Here, Href, Media, Model, Msg(..), Page(..), Pages, RemoteData(..), defaultCountdown)
 import Random
-import Services exposing (..)
-import Task
-import Time exposing (..)
-import Tuple exposing (..)
-import Url exposing (Url)
+import Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLunchImgs, fetchLunchMenu, fetchPublicTransport, fetchSlackEvents, fetchSlackImgs, fetchSlackInfo, fetchWeather)
+import Time exposing (Posix, toWeekday)
+import Url
 import Url.Parser as UrlParser exposing ((</>), Parser)
 
 
@@ -126,8 +114,8 @@ update message model =
                 , fetchLunchMenu UpdateLunchMenu model
                 , fetchBirthdays UpdateBirthdays model
                 , fetchCalendar UpdateCalendar model
-                , fetchSlackImgs UpdateSlackImgs model
-                , fetchLunchImgs UpdateLunchImgs model
+                , fetchSlackImgs UpdateSlackImgs
+                , fetchLunchImgs UpdateLunchImgs
                 , Random.generate UpdateMediaDigit oneToThirty
                 ]
             )
@@ -182,7 +170,7 @@ update message model =
         UpdatePublicTransport res ->
             case res of
                 Ok publicTransports ->
-                    ( { model | publicTransport = Success <| sortWith sortTransport <| List.concat publicTransports }, Cmd.none )
+                    ( { model | publicTransport = Success <| List.sortWith sortTransport <| List.concat publicTransports }, Cmd.none )
 
                 Err err ->
                     ( { model | publicTransport = Failure err }, Cmd.none )
@@ -236,12 +224,7 @@ birthdayUrlName birthdays segment =
                 _ ->
                     Nothing
     in
-    case person of
-        Just person_ ->
-            Just (Birthday person_)
-
-        Nothing ->
-            Nothing
+    Maybe.map Birthday person
 
 
 

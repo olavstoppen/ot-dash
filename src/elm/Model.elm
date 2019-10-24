@@ -1,15 +1,15 @@
 module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo, defaultCountdown)
 
 import Browser exposing (UrlRequest(..))
-import Browser.Navigation as Nav exposing (Key)
+import Browser.Navigation exposing (Key)
 import Http exposing (Error(..))
 import Time exposing (..)
 import Url exposing (Url)
-import Url.Parser as UrlParser exposing ((</>), Parser)
 
 
 type alias Flags =
     { apiKey : String
+    , pageCountdownMillis : Int
     }
 
 
@@ -247,4 +247,4 @@ type Msg
 
 defaultCountdown : Int
 defaultCountdown =
-    60
+    6000000

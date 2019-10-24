@@ -7,8 +7,8 @@ import Icons exposing (..)
 import Model exposing (..)
 
 
-view : Model -> Html Msg
-view { slackEvents, slackInfo, here, media } =
+view : Model -> Html msg
+view { slackEvents, slackInfo, media } =
     div [ class "page page__slack" ]
         [ title
         , annotation
@@ -18,7 +18,7 @@ view { slackEvents, slackInfo, here, media } =
         ]
 
 
-title : Html Msg
+title : Html msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -27,7 +27,7 @@ title =
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ slackIcon
@@ -35,7 +35,7 @@ annotation =
         ]
 
 
-body : RemoteData (List SlackEvent) -> Html Msg
+body : RemoteData (List SlackEvent) -> Html msg
 body slackEvents =
     div [ class "content" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -49,11 +49,11 @@ body slackEvents =
         ]
 
 
-event : SlackEvent -> Html Msg
+event : SlackEvent -> Html msg
 event slackEvent =
     div [ class "event" ] <|
         case slackEvent of
-            Reaction person time emoji ->
+            Reaction person _ emoji ->
                 case emoji of
                     Nothing ->
                         [ div [] [ viewImageRound person.imageUrl ]
@@ -68,7 +68,7 @@ event slackEvent =
                         , viewImage emojiUrl
                         ]
 
-            Message person time ->
+            Message person _ ->
                 [ div [] [ viewImageRound person.imageUrl ]
                 , div [ class "who text--medium" ] [ text person.firstName ]
                 , div [ class "text--medium" ] [ text "skrev noe nytt og spennende " ]
@@ -78,7 +78,7 @@ event slackEvent =
                 [ text "Hmm, hva har jeg gjort på Slack....? \u{1F914}" ]
 
 
-square : Href -> Html Msg
+square : Href -> Html msg
 square imageUrl =
     div [ class "square " ]
         [ div [ class "animated slideInLeft faster" ]
@@ -87,7 +87,7 @@ square imageUrl =
         ]
 
 
-footer : RemoteData SlackInfo -> Html Msg
+footer : RemoteData SlackInfo -> Html msg
 footer slackInfo =
     div [ class "footer animated fadeIn faster" ]
         [ div [ class "topEmojis" ] <|
@@ -101,17 +101,17 @@ footer slackInfo =
         ]
 
 
-viewImageRound : Href -> Html Msg
+viewImageRound : Href -> Html msg
 viewImageRound imageUrl =
     img [ class "image image--round", src imageUrl ] []
 
 
-viewImage : Href -> Html Msg
+viewImage : Href -> Html msg
 viewImage imageUrl =
     img [ class "image--small", src imageUrl ] []
 
 
-viewTopEmojis : List Emoji -> List (Html Msg)
+viewTopEmojis : List Emoji -> List (Html msg)
 viewTopEmojis emojis =
     List.concat
         [ [ h4 [] [ text "Topp emojis" ] ]

@@ -8,7 +8,7 @@ import String exposing (..)
 
 
 view : Model -> Html Msg
-view model =
+view _ =
     div [ class "page page__traffic" ]
         [ annotation
         , body

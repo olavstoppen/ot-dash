@@ -8,7 +8,7 @@ import Icons exposing (..)
 import Model exposing (..)
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view model =
     case model.publicTransport of
         Success publicTransport ->
@@ -29,7 +29,7 @@ view model =
                 ]
 
 
-title : Html Msg
+title : Html msg
 title =
     div [ class "title" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -38,7 +38,7 @@ title =
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ busIcon
@@ -46,7 +46,7 @@ annotation =
         ]
 
 
-body : List Transport -> Model -> Html Msg
+body : List Transport -> Model -> Html msg
 body publicTransport model =
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
@@ -57,7 +57,7 @@ body publicTransport model =
         ]
 
 
-departure : Model -> Transport -> Html Msg
+departure : Model -> Transport -> Html msg
 departure { here } transport =
     div [ class "departure" ] <|
         case transport of
@@ -77,8 +77,8 @@ departure { here } transport =
                 ]
 
 
-square : Model -> Html Msg
-square model =
+square : Model -> Html msg
+square _ =
     div [ class "square " ]
         [ div [ class "animated slideInLeft faster delay-2s" ]
             [ iframe [ class "transit__map ", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]

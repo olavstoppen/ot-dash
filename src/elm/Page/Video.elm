@@ -7,15 +7,15 @@ import Model exposing (..)
 import String exposing (..)
 
 
-view : Model -> Html Msg
-view model =
+view : Model -> Html msg
+view _ =
     div [ class "page page__video" ]
         [ annotation
         , body
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ img [ class "icon--med", src "/icons/sa-icon.png" ] []
@@ -23,7 +23,7 @@ annotation =
         ]
 
 
-body : Html Msg
+body : Html msg
 body =
     div [ class "content--big" ]
         [ div [ class "animated fadeInDown faster video" ]
