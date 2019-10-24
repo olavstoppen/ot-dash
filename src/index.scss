@@ -9,6 +9,7 @@
 @import "styles/page/calendar";
 @import "styles/page/instagram";
 @import "styles/page/lunch";
+@import "styles/page/slack";
 
 body {
   background: $white;
@@ -201,6 +202,10 @@ nav.sidebar {
 
 .image {
   height: 3vmax;
+  min-height: 1.5vmax;
+  min-width: 1.5vmax;
+  background: $grey-light;
+
   @at-root #{&}--round {
     height: 4.5vmax;
     border-radius: 50%;

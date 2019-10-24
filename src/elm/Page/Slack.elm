@@ -9,7 +9,7 @@ import Model exposing (..)
 
 view : Model -> Html msg
 view { slackEvents, slackInfo, media } =
-    div [ class "page page__slack" ]
+    div [ class "page slack-page" ]
         [ title
         , annotation
         , body slackEvents
@@ -41,7 +41,7 @@ body slackEvents =
         [ div [ class "animated fadeInDown faster" ]
             [ case slackEvents of
                 Success slackEvents_ ->
-                    div [ class "events " ] <| List.map event slackEvents_
+                    div [ class "slack-events " ] <| List.map event slackEvents_
 
                 _ ->
                     div [] [ text "Ingen skravling 😞" ]
@@ -51,26 +51,26 @@ body slackEvents =
 
 event : SlackEvent -> Html msg
 event slackEvent =
-    div [ class "event" ] <|
+    div [ class "slack-event" ] <|
         case slackEvent of
             Reaction person _ emoji ->
                 case emoji of
                     Nothing ->
                         [ div [] [ viewImageRound person.imageUrl ]
-                        , div [ class "who text--medium" ] [ text person.firstName ]
+                        , div [ class "event-who text--medium" ] [ text person.firstName ]
                         , div [ class "text--medium" ] [ text "reagerte på noe spennende" ]
                         ]
 
                     Just emojiUrl ->
                         [ div [] [ viewImageRound person.imageUrl ]
-                        , div [ class "who text--medium" ] [ text person.firstName ]
+                        , div [ class "event-who text--medium" ] [ text person.firstName ]
                         , div [ class "text--medium" ] [ text "reagerte med " ]
                         , viewImage emojiUrl
                         ]
 
             Message person _ ->
                 [ div [] [ viewImageRound person.imageUrl ]
-                , div [ class "who text--medium" ] [ text person.firstName ]
+                , div [ class "event-who text--medium" ] [ text person.firstName ]
                 , div [ class "text--medium" ] [ text "skrev noe nytt og spennende " ]
                 ]
 
@@ -90,7 +90,7 @@ square imageUrl =
 footer : RemoteData SlackInfo -> Html msg
 footer slackInfo =
     div [ class "footer animated fadeIn faster" ]
-        [ div [ class "topEmojis" ] <|
+        [ div [ class "slack-reactions" ] <|
             case slackInfo of
                 Success slackInfo_ ->
                     viewTopEmojis slackInfo_.topEmojis
