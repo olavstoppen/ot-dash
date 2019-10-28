@@ -10,7 +10,7 @@ import Time exposing (..)
 
 pingubotUrl : String -> String
 pingubotUrl path =
-    "https://pingubot-server.herokuapp.com/" ++ path
+    "https://ot-pingu-server.azurewebsites.net/" ++ path
 
 
 pingubotHeaders : String -> List Http.Header
@@ -18,21 +18,18 @@ pingubotHeaders apiKey =
     [ Http.header "x-api-key" apiKey ]
 
 
+limit : String
+limit =
+    "30"
+
+
 tenorUrl : String
 tenorUrl =
-    let
-        limit =
-            "30"
-    in
     "https://api.tenor.com/v1/random?key=B81HIUQSPE5Q&limit=" ++ limit ++ "&contentfilter=high&q=typing"
 
 
 unslpashUrl : String
 unslpashUrl =
-    let
-        limit =
-            "30"
-    in
     "https://api.unsplash.com/photos/random?collections=202618,575196&count=" ++ limit
 
 
@@ -79,6 +76,11 @@ toPosix number =
     millisToPosix <| number * 1000
 
 
+decodeEmoji : Decoder Emoji
+decodeEmoji =
+    maybe string
+
+
 
 -- Slack
 
@@ -104,7 +106,7 @@ decodeSlackEvent message =
             Decode.succeed Reaction
                 |> required "user" decodePerson
                 |> required "posix" decodeTime
-                |> required "emojiUrl" string
+                |> optional "emojiUrl" decodeEmoji Nothing
 
         "message" ->
             Decode.succeed Message
@@ -129,7 +131,7 @@ fetchSlackInfo callback { apiKey } =
 
 decodeSlackInfo : Decoder SlackInfo
 decodeSlackInfo =
-    map SlackInfo (list string)
+    map SlackInfo (list decodeEmoji)
 
 
 
@@ -328,16 +330,10 @@ decodeLunch =
     Decode.succeed LunchData
         |> required "name" decodeDay
         |> required "name" string
-        |> required "dishes" decodeConcatList
-        |> required "soups" decodeConcatList
+        |> required "dishes" string
+        |> required "soups" string
         |> required "dishEmojis" (list string)
         |> required "soupEmojis" (list string)
-
-
-decodeConcatList : Decoder String
-decodeConcatList =
-    list string
-        |> andThen concat
 
 
 concat : List String -> Decoder String

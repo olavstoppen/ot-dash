@@ -1,30 +1,28 @@
-module Main exposing (background, getPage, init, link, main, sidebar, subscriptions, view)
+module Main exposing (main)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (fullName, getPageKey, getPageTitle, sortTransport)
+import Helpers exposing (formatTime, fullName, getPageKey, getPageTitle, getWeekDayName)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Http exposing (Error(..))
-import Json.Decode as Decode
-import List exposing (..)
+import List
 import Model exposing (..)
 import Page.Birthday as Birthday
 import Page.Calendar as Calendar
-import Page.Error as Error
 import Page.Instagram as Instagram
 import Page.Lunch as Lunch
 import Page.Slack as Slack
+import Page.Traffic as Traffic
 import Page.Transit as Transit
+import Page.Video as Video
 import Page.Weather as Weather
-import Services exposing (..)
 import Task
-import Time exposing (..)
-import Tuple exposing (..)
+import Time
 import Updates exposing (update, urlParser)
 import Url exposing (Url)
-import Url.Parser as UrlParser exposing ((</>), Parser)
+import Url.Parser as UrlParser
+import Views exposing (viewRemoteData)
 
 
 
@@ -50,12 +48,12 @@ main =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.batch
-        [ every 1000 EverySecond
-        , every (1000 * 60) EveryMinute
-        , every (1000 * 60 * 60) EveryHour
-        , every (1000 * 60 * 60 * 24) EveryDay
+        [ Time.every 1000 EverySecond
+        , Time.every (1000 * 60) EveryMinute
+        , Time.every (1000 * 60 * 60) EveryHour
+        , Time.every (1000 * 60 * 60 * 24) EveryDay
         ]
 
 
@@ -63,19 +61,18 @@ init : Flags -> Url -> Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         urlPage =
-            Maybe.withDefault Lunch <|
+            Maybe.withDefault Slack <|
                 UrlParser.parse (urlParser NotAsked) url
 
         model =
             { key = key
             , apiKey = flags.apiKey
-            , here = Here (millisToPosix 0) Time.utc Mon
+            , here = Here (Time.millisToPosix 0) Time.utc Time.Mon
             , pages =
                 { active = urlPage
-                , countdown = 30
+                , countdown = defaultCountdown
                 , available =
-                    [ Lunch
-                    , Slack
+                    [ Slack
                     , Instagram
                     , Calendar
                     , Transit
@@ -115,63 +112,83 @@ init flags url key =
 view : Model -> Html Msg
 view model =
     main_ []
-        [ background model
+        [ viewBackground model
         , div [ class "layout" ]
-            [ getPage model
-            , sidebar model
+            [ viewPage model
+            , viewSidebar model
             ]
         ]
 
 
-getPage : Model -> Html Msg
-getPage model =
+viewPage : Model -> Html Msg
+viewPage model =
     case model.pages.active of
         Transit ->
-            Transit.view model
+            viewRemoteData model .publicTransport Transit.view
 
         Slack ->
-            Slack.view model
+            viewRemoteData model .slackEvents Slack.view
 
         Birthday person ->
             case model.birthdays of
-                Success birthdays ->
+                Success _ ->
                     Birthday.view person
 
-                Failure err ->
-                    Error.view err
-
                 _ ->
-                    div [] [ text "loading" ]
+                    div [ style "padding" "5vmax", style "display" "flex" ]
+                        [ div [] [ text "⌛" ]
+                        , div [] [ text "Laster..." ]
+                        ]
 
         Weather ->
-            Weather.view model
+            viewRemoteData model .weatherInfo Weather.view
 
         Instagram ->
-            Instagram.view model
+            viewRemoteData model .instagram Instagram.view
 
         Lunch ->
-            Lunch.view model
+            viewRemoteData model .lunchMenu Lunch.view
 
         Calendar ->
-            Calendar.view model
+            viewRemoteData model .calendar Calendar.view
+
+        Video ->
+            viewRemoteData model .publicTransport Video.view
+
+        Traffic ->
+            viewRemoteData model .publicTransport Traffic.view
 
 
-background : Model -> Html Msg
-background model =
+viewBackground : Model -> Html Msg
+viewBackground { here } =
     div [ class "background" ]
         [ div [ class "background__page" ] []
-        , div [ class "background__divider" ] []
+        , div [ class "background__divider" ]
+            [ viewClock here
+            ]
         , div [ class "background__sidebar" ] []
         ]
 
 
-sidebar : Model -> Html Msg
-sidebar { pages } =
-    nav [ class "sidebar" ] <| List.map (link pages.active) pages.available
+viewClock : Here -> Html Msg
+viewClock { zone, time, day } =
+    div [ class "clock" ]
+        [ text <|
+            String.concat
+                [ getWeekDayName day
+                , ", kl. "
+                , formatTime zone time
+                ]
+        ]
 
 
-link : Page -> Page -> Html Msg
-link activePage page =
+viewSidebar : Model -> Html Msg
+viewSidebar { pages } =
+    nav [ class "sidebar" ] <| List.map (viewLink pages.active) pages.available
+
+
+viewLink : Page -> Page -> Html Msg
+viewLink activePage page =
     let
         url =
             "/" ++ getPageKey page
@@ -195,15 +212,15 @@ link activePage page =
     if isActive then
         a [ href url, class "active" ]
             [ div [ class "link__title " ] [ text title ]
-            , linkFooter
+            , viewLinkFooter
             ]
 
     else
         a [ href url ] [ div [ class "link__title " ] [ text title ] ]
 
 
-linkFooter : Html Msg
-linkFooter =
+viewLinkFooter : Html Msg
+viewLinkFooter =
     div [ class "link__footer" ]
         [ div [ class "animated slideInLeft link__footer__bit" ] []
         ]

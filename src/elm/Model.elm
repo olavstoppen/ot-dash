@@ -1,4 +1,4 @@
-module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo, defaultCountdown)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
@@ -70,6 +70,8 @@ type Page
     | Instagram
     | Lunch
     | Calendar
+    | Video
+    | Traffic
 
 
 type alias Href =
@@ -77,7 +79,7 @@ type alias Href =
 
 
 type alias Emoji =
-    Href
+    Maybe Href
 
 
 type alias Birthdays =
@@ -241,3 +243,8 @@ type Msg
     | UpdateSlackImgs (Result Http.Error (List Href))
     | UpdateLunchImgs (Result Http.Error (List Href))
     | UpdateMediaDigit Int
+
+
+defaultCountdown : Int
+defaultCountdown =
+    60

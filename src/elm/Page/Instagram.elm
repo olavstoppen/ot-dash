@@ -4,16 +4,45 @@ import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Icons exposing (..)
+import List.Extra as ListExtra
 import Model exposing (..)
-import Page.Error as Error
 import Time exposing (Zone)
+import Time.Extra exposing (Interval(..), diff)
+
+
+dayAge : Int
+dayAge =
+    3
+
+
+getInstagramPost : Int -> Here -> List InstagramPost -> Maybe InstagramPost
+getInstagramPost digit here instagramPosts =
+    let
+        shouldHighlight : InstagramPost -> Bool
+        shouldHighlight instagramPost =
+            diff Day here.zone instagramPost.time here.time < dayAge
+
+        highlighted =
+            instagramPosts
+                |> List.filter shouldHighlight
+    in
+    if List.isEmpty highlighted then
+        instagramPosts
+            |> ListExtra.getAt (round <| toFloat digit / 10)
+
+    else
+        List.head highlighted
 
 
 view : Model -> Html Msg
-view model =
-    case model.instagram of
+view { media, here, instagram } =
+    case instagram of
         Success instagramPosts ->
-            case List.head instagramPosts of
+            let
+                instagramPost_ =
+                    getInstagramPost media.digit here instagramPosts
+            in
+            case instagramPost_ of
                 Nothing ->
                     div [ class "page page__instagram" ]
                         [ title
@@ -25,13 +54,10 @@ view model =
                     div [ class "page page__instagram" ]
                         [ title
                         , annotation
-                        , footer model.here instagramPost
+                        , footer here instagramPost
                         , body instagramPost
                         , square instagramPost
                         ]
-
-        Failure err ->
-            Error.view err
 
         _ ->
             div [] [ text "loading" ]
@@ -81,7 +107,7 @@ footer { zone } instagramPost =
                 [ chatIcon
                 , text <| String.fromInt instagramPost.comments
                 ]
-            , div [ class "stat" ] [ text <| formatDate zone instagramPost.time ]
+            , div [ class "stat text--medium" ] [ text <| formatDate zone instagramPost.time ]
             ]
         ]
 

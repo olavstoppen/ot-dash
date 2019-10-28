@@ -54,14 +54,22 @@ event slackEvent =
     div [ class "event" ] <|
         case slackEvent of
             Reaction person time emoji ->
-                [ div [] [ imageRound person.imageUrl ]
-                , div [ class "who text--medium" ] [ text person.firstName ]
-                , div [ class "text--medium" ] [ text "reagerte med " ]
-                , image emoji
-                ]
+                case emoji of
+                    Nothing ->
+                        [ div [] [ viewImageRound person.imageUrl ]
+                        , div [ class "who text--medium" ] [ text person.firstName ]
+                        , div [ class "text--medium" ] [ text "reagerte på noe spennende" ]
+                        ]
+
+                    Just emojiUrl ->
+                        [ div [] [ viewImageRound person.imageUrl ]
+                        , div [ class "who text--medium" ] [ text person.firstName ]
+                        , div [ class "text--medium" ] [ text "reagerte med " ]
+                        , viewImage emojiUrl
+                        ]
 
             Message person time ->
-                [ div [] [ imageRound person.imageUrl ]
+                [ div [] [ viewImageRound person.imageUrl ]
                 , div [ class "who text--medium" ] [ text person.firstName ]
                 , div [ class "text--medium" ] [ text "skrev noe nytt og spennende " ]
                 ]
@@ -85,7 +93,7 @@ footer slackInfo =
         [ div [ class "topEmojis" ] <|
             case slackInfo of
                 Success slackInfo_ ->
-                    topEmojis slackInfo_.topEmojis
+                    viewTopEmojis slackInfo_.topEmojis
 
                 _ ->
                     [ h4 [] [ text "Ingen reagerer 😲" ]
@@ -93,19 +101,22 @@ footer slackInfo =
         ]
 
 
-imageRound : String -> Html Msg
-imageRound imageUrl =
+viewImageRound : Href -> Html Msg
+viewImageRound imageUrl =
     img [ class "image image--round", src imageUrl ] []
 
 
-image : String -> Html Msg
-image emoji =
-    img [ class "image--small", src emoji ] []
+viewImage : Href -> Html Msg
+viewImage imageUrl =
+    img [ class "image--small", src imageUrl ] []
 
 
-topEmojis : List String -> List (Html Msg)
-topEmojis emojis =
+viewTopEmojis : List Emoji -> List (Html Msg)
+viewTopEmojis emojis =
     List.concat
         [ [ h4 [] [ text "Topp emojis" ] ]
-        , List.map image emojis
+        , emojis
+            |> List.map (Maybe.withDefault "")
+            |> List.filter (String.isEmpty >> not)
+            |> List.map viewImage
         ]

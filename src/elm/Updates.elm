@@ -2,7 +2,7 @@ port module Updates exposing (update, urlParser)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav exposing (Key)
-import Helpers exposing (getPageKey, sortTransport)
+import Helpers exposing (fromResult, getPageKey, sortTransport)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -55,7 +55,7 @@ update message model =
                         UrlParser.parse (urlParser model.birthdays) url
             in
             ( updateActivePage urlPage model
-                |> updatePageCountdown 30
+                |> updatePageCountdown defaultCountdown
             , Cmd.none
             )
 
@@ -71,7 +71,7 @@ update message model =
                     pages.countdown - 1
             in
             if nextCountdown < 0 then
-                ( updatePageCountdown 30 updatedModel
+                ( updatePageCountdown defaultCountdown updatedModel
                 , Nav.replaceUrl model.key <| (++) "/" <| getPageKey <| nextPage pages.available pages.active
                 )
 
@@ -106,7 +106,16 @@ update message model =
             )
 
         FetchAllData _ ->
-            ( model
+            ( { model
+                | publicTransport = Loading
+                , weatherInfo = Loading
+                , birthdays = Loading
+                , slackInfo = Loading
+                , slackEvents = Loading
+                , instagram = Loading
+                , lunchMenu = Loading
+                , calendar = Loading
+              }
             , Cmd.batch
                 [ fetchSlackEvents UpdateSlackEvents model
                 , fetchWeather UpdateWeather model
@@ -131,7 +140,7 @@ update message model =
                 Ok slackImgs ->
                     ( (setMedia <| setSlackImgs slackImgs) model, Cmd.none )
 
-                Err err ->
+                Err _ ->
                     ( model, Cmd.none )
 
         UpdateLunchImgs res ->
@@ -139,16 +148,11 @@ update message model =
                 Ok lunchImgs ->
                     ( (setMedia <| setLunchImgs lunchImgs) model, Cmd.none )
 
-                Err err ->
+                Err _ ->
                     ( model, Cmd.none )
 
         UpdateCalendar res ->
-            case res of
-                Ok calendar ->
-                    ( { model | calendar = Success calendar }, Cmd.none )
-
-                Err err ->
-                    ( { model | calendar = Failure err }, Cmd.none )
+            ( { model | calendar = fromResult res }, Cmd.none )
 
         UpdateBirthdays res ->
             case res of
@@ -167,28 +171,13 @@ update message model =
                     ( { model | birthdays = Failure err }, Cmd.none )
 
         UpdateSlackEvents res ->
-            case res of
-                Ok events ->
-                    ( { model | slackEvents = Success events }, Cmd.none )
-
-                Err err ->
-                    ( { model | slackEvents = Failure err }, Cmd.none )
+            ( { model | slackEvents = fromResult res }, Cmd.none )
 
         UpdateWeather res ->
-            case res of
-                Ok weatherInfo ->
-                    ( { model | weatherInfo = Success weatherInfo }, Cmd.none )
-
-                Err err ->
-                    ( { model | weatherInfo = Failure err }, Cmd.none )
+            ( { model | weatherInfo = fromResult res }, Cmd.none )
 
         UpdateInstagram res ->
-            case res of
-                Ok instagram ->
-                    ( { model | instagram = Success instagram }, Cmd.none )
-
-                Err err ->
-                    ( { model | instagram = Failure err }, Cmd.none )
+            ( { model | instagram = fromResult res }, Cmd.none )
 
         UpdatePublicTransport res ->
             case res of
@@ -199,20 +188,10 @@ update message model =
                     ( { model | publicTransport = Failure err }, Cmd.none )
 
         UpdateSlackInfo res ->
-            case res of
-                Ok slackInfo ->
-                    ( { model | slackInfo = Success slackInfo }, Cmd.none )
-
-                Err err ->
-                    ( { model | slackInfo = Failure err }, Cmd.none )
+            ( { model | slackInfo = fromResult res }, Cmd.none )
 
         UpdateLunchMenu res ->
-            case res of
-                Ok lunchMenu ->
-                    ( { model | lunchMenu = Success lunchMenu }, Cmd.none )
-
-                Err err ->
-                    ( { model | lunchMenu = Failure err }, Cmd.none )
+            ( { model | lunchMenu = fromResult res }, Cmd.none )
 
 
 
@@ -238,6 +217,8 @@ urlParser birthdays =
         , UrlParser.map Weather <| UrlParser.s "weather"
         , UrlParser.map Lunch <| UrlParser.s "lunch"
         , UrlParser.map Calendar <| UrlParser.s "calendar"
+        , UrlParser.map Video <| UrlParser.s "video"
+        , UrlParser.map Traffic <| UrlParser.s "traffic"
         , UrlParser.s "birthday" </> UrlParser.custom "" (birthdayUrlName birthdays)
         ]
 

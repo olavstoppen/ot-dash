@@ -190,6 +190,10 @@ nav.sidebar {
   @at-root #{&}--medium {
     font-size: calc(16px + .8vmax);
   }
+  @at-root #{&}--small {
+    line-height: calc(1.1em + .3vmax);
+    font-size: calc(16px + .3vmax);
+  }
 }
 
 .image {
@@ -224,4 +228,9 @@ nav.sidebar {
   .st3 {
     fill: #ECB22E;
   }
+}
+
+.clock {
+  color: $grey-light;
+  margin: .5vmax 1vmax;
 }
