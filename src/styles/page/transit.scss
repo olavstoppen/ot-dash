@@ -1,0 +1,34 @@
+.transit-page {
+  .transit-map {
+    $size: 100%;
+    height: $size;
+    width: $size;
+  }
+
+  .transit-departures {
+    display: flex;
+    flex-direction: column;
+
+    .transit-departure {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-bottom: 1px solid $grey-light;
+      padding: 16px 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      > * {
+        margin-right: 1vmax;
+
+        &:last-child {
+          margin-right: 0;
+          margin-left: auto;
+          justify-self: flex-end;
+        }
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@ view : Model -> Html msg
 view model =
     case model.publicTransport of
         Success publicTransport ->
-            div [ class "page page__transit" ]
+            div [ class "page transit-page" ]
                 [ title
                 , annotation
                 , body publicTransport model
@@ -20,7 +20,7 @@ view model =
                 ]
 
         _ ->
-            div [ class "page page__transit" ]
+            div [ class "page transit-page" ]
                 [ div [ class "content" ]
                     [ div [ class "animated fadeInDown faster today" ]
                         [ div [] [ text "Mangler data" ]
@@ -50,7 +50,7 @@ body : List Transport -> Model -> Html msg
 body publicTransport model =
     div [ class "content--tall" ]
         [ div [ class "animated fadeInDown faster" ]
-            [ div [ class "departures" ] <|
+            [ div [ class "transit-departures" ] <|
                 List.map (departure model) <|
                     List.take 6 publicTransport
             ]
@@ -59,7 +59,7 @@ body publicTransport model =
 
 departure : Model -> Transport -> Html msg
 departure { here } transport =
-    div [ class "departure" ] <|
+    div [ class "transit-departure" ] <|
         case transport of
             Unknown ->
                 [ text "Ukjent transport" ]
@@ -81,6 +81,6 @@ square : Model -> Html msg
 square _ =
     div [ class "square " ]
         [ div [ class "animated slideInLeft faster delay-2s" ]
-            [ iframe [ class "transit__map ", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
+            [ iframe [ class "transit-map ", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
             ]
         ]
