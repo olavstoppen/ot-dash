@@ -1,0 +1,117 @@
+.weather-page {
+  .weather-today {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    background: $blue;
+    color: $white;
+    font-weight: 300;
+
+    .today-status {
+      grid-column: 2 / span 7;
+      grid-row: 2 / span 5;
+      display: flex;
+      align-items: stretch;
+
+      * > {
+        height: 100%;
+      }
+
+      img {
+        height: 13vmax;
+      }
+
+      .today-temperature {
+        margin-right: 2vmax;
+      }
+    }
+
+    .today-description {
+      grid-column: 2 / span 7;
+      grid-row: 8 / span 2;
+      line-height: calc(1.1em + 0.2vmax);
+      font-size: calc(16px + 0.2vmax);
+
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .today-highlow {
+      grid-column: 10 / span 5;
+      grid-row: 2 / span 2;
+
+      display: flex;
+      justify-content: flex-end;
+
+      > * {
+        margin-left: 1vmax;
+      }
+    }
+
+    .today-rainfall {
+      grid-column: 10 / span 5;
+      grid-row: 5 / span 5;
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+
+      .rainfall-title {
+        margin-bottom: 1vmax;
+        text-align: right;
+      }
+
+      .rainfall-downfall {
+        display: flex;
+
+        > * {
+          margin-left: 1vmax;
+        }
+      }
+    }
+  }
+
+  .weather-forecasts {
+    display: flex;
+
+    .weather-forecast {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 1.5vmax;
+      width: 100%;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .forecast-symbol {
+        display: flex;
+        justify-content: center;
+
+        img {
+          height: 4vmax;
+        }
+      }
+
+      .forecast-temperature {
+        display: flex;
+        margin-top: 1vmax;
+        width: 100%;
+        justify-content: center;
+
+        > *:first-child {
+          margin-right: 0.5vmax;
+        }
+      }
+
+      .forecast-day {
+        display: flex;
+        justify-content: center;
+        margin-top: 0.5vmax;
+      }
+    }
+  }
+}
