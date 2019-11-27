@@ -1,0 +1,41 @@
+.lunch-page {
+  .lunch {
+    display: flex;
+    flex-direction: column;
+
+    .lunch-day {
+      display: flex;
+      align-items: center;
+      padding-bottom: 1vmax;
+      border-bottom: 1px solid $grey-light;
+
+      &:not(:first-child) {
+        margin-top: 1vmax;
+      }
+    }
+
+    .lunch-courses {
+      margin-left: 2vmax;
+
+      .lunch-course {
+        display: flex;
+        align-items: center;
+
+        .course-label {
+          align-self: flex-start;
+          margin-right: 0.5vmax;
+          min-width: 8vmax;
+          width: 8vmax;
+        }
+
+        .course-dish {
+          > *,
+          .dish-emoji {
+            display: inline;
+            margin-right: 0.2vmax;
+          }
+        }
+      }
+    }
+  }
+}

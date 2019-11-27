@@ -7,15 +7,15 @@ import Model exposing (..)
 import String exposing (..)
 
 
-view : Model -> Html Msg
-view model =
-    div [ class "page page__video" ]
+view : Model -> Html msg
+view _ =
+    div [ class "page video-page" ]
         [ annotation
         , body
         ]
 
 
-annotation : Html Msg
+annotation : Html msg
 annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ img [ class "icon--med", src "/icons/sa-icon.png" ] []
@@ -23,13 +23,13 @@ annotation =
         ]
 
 
-body : Html Msg
+body : Html msg
 body =
     div [ class "content--big" ]
-        [ div [ class "animated fadeInDown faster video" ]
+        [ div [ class "animated fadeInDown faster video-view" ]
             [ iframe
-                [ src "https://video-embed.sadev.tech/sa/100166"
-                , id "video"
+                [ src "https://video-embed.sadev.tech/sa/102777"
+                , id "video-view"
                 , attribute "allowFullscreen" "false"
                 , attribute "scrolling" "no"
                 ]

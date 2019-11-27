@@ -2,10 +2,10 @@ module Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLu
 
 import Http
 import Json.Decode as Decode exposing (..)
-import Json.Decode.Extra as DecodeExtra exposing (withDefault)
+import Json.Decode.Extra exposing (withDefault)
 import Json.Decode.Pipeline exposing (..)
 import Model exposing (..)
-import Time exposing (..)
+import Time exposing (Posix, Weekday(..), millisToPosix)
 
 
 pingubotUrl : String -> String
@@ -328,12 +328,16 @@ fetchLunchMenu callback { apiKey } =
 decodeLunch : Decoder LunchData
 decodeLunch =
     Decode.succeed LunchData
-        |> required "name" decodeDay
+        |> required "day" decodeDay
+        |> required "day" string
+        |> required "dishes" (list decodeLunchDish)
+
+
+decodeLunchDish : Decoder LunchDish
+decodeLunchDish =
+    Decode.succeed LunchDish
         |> required "name" string
-        |> required "dishes" string
-        |> required "soups" string
-        |> required "dishEmojis" (list string)
-        |> required "soupEmojis" (list string)
+        |> required "emojis" (list string)
 
 
 concat : List String -> Decoder String
@@ -373,8 +377,8 @@ toWeekday day =
 -- Tenor
 
 
-fetchSlackImgs : (Result Http.Error (List Href) -> Msg) -> Model -> Cmd Msg
-fetchSlackImgs callback model =
+fetchSlackImgs : (Result Http.Error (List Href) -> Msg) -> Cmd Msg
+fetchSlackImgs callback =
     get [] tenorUrl callback <| decodeTenor
 
 
@@ -395,8 +399,8 @@ flatHref lists =
 -- Unsplash
 
 
-fetchLunchImgs : (Result Http.Error (List Href) -> Msg) -> Model -> Cmd Msg
-fetchLunchImgs callback model =
+fetchLunchImgs : (Result Http.Error (List Href) -> Msg) -> Cmd Msg
+fetchLunchImgs callback =
     get unslpashHeaders unslpashUrl callback <| decodeUnslpash
 
 

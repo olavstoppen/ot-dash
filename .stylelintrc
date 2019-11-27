@@ -1,0 +1,15 @@
+
+{
+    "extends": "stylelint-config-recommended-scss",
+    "plugins": [
+        "stylelint-scss"
+    ],
+    "rules": {
+        "indentation": 2,
+        "max-empty-lines": 2,
+        "block-no-empty": true,
+        "color-no-invalid-hex": true,
+        "comment-empty-line-before":  "always",
+        "declaration-colon-space-after": "always"
+    }
+}

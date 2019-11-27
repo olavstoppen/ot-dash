@@ -8,8 +8,8 @@ import String exposing (..)
 
 
 view : Model -> Html Msg
-view model =
-    div [ class "page page__traffic" ]
+view _ =
+    div [ class "page traffic-page" ]
         [ annotation
         , body
         ]
@@ -25,10 +25,10 @@ annotation =
 body : Html Msg
 body =
     div [ class "content--big" ]
-        [ div [ class "animated fadeInDown faster traffic" ]
+        [ div [ class "animated fadeInDown faster traffic-view" ]
             [ iframe
                 [ src "https://embed.waze.com/iframe?zoom=12&lat=58.913916&lon=5.739776&ct=livemap"
-                , id "traffic"
+                , id "traffic-view"
                 , attribute "allowFullscreen" "false"
                 , attribute "scrolling" "no"
                 ]

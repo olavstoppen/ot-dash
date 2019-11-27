@@ -1,0 +1,29 @@
+.slack-page {
+  .slack-events {
+    display: flex;
+    flex-direction: column;
+
+    .slack-event {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 1vmax;
+      padding-bottom: 0.8vmax;
+      border-bottom: 1px solid $grey-light;
+
+      > * {
+        margin-right: 1vmax;
+      }
+
+      .event-who {
+        margin-right: 0.25vmax;
+      }
+    }
+  }
+
+  .slack-reactions {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}

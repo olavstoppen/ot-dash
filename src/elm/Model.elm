@@ -1,15 +1,15 @@
-module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo, defaultCountdown)
+module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, LunchDish, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
-import Browser.Navigation as Nav exposing (Key)
+import Browser.Navigation exposing (Key)
 import Http exposing (Error(..))
 import Time exposing (..)
 import Url exposing (Url)
-import Url.Parser as UrlParser exposing ((</>), Parser)
 
 
 type alias Flags =
     { apiKey : String
+    , pageCountdownMillis : Int
     }
 
 
@@ -47,6 +47,7 @@ type alias Here =
 type alias Pages =
     { active : Page
     , countdown : Int
+    , defaultCountdown : Int
     , available : List Page
     }
 
@@ -193,10 +194,13 @@ type alias InstagramPost =
 type alias LunchData =
     { day : Weekday
     , dayName : String
-    , maincourse : String
-    , soup : String
-    , maincourseEmojis : List Href
-    , soupEmojis : List Href
+    , dishes : List LunchDish
+    }
+
+
+type alias LunchDish =
+    { name : String
+    , emojis : List Href
     }
 
 
@@ -243,8 +247,3 @@ type Msg
     | UpdateSlackImgs (Result Http.Error (List Href))
     | UpdateLunchImgs (Result Http.Error (List Href))
     | UpdateMediaDigit Int
-
-
-defaultCountdown : Int
-defaultCountdown =
-    60
