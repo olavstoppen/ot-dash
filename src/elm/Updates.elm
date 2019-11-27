@@ -114,7 +114,6 @@ update message model =
                 , fetchPublicTransport UpdatePublicTransport model
                 , fetchSlackInfo UpdateSlackInfo model
                 , fetchLunchMenu UpdateLunchMenu model
-                , fetchLunchMenu UpdateLunchMenu model
                 , fetchBirthdays UpdateBirthdays model
                 , fetchCalendar UpdateCalendar model
                 , fetchSlackImgs UpdateSlackImgs

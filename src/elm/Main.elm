@@ -72,7 +72,8 @@ init { apiKey, pageCountdownMillis } url key =
                 , countdown = pageCountdownMillis
                 , defaultCountdown = pageCountdownMillis
                 , available =
-                    [ Slack
+                    [ Lunch
+                    , Slack
                     , Instagram
                     , Calendar
                     , Transit
