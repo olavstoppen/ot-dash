@@ -3,7 +3,7 @@ module Page.Lunch exposing (view)
 import Helpers exposing (getStringAt)
 import Html exposing (Html, div, h1, h3, img, strong, text)
 import Html.Attributes exposing (class, classList, src)
-import Model exposing (Here, Href, LunchData, Model, RemoteData(..))
+import Model exposing (Here, Href, LunchData, LunchDish, Model, RemoteData(..))
 import Time exposing (Weekday)
 
 
@@ -55,7 +55,7 @@ body lunchMenu { day } =
 
 
 lunchDay : Weekday -> LunchData -> Html msg
-lunchDay todayWeekDay { dayName, maincourse, soup, day, maincourseEmojis, soupEmojis } =
+lunchDay todayWeekDay { dayName, day, dishes } =
     div [ class "lunch-day" ]
         [ div
             [ classList
@@ -64,10 +64,8 @@ lunchDay todayWeekDay { dayName, maincourse, soup, day, maincourseEmojis, soupEm
                 ]
             ]
             [ text <| String.slice 0 2 dayName ]
-        , div [ class "lunch-courses" ]
-            [ course "Varmrett: " maincourse maincourseEmojis
-            , course "Suppe: " soup soupEmojis
-            ]
+        , div [ class "lunch-courses" ] <|
+            List.map course dishes
         ]
 
 
@@ -80,12 +78,29 @@ square { media } =
         ]
 
 
-course : String -> String -> List Href -> Html msg
-course label name emojis =
+course : LunchDish -> Html msg
+course { name, emojis } =
+    let
+        dish =
+            name
+                |> String.split ":"
+                |> List.map String.trim
+
+        { label, name_ } =
+            case dish of
+                [] ->
+                    { label = "", name_ = "" }
+
+                [ a ] ->
+                    { label = "", name_ = a }
+
+                a :: b :: _ ->
+                    { label = a, name_ = b }
+    in
     div [ class "lunch-course" ]
         [ strong [ class "course-label" ] [ text label ]
         , div [ class "course-dish" ]
-            [ div [] [ text name ]
+            [ div [] [ text name_ ]
             , div [] <| List.map emoji emojis
             ]
         ]

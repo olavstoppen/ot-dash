@@ -1,4 +1,4 @@
-module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
+module Model exposing (Birthdays, CalendarCategory(..), CalendarEvent, DegreesCelsius, Departure, Emoji, Flags, Here, Href, InstagramPost, LunchData, LunchDish, Media, MilliMeter, Model, Msg(..), Page(..), Pages, Person, Rainfall, RemoteData(..), SlackEvent(..), SlackInfo, Temperature, Transport(..), WeatherData, WeatherInfo)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation exposing (Key)
@@ -194,10 +194,13 @@ type alias InstagramPost =
 type alias LunchData =
     { day : Weekday
     , dayName : String
-    , maincourse : String
-    , soup : String
-    , maincourseEmojis : List Href
-    , soupEmojis : List Href
+    , dishes : List LunchDish
+    }
+
+
+type alias LunchDish =
+    { name : String
+    , emojis : List Href
     }
 
 

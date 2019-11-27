@@ -328,12 +328,16 @@ fetchLunchMenu callback { apiKey } =
 decodeLunch : Decoder LunchData
 decodeLunch =
     Decode.succeed LunchData
-        |> required "name" decodeDay
+        |> required "day" decodeDay
+        |> required "day" string
+        |> required "dishes" (list decodeLunchDish)
+
+
+decodeLunchDish : Decoder LunchDish
+decodeLunchDish =
+    Decode.succeed LunchDish
         |> required "name" string
-        |> required "dishes" string
-        |> required "soups" string
-        |> required "dishEmojis" (list string)
-        |> required "soupEmojis" (list string)
+        |> required "emojis" (list string)
 
 
 concat : List String -> Decoder String
