@@ -6,7 +6,7 @@ import Helpers exposing (fromResult, getPageKey, sortTransport)
 import Http exposing (Error(..))
 import List
 import List.Extra as ListExtra
-import Model exposing (Birthdays, Here, Href, Media, Model, Msg(..), Page(..), Pages, RemoteData(..), defaultCountdown)
+import Model exposing (Birthdays, Here, Href, Media, Model, Msg(..), Page(..), Pages, RemoteData(..))
 import Random
 import Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLunchImgs, fetchLunchMenu, fetchPublicTransport, fetchSlackEvents, fetchSlackImgs, fetchSlackInfo, fetchWeather)
 import Time exposing (Posix, toWeekday)
@@ -38,12 +38,15 @@ update message model =
 
         OnUrlChange url ->
             let
+                { pages, birthdays } =
+                    model
+
                 urlPage =
-                    Maybe.withDefault model.pages.active <|
-                        UrlParser.parse (urlParser model.birthdays) url
+                    Maybe.withDefault pages.active <|
+                        UrlParser.parse (urlParser birthdays) url
             in
             ( updateActivePage urlPage model
-                |> updatePageCountdown defaultCountdown
+                |> updatePageCountdown pages.defaultCountdown
             , Cmd.none
             )
 
@@ -59,7 +62,7 @@ update message model =
                     pages.countdown - 1
             in
             if nextCountdown < 0 then
-                ( updatePageCountdown defaultCountdown updatedModel
+                ( updatePageCountdown model.pages.defaultCountdown updatedModel
                 , Nav.replaceUrl model.key <| (++) "/" <| getPageKey <| nextPage pages.available pages.active
                 )
 

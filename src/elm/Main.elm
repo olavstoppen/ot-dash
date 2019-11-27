@@ -57,7 +57,7 @@ subscriptions _ =
 
 
 init : Flags -> Url -> Key -> ( Model, Cmd Msg )
-init flags url key =
+init { apiKey, pageCountdownMillis } url key =
     let
         urlPage =
             Maybe.withDefault Slack <|
@@ -65,11 +65,12 @@ init flags url key =
 
         model =
             { key = key
-            , apiKey = flags.apiKey
+            , apiKey = apiKey
             , here = Here (Time.millisToPosix 0) Time.utc Time.Mon
             , pages =
                 { active = urlPage
-                , countdown = defaultCountdown
+                , countdown = pageCountdownMillis
+                , defaultCountdown = pageCountdownMillis
                 , available =
                     [ Slack
                     , Instagram
