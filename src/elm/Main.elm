@@ -60,7 +60,7 @@ init : Flags -> Url -> Key -> ( Model, Cmd Msg )
 init { apiKey, pageCountdownMillis } url key =
     let
         urlPage =
-            Maybe.withDefault Slack <|
+            Maybe.withDefault Lunch <|
                 UrlParser.parse (urlParser NotAsked) url
 
         model =
