@@ -47,7 +47,7 @@ annotation =
 
 body : List LunchData -> Here -> Html msg
 body lunchMenu { day } =
-    div [ class "content--tall" ]
+    div [ class "content--tall--wide" ]
         [ div [ class "animated fadeInDown faster" ]
             [ div [ class "lunch" ] <| List.map (lunchDay day) lunchMenu
             ]
@@ -71,7 +71,7 @@ lunchDay todayWeekDay { dayName, day, dishes } =
 
 square : Model -> Html msg
 square { media } =
-    div [ class "square" ]
+    div [ class "square --background" ]
         [ div [ class "animated slideInLeft faster" ]
             [ img [ src <| getStringAt media.digit media.lunchImgs ] []
             ]
