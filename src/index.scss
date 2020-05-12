@@ -220,6 +220,9 @@ nav.sidebar {
   @at-root #{&}--large {
     height: 3vmax;
   }
+  @at-root #{&}--xsmall {
+    height: 1vmax;
+  }
 }
 
 .slack-icon {

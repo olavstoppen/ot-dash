@@ -108,4 +108,4 @@ course { name, emojis } =
 
 emoji : Href -> Html msg
 emoji emojiUrl =
-    img [ class "image--small dish-emoji", src emojiUrl ] []
+    img [ class "image--xsmall dish-emoji", src emojiUrl ] []
