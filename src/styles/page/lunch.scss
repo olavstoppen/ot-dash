@@ -8,6 +8,8 @@
       align-items: center;
       padding-bottom: 1vmax;
       border-bottom: 1px solid $grey-light;
+      line-height: calc(1.1em + 0.3vmax);
+      font-size: calc(16px + 0.3vmax);
 
       &:not(:first-child) {
         margin-top: 1vmax;
