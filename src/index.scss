@@ -1,6 +1,6 @@
 @import "~modern-normalize/modern-normalize.css";
 @import "~animate.css/animate.css";
-@import url("https://fonts.googleapis.com/css?family=Lato:300,400,bold");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 @import "styles/colors";
 
 // Pages
@@ -243,6 +243,6 @@ nav.sidebar {
 }
 
 .clock {
-  color: $grey-light;
   margin: 0.5vmax 1vmax;
+  float: right;
 }
