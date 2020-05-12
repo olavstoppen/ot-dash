@@ -1,4 +1,4 @@
-module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDay, formatTime, formatWeekDayName, fromResult, fullName, getPageKey, getPageTitle, getStringAt, getWeekDayName, hash, newLineOnFirstHash, sortTransport, toMonthNumber, toPascalCase)
+module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDateTimeName, formatDay, formatTime, formatWeekDayName, fromResult, fullName, getPageKey, getPageTitle, getStringAt, getWeekDayName, hash, newLineOnFirstHash, sortTransport, toMonthName, toMonthNumber, toPascalCase)
 
 import Browser exposing (UrlRequest(..))
 import Http exposing (Error(..))
@@ -40,6 +40,21 @@ formatTime : Zone -> Posix -> String
 formatTime zone time =
     concat
         [ padLeft 2 '0' <| fromInt (toHour zone time)
+        , ":"
+        , padLeft 2 '0' <| fromInt (toMinute zone time)
+        ]
+
+
+formatDateTimeName : Here -> String
+formatDateTimeName { zone, time, day } =
+    concat
+        [ getWeekDayName day
+        , " "
+        , fromInt (toDay zone time)
+        , " "
+        , toMonthName (toMonth zone time)
+        , ", kl. "
+        , padLeft 2 '0' <| fromInt (toHour zone time)
         , ":"
         , padLeft 2 '0' <| fromInt (toMinute zone time)
         ]
@@ -131,6 +146,46 @@ toMonthNumber month =
 
         Dec ->
             12
+
+
+toMonthName : Month -> String
+toMonthName month =
+    case month of
+        Jan ->
+            "Januar"
+
+        Feb ->
+            "Februar"
+
+        Mar ->
+            "Mars"
+
+        Apr ->
+            "April"
+
+        May ->
+            "Mai"
+
+        Jun ->
+            "Juni"
+
+        Jul ->
+            "Juli"
+
+        Aug ->
+            "August"
+
+        Sep ->
+            "September"
+
+        Oct ->
+            "Oktober"
+
+        Nov ->
+            "November"
+
+        Dec ->
+            "Desember"
 
 
 getPageKey : Page -> String
