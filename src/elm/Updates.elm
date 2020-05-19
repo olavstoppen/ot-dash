@@ -59,7 +59,7 @@ update message model =
                     updatedModel
 
                 nextCountdown =
-                    pages.countdown - 1
+                    calculateNextCountdown model
             in
             if nextCountdown < 0 then
                 ( updatePageCountdown model.pages.defaultCountdown updatedModel
@@ -317,3 +317,21 @@ updatePageCountdown countdown =
 updateAvailablePages : List Page -> Model -> Model
 updateAvailablePages available =
     setPages <| setAvailablePages available
+
+
+calculateNextCountdown : Model -> Int
+calculateNextCountdown { pages, here } =
+    let
+        hour =
+            Time.toHour here.zone here.time
+    in
+    case pages.active of
+        Lunch ->
+            if hour > 10 && hour < 12 then
+                pages.countdown
+
+            else
+                pages.countdown - 1
+
+        _ ->
+            pages.countdown - 1
