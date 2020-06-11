@@ -74,8 +74,6 @@ init { apiKey, pageCountdownMillis } url key =
                 , available =
                     [ Lunch
                     , Slack
-                    , Instagram
-                    , Calendar
                     , Transit
                     , Weather
                     ]
