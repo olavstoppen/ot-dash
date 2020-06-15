@@ -1,5 +1,6 @@
 .transit-page {
-  .transit-map {
+  .transit-map,
+  .transit-map > iframe {
     $size: 100%;
     height: $size;
     width: $size;
