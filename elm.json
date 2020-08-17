@@ -19,7 +19,8 @@
             "elm/url": "1.0.0",
             "elm-community/json-extra": "4.0.0",
             "elm-community/list-extra": "8.1.0",
-            "justinmimbs/time-extra": "1.1.0"
+            "justinmimbs/time-extra": "1.1.0",
+            "marcosh/elm-html-to-unicode": "1.0.3"
         },
         "indirect": {
             "elm/bytes": "1.0.7",

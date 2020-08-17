@@ -1,5 +1,6 @@
 module Page.Lunch exposing (view)
 
+import ElmEscapeHtml exposing (unescape)
 import Helpers exposing (getStringAt)
 import Html exposing (Html, div, h1, h3, img, strong, text)
 import Html.Attributes exposing (class, classList, src)
@@ -64,8 +65,10 @@ lunchDay todayWeekDay { dayName, day, dishes } =
                 ]
             ]
             [ text <| String.slice 0 2 dayName ]
-        , div [ class "lunch-courses" ] <|
-            List.map course dishes
+        , dishes
+            |> List.filter (\x -> not <| (String.isEmpty x.name || x.name == "."))
+            |> List.map course
+            |> div [ class "lunch-courses" ]
         ]
 
 
@@ -94,13 +97,13 @@ course { name, emojis } =
                 [ a ] ->
                     { label = "", name_ = a }
 
-                a :: b :: _ ->
-                    { label = a, name_ = b }
+                a :: b ->
+                    { label = a, name_ = String.concat b }
     in
     div [ class "lunch-course" ]
         [ strong [ class "course-label" ] [ text label ]
         , div [ class "course-dish" ]
-            [ div [] [ text name_ ]
+            [ div [] [ text <| unescape <| name_ ]
             , div [] <| List.map emoji emojis
             ]
         ]
