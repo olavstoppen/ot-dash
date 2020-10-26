@@ -12,6 +12,7 @@ import Page.Calendar as Calendar
 import Page.Instagram as Instagram
 import Page.Lunch as Lunch
 import Page.Slack as Slack
+import Page.Surf as Surf
 import Page.Traffic as Traffic
 import Page.Transit as Transit
 import Page.Video as Video
@@ -157,3 +158,6 @@ viewPage model =
 
         Traffic ->
             viewRemoteData model .publicTransport Traffic.view
+
+        Surf ->
+            viewRemoteData model .weatherInfo Surf.view

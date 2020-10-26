@@ -73,6 +73,7 @@ type Page
     | Calendar
     | Video
     | Traffic
+    | Surf
 
 
 type alias Href =

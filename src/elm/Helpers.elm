@@ -218,6 +218,9 @@ getPageKey page =
         Traffic ->
             "traffic"
 
+        Surf ->
+            "surf"
+
 
 getPageTitle : Page -> String
 getPageTitle page =
