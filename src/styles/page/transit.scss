@@ -1,9 +1,21 @@
 .transit-page {
+  .transit-map {
+    box-shadow: /* ie */
+                 0px -10px 15px -6px  rgba(237,235,232, .1), /* top - THE RED SHADOW */
+                 0px  0px  35px  0px  rgba(237,235,232,.1), /* bottom */
+                 5px  0px  45px  0px  rgba(121, 192, 253, 0.1), /* right */
+                -5px  0px  15px  00px  rgba(237,235,232, .1); /* left */
+  }
+}
+
+.transit-page {
   .transit-map,
   .transit-map > iframe {
     $size: 100%;
     height: $size;
     width: $size;
+    border-radius: 8px;
+    
   }
 
   .transit-departures {

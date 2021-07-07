@@ -81,7 +81,7 @@ event slackEvent =
 square : Href -> Html msg
 square imageUrl =
     div [ class "square " ]
-        [ div [ class "animated slideInLeft faster" ]
+        [ div [ class "animated fadeInLeft faster" ]
             [ img [ src imageUrl ] []
             ]
         ]

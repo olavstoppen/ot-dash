@@ -124,5 +124,5 @@ viewLink activePage page =
 viewLinkFooter : Html msg
 viewLinkFooter =
     div [ class "link__footer" ]
-        [ div [ class "animated slideInLeft link__footer__bit" ] []
+        [ div [ class "animated fadeInLeft100 link__footer__bit" ] []
         ]

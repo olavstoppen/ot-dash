@@ -75,7 +75,7 @@ lunchDay todayWeekDay { dayName, day, dishes } =
 square : Model -> Html msg
 square { media } =
     div [ class "square --background" ]
-        [ div [ class "animated slideInLeft faster" ]
+        [ div [ class "animated fadeInLeft faster" ]
             [ img [ src <| getStringAt media.digit media.lunchImgs ] []
             ]
         ]

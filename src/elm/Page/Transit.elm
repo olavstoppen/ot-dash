@@ -80,7 +80,7 @@ departure { here } transport =
 square : Model -> Html msg
 square _ =
     div [ class "square " ]
-        [ div [ class "animated slideInLeft faster delay-2s transit-map" ]
+        [ div [ class "animated fadeIn faster delay-2s transit-map" ]
             [ iframe [ class "", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
             ]
         ]
