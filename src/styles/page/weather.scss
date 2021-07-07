@@ -5,11 +5,11 @@
     display: grid;
     grid-template-columns: repeat(15, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    background: $dark-green;
+    background: $dark-grey;
     color: $white;
     font-weight: 300;
     border-radius: 8px;
-    box-shadow: rgba(74, 119, 99, .25) 0px 0 60px 12px;
+    box-shadow: rgba(100, 100, 100, .25) 0px 0 60px 12px;
 
     .today-status {
       grid-column: 2 / span 7;
