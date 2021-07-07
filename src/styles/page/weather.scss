@@ -23,6 +23,8 @@
 
       img {
         height: 13vmax;
+        /* TODO: weirdest way to make an image silhouette white, will be used extensively later for new profile perhaps*/
+        filter: sepia(100%) saturate(70%) hue-rotate(0) brightness(1) contrast(117%) grayscale(100%);
       }
 
       .today-temperature {
