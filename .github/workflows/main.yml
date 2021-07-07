@@ -16,7 +16,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t olavstoppendockerregistry.azurecr.io/ot-dash:${{ github.sha }}
+        docker build --build-arg API_KEY=${{ secrets.API_KEY }} . -t olavstoppendockerregistry.azurecr.io/ot-dash:${{ github.sha }}
         docker push olavstoppendockerregistry.azurecr.io/ot-dash:${{ github.sha }}     
     - uses: azure/webapps-deploy@v2
       with:
