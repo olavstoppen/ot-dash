@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-#ARG API_KEY
+ARG API_KEY
 RUN npm run prod
 
 FROM nginx:1.15.8-alpine
