@@ -50,7 +50,7 @@ main =
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch
-        [ Time.every 1000 EverySecond
+        [ Time.every 5000 EverySecond
         , Time.every (1000 * 60) EveryMinute
         , Time.every (1000 * 60 * 60) EveryHour
         , Time.every (1000 * 60 * 60 * 24) EveryDay

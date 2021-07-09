@@ -12,14 +12,14 @@ view model =
     case model.weatherInfo of
         Success weatherInfo ->
             div [ class "page weather-page" ]
-                [ annotation
-                , body weatherInfo.today
+                [ {-annotation
+                ,-} body weatherInfo.today
                 , footer weatherInfo.forecast
                 ]
 
         _ ->
             div [ class "page weather-page" ]
-                [ div [ class "content--wide" ]
+                [ div [ class "weather-content" ]
                     [ div [ class "animated fadeInDown faster today" ]
                         [ div [ class "description" ] [ text "Venter på været... ☘️" ]
                         ]
@@ -32,63 +32,48 @@ annotation =
     div [ class "annotation animated fadeIn faster" ]
         [ metIcon
         , h3 [] [ text "met.no" ]
-        ]
+       ]
 
 
 body : WeatherData -> Html Msg
 body { temperature, symbolUrl, description, rainfall } =
     let
         todayTemp =
-            (temperature.current |> fromFloat) ++ " °"
+            (temperature.current |> fromFloat) ++ " °C"
 
-        ( highTemp, lowTemp ) =
-            ( viewFloat "Dag " temperature.high " ° ↑"
-            , viewFloat "Natt " temperature.low " ° ↓"
+        ( minMaxTemp ) =
+            ( viewFloat "Temperatur: " temperature.low " °C - " ++ viewFloat "" temperature.high " °C"
             )
     in
-    div [ class "content--wide" ]
+    div [ class "weather-content" ]
         [ div [ class "animated fadeInDown faster weather-today" ]
             [ div [ class "today-status" ]
-                [ div [ class "text--large today-temperature" ] [ text todayTemp ]
-                , div [] [ img [ src symbolUrl ] [] ]
-                ]
-            , div [ class "today-description" ] [ text description ]
-            , div [ class "today-highlow" ]
-                [ div [] [ text highTemp ]
-                , div [] [ text lowTemp ]
-                ]
-            , div [ class "today-rainfall" ]
-                [ todayRainfall rainfall
+                [ div [ class "today-temperature" ] [ text todayTemp], div [ class "today-highlow" ]
+                [ div [class "today-details"] [ span [] [ text minMaxTemp ], todayRainfall rainfall  ],
+                div [ class "today-description" ] [ text description ] ]
+                 {-,div [] [ img [ src symbolUrl ] [] ]-}
                 ]
             ]
         ]
 
 
-todayRainfall : Maybe Rainfall -> Html msg
+todayRainfall : Maybe Rainfall -> Html Msg
 todayRainfall rainfall =
     case rainfall of
         Nothing ->
-            div [ class "rainfall-title" ] [ text "Ingen regn idag! " ]
+             span [ ] [ text "Nedbør: 0 mm"]
 
         Just rainfall_ ->
-            div []
-                [ div [ class "rainfall-title" ] [ text "Nedbør" ]
-                , div [ class "rainfall-downfall" ]
-                    [ div []
-                        [ text <|
-                            viewFloat "Høy " rainfall_.high " mm"
-                        ]
-                    , div []
-                        [ text <|
-                            viewFloat "Lav " rainfall_.low " mm"
-                        ]
-                    ]
-                ]
+                span [ ] [ text <|
+                            viewFloat "Nedbør: " rainfall_.low " - " ++
+                            viewFloat "" rainfall_.high " mm" 
+                            ]
+
 
 
 footer : List WeatherData -> Html Msg
 footer forecasts =
-    div [ class "footer--tall animated fadeIn faster" ]
+    div [ class "weather-footer animated fadeIn faster" ]
         [ div [ class "weather-forecasts" ] <|
             List.map forecast forecasts
         ]
@@ -97,18 +82,15 @@ footer forecasts =
 forecast : WeatherData -> Html Msg
 forecast { symbolUrl, temperature, day } =
     let
-        ( highTemp, lowTemp ) =
-            ( viewFloat "" temperature.high " ° ↑"
-            , viewFloat "" temperature.low " ° ↓"
+        ( temp ) =
+            ( viewFloat "" temperature.current " °C"
             )
     in
     div [ class "weather-forecast" ]
-        [ div [ class "forecast-symbol" ] [ img [ src symbolUrl ] [] ]
-        , div [ class "forecast-temperature text--small" ]
-            [ div [] [ text highTemp ]
-            , div [ class "fade-out" ] [ text lowTemp ]
-            ]
-        , div [ class "forecast-day text--small" ] [ text day ]
+        [
+        div [ class "forecast-day" ] [ text day ],
+        div [ class "forecast-temperature" ][ div [] [ text temp ]],
+        div [ class "forecast-symbol" ] [ img [ src symbolUrl ] [] ]
         ]
 
 

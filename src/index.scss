@@ -1,6 +1,7 @@
 @import "~modern-normalize/modern-normalize.css";
 @import "~animate.css/animate.css";
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@200;300;400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400&display=swap');
 @import "styles/colors";
 
 // Pages
@@ -19,7 +20,7 @@
 body {
   background: $white;
   color: $black;
-  font-family: "Lato", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   height: 100vh;
   width: 100vw;
   overflow: hidden;

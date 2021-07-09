@@ -70,8 +70,6 @@ viewBackground : Model -> Html msg
 viewBackground { here } =
     div [ class "background" ]
         [ div [ class "background__page" ] [ viewClock here ]
-        , div [ class "background__divider" ]
-            []
         , div [ class "background__sidebar" ] []
         ]
 

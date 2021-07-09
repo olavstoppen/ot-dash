@@ -1,22 +1,13 @@
 .weather-page {
+background-color: $ot-black;
+.weather-content {
+  grid-column: 3 / span 9;
+  grid-row: 6 / span 10;
   .weather-today {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(15, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    background: $dark-grey;
     color: $white;
-    font-weight: 300;
-    border-radius: 8px;
-    box-shadow: rgba(100, 100, 100, .25) 0px 0 60px 12px;
-
     .today-status {
-      grid-column: 2 / span 7;
-      grid-row: 2 / span 5;
       display: flex;
-      align-items: stretch;
-
+      flex-direction: column;
       * > {
         height: 100%;
       }
@@ -28,73 +19,58 @@
       }
 
       .today-temperature {
-        margin-right: 2vmax;
+        font-size: calc(16px + 7vmax);
+        line-height: calc(16px + 7vmax);
+      font-weight: 300;
       }
     }
 
+    .today-details { 
+      display: flex;
+      font-weight: 200;
+      font-size: calc(16px + 0.75vmax);
+      margin-top: 3rem;;
+
+      * {
+        margin-right: 2rem;
+      }
+
+    }
     .today-description {
-      grid-column: 2 / span 7;
-      grid-row: 8 / span 2;
-      line-height: calc(1.1em + 0.2vmax);
-      font-size: calc(16px + 0.2vmax);
-
-      display: flex;
-      align-items: flex-end;
+      font-weight: 200;
+      margin-top: 2rem;;
+      line-height: calc(1.1em + 0.75vmax);
+      font-size: calc(16px + 0.75vmax);
     }
 
-    .today-highlow {
-      grid-column: 10 / span 5;
-      grid-row: 2 / span 2;
-
-      display: flex;
-      justify-content: flex-end;
-
-      > * {
-        margin-left: 1vmax;
-      }
-    }
-
-    .today-rainfall {
-      grid-column: 10 / span 5;
-      grid-row: 5 / span 5;
-      height: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
-
-      .rainfall-title {
-        margin-bottom: 1vmax;
-        text-align: right;
-      }
-
-      .rainfall-downfall {
-        display: flex;
-
-        > * {
-          margin-left: 1vmax;
-        }
-      }
     }
   }
 
+  .weather-footer {
+    grid-column: 14 / span 6;
+    grid-row: 6 / span 3;
+  
   .weather-forecasts {
     display: flex;
-
+    flex-direction: column;
+    
     .weather-forecast {
       display: flex;
-      flex-direction: column;
+      color: $ot-white;
+      padding: 1rem 0 1rem 0;
+      flex-direction: row;
       align-items: center;
       margin-right: 1.5vmax;
       width: 100%;
-
+      font-weight: 200;
+      border-top: 1px #ffffff14 solid;
+      font-size: calc(16px + 0.75vmax);
       &:last-child {
         margin-right: 0;
       }
 
       .forecast-symbol {
         display: flex;
-        justify-content: center;
-
         img {
           height: 4vmax;
         }
@@ -102,20 +78,17 @@
 
       .forecast-temperature {
         display: flex;
-        margin-top: 1vmax;
         width: 100%;
-        justify-content: center;
-
-        > *:first-child {
-          margin-right: 0.5vmax;
-        }
+        justify-content: flex-end;
+        margin-right: 2rem;
       }
 
       .forecast-day {
         display: flex;
         justify-content: center;
-        margin-top: 0.5vmax;
       }
     }
   }
+  }
+  
 }
