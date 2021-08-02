@@ -1,4 +1,4 @@
-module Helpers exposing (formatDate, formatDateDiffMinutes, formatDateTime, formatDateTimeName, formatDay, formatTime, formatWeekDayName, fromResult, fullName, getPageKey, getPageTitle, getStringAt, getWeekDayName, hash, newLineOnFirstHash, sortTransport, toMonthName, toMonthNumber, toPascalCase)
+module Helpers exposing (formatDayDate, formatDate, formatDateDiffMinutes, formatDateTime, formatDateTimeName, formatDay, formatTime, formatWeekDayName, fromResult, fullName, getPageKey, getPageTitle, getStringAt, getWeekDayName, hash, newLineOnFirstHash, sortTransport, toMonthName, toMonthNumber, toPascalCase)
 
 import Browser exposing (UrlRequest(..))
 import Http exposing (Error(..))
@@ -45,15 +45,21 @@ formatTime zone time =
         ]
 
 
-formatDateTimeName : Here -> String
-formatDateTimeName { zone, time, day } =
+formatDayDate : Here -> String
+formatDayDate { zone, time, day } =
     concat
         [ getWeekDayName day
         , " "
         , fromInt (toDay zone time)
-        , " "
-        , toMonthName (toMonth zone time)
-        , ", kl. "
+        , "."
+        , fromInt (toMonthNumber (toMonth zone time))
+        , "."
+        , fromInt (toYear zone time)
+        ]
+formatDateTimeName : Here -> String
+formatDateTimeName { zone, time} =
+    concat
+        [ "kl. "
         , padLeft 2 '0' <| fromInt (toHour zone time)
         , ":"
         , padLeft 2 '0' <| fromInt (toMinute zone time)

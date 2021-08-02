@@ -27,7 +27,6 @@ body {
 }
 
 main {
-  display: relative;
   height: 100vh;
   width: 100vw;
   line-height: calc(1.1em + 0.5vmax);
@@ -57,13 +56,17 @@ header {
   display: grid;
   height: 100%;
   width: 100%;
+  font-weight: 200;
   grid-template-columns: 15fr 6fr 2fr;
   grid-template-rows: 100%;
   grid-template-areas: "page middle sidebar";
-  z-index: -1;
   @at-root #{&}__page {
     grid-area: page;
-    background: $white;
+    display: flex;
+    justify-content: space-between;
+    grid-column: 1 / span 2;
+    font-size: 2rem;
+    color:white;
   }
   @at-root #{&}__divider {
     background: $black;
@@ -249,7 +252,7 @@ nav.sidebar {
 
 .clock {
   margin: 0.5vmax 1vmax;
-  float: right;
+  mix-blend-mode: difference;
 }
 
 /* CUSTOM ANIMATIONS */

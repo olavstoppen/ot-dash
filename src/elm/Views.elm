@@ -1,18 +1,18 @@
 module Views exposing (viewBackground, viewRemoteData, viewSidebar)
 
-import Helpers exposing (formatDateTimeName, fullName, getPageKey, getPageTitle, getWeekDayName)
+import Helpers exposing (formatDayDate, formatDateTimeName, fullName, getPageKey, getPageTitle, getWeekDayName)
 import Html exposing (Html, a, div, h1, nav, text)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, style)
 import Http exposing (Error(..))
 import Model exposing (Here, Model, Page(..), RemoteData(..))
 import String
 
 
-viewRemoteData : Model -> (Model -> RemoteData a) -> (Model -> Html msg) -> Html msg
-viewRemoteData model remoteData viewfn =
+viewRemoteData : Model -> (Model -> RemoteData a) -> (Model -> Html msg) -> String -> Html msg
+viewRemoteData model remoteData viewfn bg =
     case remoteData model of
         NotAsked ->
-            div [ class "page" ]
+            div [ class "page"]
                 [ div [ class "title" ]
                     [ div [ class "animated fadeInDown faster" ]
                         [ h1 [] [ text "Starter opp... ️️🏗️" ]
@@ -66,13 +66,19 @@ httpErrorToString err =
             "BadBody: " ++ string
 
 
-viewBackground : Model -> Html msg
-viewBackground { here } =
+viewBackground : Model -> String -> Html msg
+viewBackground { here } bgColorClass =
     div [ class "background" ]
-        [ div [ class "background__page" ] [ viewClock here ]
+        [ div [ class (bgColorClass ++ " background__page") ] [ viewDayDate here, viewClock here ]
         , div [ class "background__sidebar" ] []
         ]
 
+viewDayDate : Here -> Html msg
+viewDayDate here =
+    div [ class "clock" ]
+        [ text <|
+            formatDayDate here
+        ]
 
 viewClock : Here -> Html msg
 viewClock here =
