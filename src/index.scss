@@ -61,6 +61,7 @@ header {
   grid-template-rows: 100%;
   grid-template-areas: "page middle sidebar";
   @at-root #{&}__page {
+    transition: background-color .2s ease-in-out;
     grid-area: page;
     display: flex;
     justify-content: space-between;
@@ -160,28 +161,6 @@ nav.sidebar {
   }
 }
 
-.ellipse {
-  $size: calc(16px + 2vmax);
-  background: $white;
-  color: $black;
-  fill: $black;
-  border-radius: 50%;
-  width: $size;
-  height: $size;
-  min-width: $size;
-  min-height: $size;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0.1vmax solid $black;
-
-  &.active {
-    background: $black;
-    color: $white;
-    fill: $white;
-  }
-}
-
 .icon {
   height: 1vmax;
   width: 1vmax;
@@ -252,7 +231,7 @@ nav.sidebar {
 
 .clock {
   margin: 0.5vmax 1vmax;
-  mix-blend-mode: difference;
+  transition: color .2s ease-in-out;
 }
 
 /* CUSTOM ANIMATIONS */

@@ -3,9 +3,10 @@ module Page.Lunch exposing (view)
 import ElmEscapeHtml exposing (unescape)
 import Helpers exposing (getStringAt)
 import Html exposing (Html, div, h1, h3, img, strong, text)
-import Html.Attributes exposing (class, classList, src)
+import Html.Attributes exposing (class, classList, src, style)
 import Model exposing (Here, Href, LunchData, LunchDish, Model, RemoteData(..))
 import Time exposing (Weekday)
+import Json.Decode exposing (bool)
 
 
 view : Model -> Html msg
@@ -13,9 +14,7 @@ view model =
     case model.lunchMenu of
         Success lunchMenu ->
             div [ class "page lunch-page" ]
-                [ title
-                , annotation
-                , body lunchMenu model.here
+                [ body lunchMenu model.here
                 , square model
                 ]
 
@@ -29,26 +28,9 @@ view model =
                 ]
 
 
-title : Html msg
-title =
-    div [ class "title" ]
-        [ div [ class "animated fadeInDown faster" ]
-            [ h1 [] [ text "Lunsjmeny!" ]
-            ]
-        ]
-
-
-annotation : Html msg
-annotation =
-    div [ class "annotation animated fadeIn faster" ]
-        [ h3 [] [ text "🍽️" ]
-        , h3 [] [ text "Kanalpiren" ]
-        ]
-
-
 body : List LunchData -> Here -> Html msg
 body lunchMenu { day } =
-    div [ class "content--tall--wide" ]
+    div [ class "content--box" ]
         [ div [ class "animated fadeInDown faster" ]
             [ div [ class "lunch" ] <| List.map (lunchDay day) lunchMenu
             ]
@@ -57,14 +39,13 @@ body lunchMenu { day } =
 
 lunchDay : Weekday -> LunchData -> Html msg
 lunchDay todayWeekDay { dayName, day, dishes } =
-    div [ class "lunch-day" ]
+    div [ classList [("lunch-day", True) , ( "day__active", todayWeekDay == day )]  ]
         [ div
             [ classList
-                [ ( "ellipse", True )
-                , ( "active", todayWeekDay == day )
+                [ ( "day", True )
                 ]
             ]
-            [ text <| String.slice 0 2 dayName ]
+            [ text <| dayName ]
         , dishes
             |> List.filter (\x -> not <| (String.isEmpty x.name || x.name == "."))
             |> List.map course
@@ -74,11 +55,8 @@ lunchDay todayWeekDay { dayName, day, dishes } =
 
 square : Model -> Html msg
 square { media } =
-    div [ class "square --background" ]
-        [ div [ class "animated fadeInLeft faster" ]
-            [ img [ src <| getStringAt media.digit media.lunchImgs ] []
-            ]
-        ]
+    div [ class "square animated fadeIn faster lunch-img", style "background-image" <| "url(" ++ (getStringAt media.digit media.lunchImgs) ++")" ]
+            []
 
 
 course : LunchDish -> Html msg
@@ -101,9 +79,8 @@ course { name, emojis } =
                     { label = a, name_ = String.concat b }
     in
     div [ class "lunch-course" ]
-        [ strong [ class "course-label" ] [ text label ]
-        , div [ class "course-dish" ]
-            [ div [] [ text <| unescape <| name_ ]
+        [ div [ class "course-dish" ]
+            [ div [] [ text <| unescape <| label ++ " - " ++ name_ ]
             , div [] <| List.map emoji emojis
             ]
         ]

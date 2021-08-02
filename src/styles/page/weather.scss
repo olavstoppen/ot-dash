@@ -1,5 +1,8 @@
 .weather-page {
 background-color: $ot-black;
+.clock {
+  color: $ot-white;
+}
 .weather-content {
   grid-column: 3 / span 9;
   grid-row: 6 / span 10;
