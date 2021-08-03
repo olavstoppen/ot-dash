@@ -74,7 +74,7 @@ init { apiKey, pageCountdownMillis } url key =
                 , defaultCountdown = pageCountdownMillis
                 , available =
                     [ Lunch
-                    , Slack
+                    --, Slack
                     , Transit
                     , Weather
                     ]
@@ -195,3 +195,4 @@ viewPageColor model =
 
         Surf ->
             "surf-page"
+

@@ -33,7 +33,7 @@
     grid-column: 2 / span 13;
     grid-row: 5 / span 3;
     overflow: hidden;
-
+    color: white;
     > * {
       height: 100%;
     }
@@ -41,6 +41,7 @@
     h1 {
       font-size: calc(16px + 2.5vmax);
       font-weight: 600;
+      mix-blend-mode: difference;
     }
   }
 
@@ -110,7 +111,6 @@
     $size: 100%;
     height: $size;
     width: $size;
-
 
     img {
       width: 100%;

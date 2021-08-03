@@ -21,13 +21,8 @@ viewRemoteData model remoteData viewfn bg =
                 ]
 
         Loading ->
-            div [ class "page" ]
-                [ div [ class "title" ]
-                    [ div [ class "animated fadeInDown faster" ]
-                        [ h1 [] [ text "Laster... ⏳" ]
-                        ]
-                    ]
-                ]
+           div [ class "page" ]
+                        [loadingAnim]
 
         Failure err ->
             div [ class "page" ]
@@ -44,7 +39,7 @@ viewRemoteData model remoteData viewfn bg =
                 ]
 
         Success _ ->
-            viewfn model
+            viewfn model                               
 
 
 httpErrorToString : Error -> String
@@ -68,9 +63,8 @@ httpErrorToString err =
 
 viewBackground : Model -> String -> Html msg
 viewBackground { here } bgColorClass =
-    div [ class "background" ]
-        [ div [ class (bgColorClass ++ " background__page") ] [ viewDayDate here, viewClock here ]
-        , div [ class "background__sidebar" ] []
+    div [ class <| "background " ++ bgColorClass ]
+        [ div [ class (bgColorClass ++ " background__page") ] [ viewDayDate here, viewClock here]
         ]
 
 viewDayDate : Here -> Html msg
@@ -130,3 +124,15 @@ viewLinkFooter =
     div [ class "link__footer" ]
         [ div [ class "animated fadeInLeft100 link__footer__bit" ] []
         ]
+
+
+
+loadingAnim : Html msg
+loadingAnim =
+    div [class "ot-logo-loader"][
+       div [class "ot-o"][],
+       div [class "ot-t-wrapper"][
+           div [class "ot-t-1"][],
+           div [class "ot-t-2"][]
+       ]
+    ]
