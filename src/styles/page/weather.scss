@@ -1,97 +1,94 @@
 .weather-page {
-background-color: $ot-black;
-.clock {
-  color: $ot-white;
-}
-.weather-content {
-  grid-column: 3 / span 9;
-  grid-row: 6 / span 10;
-  .weather-today {
-    color: $white;
-    .today-status {
-      display: flex;
-      flex-direction: column;
-      * > {
-        height: 100%;
+  background-color: $ot-black;
+  .clock {
+    color: $ot-white;
+  }
+  .weather-content {
+    grid-column: 3 / span 9;
+    grid-row: 6 / span 10;
+    .weather-today {
+      color: $white;
+      .today-status {
+        display: flex;
+        flex-direction: column;
+        * > {
+          height: 100%;
+        }
+
+        img {
+          height: 13vmax;
+          /* TODO: weirdest way to make an image silhouette white, will be used extensively later for new profile perhaps*/
+          filter: sepia(100%) saturate(70%) hue-rotate(0) brightness(1) contrast(117%) grayscale(100%);
+        }
+
+        .today-temperature {
+          font-size: calc(16px + 7vmax);
+          line-height: calc(16px + 7vmax);
+          font-weight: 300;
+        }
       }
 
-      img {
-        height: 13vmax;
-        /* TODO: weirdest way to make an image silhouette white, will be used extensively later for new profile perhaps*/
-        filter: sepia(100%) saturate(70%) hue-rotate(0) brightness(1) contrast(117%) grayscale(100%);
+      .today-details {
+        display: flex;
+        font-weight: 200;
+        font-size: calc(16px + 0.75vmax);
+        margin-top: 3rem;
+
+        * {
+          margin-right: 2rem;
+        }
       }
-
-      .today-temperature {
-        font-size: calc(16px + 7vmax);
-        line-height: calc(16px + 7vmax);
-      font-weight: 300;
+      .today-description {
+        font-weight: 200;
+        margin-top: 2rem;
+        line-height: calc(1.1em + 0.75vmax);
+        font-size: calc(16px + 0.75vmax);
       }
-    }
-
-    .today-details { 
-      display: flex;
-      font-weight: 200;
-      font-size: calc(16px + 0.75vmax);
-      margin-top: 3rem;;
-
-      * {
-        margin-right: 2rem;
-      }
-
-    }
-    .today-description {
-      font-weight: 200;
-      margin-top: 2rem;;
-      line-height: calc(1.1em + 0.75vmax);
-      font-size: calc(16px + 0.75vmax);
-    }
-
     }
   }
 
   .weather-footer {
     grid-column: 14 / span 6;
     grid-row: 6 / span 3;
-  
-  .weather-forecasts {
-    display: flex;
-    flex-direction: column;
-    
-    .weather-forecast {
+
+    .weather-forecasts {
       display: flex;
-      color: $ot-white;
-      padding: 1rem 0 1rem 0;
-      flex-direction: row;
-      align-items: center;
-      margin-right: 1.5vmax;
-      width: 100%;
-      font-weight: 200;
-      border-top: 1px #ffffff14 solid;
-      font-size: calc(16px + 0.75vmax);
-      &:last-child {
-        margin-right: 0;
-      }
+      flex-direction: column;
 
-      .forecast-symbol {
+      .weather-forecast {
         display: flex;
-        img {
-          height: 4vmax;
-        }
-      }
-
-      .forecast-temperature {
-        display: flex;
+        color: $ot-white;
+        padding: 1rem 0 1rem 0;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 1.5vmax;
         width: 100%;
-        justify-content: flex-end;
-        margin-right: 2rem;
-      }
+        font-weight: 200;
+        border-top: 1px #ffffff14 solid;
+        font-size: calc(16px + 0.75vmax);
+        &:last-child {
+          margin-right: 0;
+        }
 
-      .forecast-day {
-        display: flex;
-        justify-content: center;
+        .forecast-symbol {
+          display: flex;
+          img {
+            height: 4vmax;
+          }
+        }
+
+        .forecast-temperature {
+          display: flex;
+          width: 100%;
+          justify-content: flex-end;
+          margin-right: 2rem;
+        }
+
+        .forecast-day {
+          display: flex;
+          justify-content: center;
+        }
       }
     }
   }
-  }
-  
 }

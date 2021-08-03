@@ -79,6 +79,6 @@ square _ =
     div [ class "square transit-map-wrapper" ]
         [ div [ class "animated fadeIn faster delay-2s transit-map iframe-wrapper" ]
             [ --iframe [ class "", src "https://www.kolumbus.no/ruter/kart/sanntidskart/?c=58.914520,5.732501,14&lf=all&vt=bus,ferry" ] [ text "Loading" ]
-             iframe [ class "", src "https://kart.kolumbus.no/?c=58.914520,5.732501,14&lineName=3,2,X31,6,59" ] [ text "Loading" ]
+             iframe [ class "", src "https://kart.kolumbus.no/?c=58.907976,5.732836,14,14&lineName=3,2,X31,6,59" ] [ text "Loading" ]
             ]
         ]
