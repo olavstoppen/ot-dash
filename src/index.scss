@@ -1,7 +1,9 @@
 @import "~modern-normalize/modern-normalize.css";
 @import "~animate.css/animate.css";
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@200;300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400&display=swap");
 @import "styles/colors";
+@import "styles/loading_anim";
 
 // Pages
 @import "styles/page";
@@ -19,14 +21,13 @@
 body {
   background: $white;
   color: $black;
-  font-family: "Lato", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
 
 main {
-  display: relative;
   height: 100vh;
   width: 100vw;
   line-height: calc(1.1em + 0.5vmax);
@@ -53,16 +54,19 @@ header {
 
 .background {
   position: fixed;
-  display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: 15fr 6fr 2fr;
-  grid-template-rows: 100%;
-  grid-template-areas: "page middle sidebar";
-  z-index: -1;
+  font-weight: 200;
+  transition: background-color .2s ease-in-out;
+
   @at-root #{&}__page {
+    transition: background-color 0.2s ease-in-out;
     grid-area: page;
-    background: $white;
+    display: flex;
+    justify-content: space-between;
+    grid-column: 1 / span 2;
+    font-size: 2rem;
+    color: white;
   }
   @at-root #{&}__divider {
     background: $black;
@@ -75,13 +79,21 @@ header {
 }
 
 nav.sidebar {
+  position: fixed;
+  right: -7rem;
+  top: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
-
+  background-color: #2f2f2f;
+  transition: right .2s ease-in-out;
+  &:hover {
+    opacity: 1;
+  right: 0px;
+  }
   a {
     display: flex;
     flex-direction: column;
@@ -140,41 +152,10 @@ nav.sidebar {
 }
 
 .layout {
-  display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: 21fr 2fr;
-  grid-template-rows: 100%;
-  grid-template-areas: "page sidebar";
-
-  .sidebar {
-    grid-area: sidebar;
-  }
-
   .page {
     grid-area: page;
-  }
-}
-
-.ellipse {
-  $size: calc(16px + 2vmax);
-  background: $white;
-  color: $black;
-  fill: $black;
-  border-radius: 50%;
-  width: $size;
-  height: $size;
-  min-width: $size;
-  min-height: $size;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0.1vmax solid $black;
-
-  &.active {
-    background: $black;
-    color: $white;
-    fill: $white;
   }
 }
 
@@ -248,7 +229,7 @@ nav.sidebar {
 
 .clock {
   margin: 0.5vmax 1vmax;
-  float: right;
+  transition: color 0.2s ease-in-out;
 }
 
 /* CUSTOM ANIMATIONS */
@@ -278,7 +259,7 @@ nav.sidebar {
   from {
     opacity: 0;
     -webkit-transform: translate3d(-10%, 0, 0);
-    transform: translate3d( -10%, 0, 0);
+    transform: translate3d(-10%, 0, 0);
   }
 
   to {
@@ -296,7 +277,7 @@ nav.sidebar {
   from {
     opacity: 0;
     -webkit-transform: translate3d(-100%, 0, 0);
-    transform: translate3d( -100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
 
   to {

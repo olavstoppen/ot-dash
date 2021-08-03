@@ -50,7 +50,7 @@ main =
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch
-        [ Time.every 1000 EverySecond
+        [ Time.every 5000 EverySecond
         , Time.every (1000 * 60) EveryMinute
         , Time.every (1000 * 60 * 60) EveryHour
         , Time.every (1000 * 60 * 60 * 24) EveryDay
@@ -74,7 +74,7 @@ init { apiKey, pageCountdownMillis } url key =
                 , defaultCountdown = pageCountdownMillis
                 , available =
                     [ Lunch
-                    , Slack
+                    --, Slack
                     , Transit
                     , Weather
                     ]
@@ -112,7 +112,8 @@ init { apiKey, pageCountdownMillis } url key =
 view : Model -> Html Msg
 view model =
     main_ []
-        [ viewBackground model
+        [ viewBackground model 
+        <| viewPageColor model
         , div [ class "layout" ]
             [ viewPage model
             , viewSidebar model
@@ -124,10 +125,10 @@ viewPage : Model -> Html Msg
 viewPage model =
     case model.pages.active of
         Transit ->
-            viewRemoteData model .publicTransport Transit.view
+            viewRemoteData model .publicTransport Transit.view ""
 
         Slack ->
-            viewRemoteData model .slackEvents Slack.view
+            viewRemoteData model .slackEvents Slack.view ""
 
         Birthday person ->
             case model.birthdays of
@@ -141,22 +142,57 @@ viewPage model =
                         ]
 
         Weather ->
-            viewRemoteData model .weatherInfo Weather.view
+            viewRemoteData model .weatherInfo Weather.view "s"
 
         Instagram ->
-            viewRemoteData model .instagram Instagram.view
+            viewRemoteData model .instagram Instagram.view ""
 
         Lunch ->
-            viewRemoteData model .lunchMenu Lunch.view
+            viewRemoteData model .lunchMenu Lunch.view ""
 
         Calendar ->
-            viewRemoteData model .calendar Calendar.view
+            viewRemoteData model .calendar Calendar.view ""
 
         Video ->
-            viewRemoteData model .publicTransport Video.view
+            viewRemoteData model .publicTransport Video.view ""
 
         Traffic ->
-            viewRemoteData model .publicTransport Traffic.view
+            viewRemoteData model .publicTransport Traffic.view ""
 
         Surf ->
-            viewRemoteData model .weatherInfo Surf.view
+            viewRemoteData model .weatherInfo Surf.view ""
+
+
+viewPageColor : Model -> String
+viewPageColor model =
+    case model.pages.active of
+        Transit ->
+            "transit-page"
+
+        Slack ->
+            "slack-page"
+
+        Birthday person ->
+            "birthday-page"
+
+        Weather ->
+            "weather-page"
+
+        Instagram ->
+            "instagram-page"
+
+        Lunch ->
+            "lunch-page"
+
+        Calendar ->
+            "calendar-page"
+
+        Video ->
+            "video-page"
+
+        Traffic ->
+            "traffic-page"
+
+        Surf ->
+            "surf-page"
+

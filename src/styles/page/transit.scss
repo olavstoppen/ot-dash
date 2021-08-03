@@ -1,21 +1,30 @@
 .transit-page {
-  .transit-map {
-    box-shadow: /* ie */
-                 0px -10px 15px -6px  rgba(237,235,232, .1), /* top - THE RED SHADOW */
-                 0px  0px  35px  0px  rgba(237,235,232,.1), /* bottom */
-                 5px  0px  45px  0px  rgba(121, 192, 253, 0.1), /* right */
-                -5px  0px  15px  00px  rgba(237,235,232, .1); /* left */
+  background-color: $ot-white;
+  .clock {
+    color: $ot-black;
   }
 }
 
 .transit-page {
-  .transit-map,
-  .transit-map > iframe {
-    $size: 100%;
-    height: $size;
-    width: $size;
+  .transit-map-wrapper {
+    overflow: hidden;
     border-radius: 8px;
-    
+    box-shadow: /* ie */ 0px -10px 15px -6px rgba(237, 235, 232, 0.1),
+      /* top - THE RED SHADOW */ 0px 0px 35px 0px rgba(237, 235, 232, 0.1),
+      /* bottom */ 5px 0px 45px 0px rgba(121, 192, 253, 0.1), /* right */ -5px 0px 15px 00px rgba(237, 235, 232, 0.1); /* left */
+    .transit-map {
+      position: relative;
+      height: 124%;
+      top: -80px;
+      width: 110%;
+    }
+
+    .transit-map iframe {
+      $size: 100%;
+      height: $size;
+      width: $size;
+      border-radius: 8px;
+    }
   }
 
   .transit-departures {
@@ -27,20 +36,62 @@
       flex-direction: row;
       align-items: center;
       border-bottom: 1px solid $grey-light;
-      padding: 16px 0;
+      padding: 2rem 0;
+      font-size: 2rem;
+
+      .line-tag-wrapper {
+        flex: 1;
+        .line-tag {
+          border-radius: 8px;
+          padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+          font-weight: 300;
+          text-align: center;
+          margin-right: auto;
+          display: inline-block;
+        }
+        .line-2 {
+          background-color: $ot-orange;
+          color: $ot-white;
+        }
+        .line-3 {
+          background-color: $ot-blue;
+          color: $ot-white;
+        }
+        .line-6 {
+          background-color: $ot-yellow;
+          color: $ot-black;
+        }
+        .line-x31 {
+          background-color: $ot-magenta;
+          color: $ot-white;
+        }
+        .line-train {
+          background-color: $ot-green;
+          color: $ot-black;
+        }
+        .line-unknown {
+          background-color: $ot-black;
+          color: $ot-white;
+        }
+      }
+
+      .line-destination {
+        flex: 2;
+        font-weight: 200;
+        font-size: 2.25rem;
+      }
+      .line-time {
+        flex: 1;
+        text-align: end;
+      }
 
       &:last-child {
         border-bottom: none;
       }
-
-      > * {
-        margin-right: 1vmax;
-
-        &:last-child {
-          margin-right: 0;
+      &:last-child {
+        /*margin-right: 0;
           margin-left: auto;
-          justify-self: flex-end;
-        }
+          justify-self: flex-end;*/
       }
     }
   }

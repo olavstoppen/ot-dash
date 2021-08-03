@@ -1,25 +1,52 @@
 .lunch-page {
+  background-color: $ot-blue;
+  /*Can be found in in background__page*/
+  .clock {
+    color: $ot-white;
+  }
+  .lunch-img {
+    border-radius: 8px;
+  }
   .lunch {
     display: flex;
     flex-direction: column;
+    color: $ot-white;
+    font-weight: 200;
+
+    .day {
+      &__active {
+        font-weight: 400;
+        position: relative;
+        &::before {
+          position: absolute;
+          left: -2.25rem;
+          content: '➞';
+        }
+      }
+    }
 
     .lunch-day {
       display: flex;
       align-items: center;
       padding-bottom: 1vmax;
-      border-bottom: 1px solid $grey-light;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
       line-height: calc(1.1em + 0.3vh);
-      font-size: calc(16px + 0.3vh);
+      font-size: 2rem;
 
       &:not(:first-child) {
         margin-top: 1vmax;
       }
+
     }
 
     .lunch-courses {
       margin-left: 2vmax;
 
       .lunch-course {
+        margin-bottom: .5rem;;
+        &:last-child {
+          margin-bottom: 0;
+        }
         display: flex;
         align-items: center;
 

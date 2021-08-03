@@ -33,7 +33,7 @@
     grid-column: 2 / span 13;
     grid-row: 5 / span 3;
     overflow: hidden;
-
+    color: white;
     > * {
       height: 100%;
     }
@@ -41,6 +41,7 @@
     h1 {
       font-size: calc(16px + 2.5vmax);
       font-weight: 600;
+      mix-blend-mode: difference;
     }
   }
 
@@ -51,6 +52,10 @@
     font-weight: 400;
     @at-root #{&}--wide {
       grid-column: 2 / span 18;
+      grid-row: 6 / span 10;
+    }
+    @at-root #{&}--box {
+      grid-column: 2 / span 10;
       grid-row: 6 / span 10;
     }
     @at-root #{&}--tall {
@@ -106,7 +111,6 @@
     $size: 100%;
     height: $size;
     width: $size;
-
 
     img {
       width: 100%;
