@@ -12,6 +12,7 @@ import Services exposing (fetchBirthdays, fetchCalendar, fetchInstagram, fetchLu
 import Time exposing (Posix, toWeekday)
 import Url
 import Url.Parser as UrlParser exposing ((</>), Parser)
+import Model exposing (Person)
 
 
 
@@ -148,6 +149,8 @@ update message model =
             case res of
                 Ok birthdays ->
                     let
+                        birthdaysMock =  
+                            [Person "Firsten-Andresen" "Lastestad" ""]
                         updatedAvailable =
                             List.map Birthday birthdays
                                 |> List.append model.pages.available
