@@ -23,6 +23,7 @@ import Updates exposing (update, urlParser)
 import Url exposing (Url)
 import Url.Parser as UrlParser
 import Views exposing (viewBackground, viewRemoteData, viewSidebar)
+import Model exposing (Person)
 
 
 
