@@ -6,6 +6,7 @@ import Html.Attributes exposing (class, href, style)
 import Http exposing (Error(..))
 import Model exposing (Here, Model, Page(..), RemoteData(..))
 import String
+import Html exposing (span)
 
 
 viewRemoteData : Model -> (Model -> RemoteData a) -> (Model -> Html msg) -> String -> Html msg
@@ -13,9 +14,10 @@ viewRemoteData model remoteData viewfn bg =
     case remoteData model of
         NotAsked ->
             div [ class "page" ]
-                [ div [ class "title" ]
+                [  loadingAnim <| viewPageLogoColor model,
+                    div [ class "bottom-title" ]
                     [ div [ class "animated fadeInDown faster" ]
-                        [ h1 [] [ text "Starter opp... ️️🏗️" ]
+                        [ h1 [] [ text "Starter opp..." ]
                         ]
                     ]
                 ]
@@ -26,20 +28,18 @@ viewRemoteData model remoteData viewfn bg =
 
         Failure err ->
             div [ class "page" ]
-                [ div [ class "title" ]
+                [  loadingAnim <| viewPageLogoColor model,
+                    div [ class "bottom-title" ]
                     [ div [ class "animated fadeInDown faster" ]
-                        [ h1 [] [ text "Pingu føler seg ikke så bra... \u{1F912}" ]
-                        ]
-                    ]
-                , div [ class "content" ]
-                    [ div [ class "animated fadeInDown faster " ]
-                        [ div [] [ text <| httpErrorToString err ]
+                        [ h1 [] [ text "Pingu føler seg ikke så bra..." ],
+                        span [] [ text  <|httpErrorToString err ]
                         ]
                     ]
                 ]
 
         Success _ ->
             viewfn model
+            
 
 
 

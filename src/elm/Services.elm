@@ -11,6 +11,7 @@ import Time exposing (Posix, Weekday(..), millisToPosix)
 pingubotUrl : String -> String
 pingubotUrl path =
     "https://ot-pingu-server.azurewebsites.net/" ++ path
+    --"http://localhost:4001/" ++ path
 
 
 pingubotHeaders : String -> List Http.Header

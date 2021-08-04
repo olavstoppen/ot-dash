@@ -141,4 +141,16 @@
       // }
     }
   }
+
+  .bottom-title {
+    grid-column: 8 / span 8;
+    grid-row: 21;
+    text-align: center;
+    mix-blend-mode: difference;
+    color:white;
+    margin-bottom: 1rem;;
+    * > h1 {
+      margin: 1rem 0;
+    }
+  }
 }

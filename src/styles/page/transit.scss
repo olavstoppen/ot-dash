@@ -26,10 +26,14 @@
       border-radius: 8px;
     }
   }
-
+  .transit-station-text {
+    color: $ot-black;
+    font-weight: 200;
+  }
   .transit-departures {
     display: flex;
     flex-direction: column;
+
 
     .transit-departure {
       display: flex;
@@ -68,6 +72,10 @@
         .line-train {
           background-color: $ot-green;
           color: $ot-black;
+        }
+        .line-region-train {
+          background-color: $ot-green;
+          color: $ot-white;
         }
         .line-unknown {
           background-color: $ot-black;
