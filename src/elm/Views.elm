@@ -1,6 +1,6 @@
 module Views exposing (viewBackground, viewRemoteData, viewSidebar)
 
-import Helpers exposing (formatDayDate, formatDateTimeName, fullName, getPageKey, getPageTitle, getWeekDayName)
+import Helpers exposing (formatDateTimeName, formatDayDate, fullName, getPageKey, getPageTitle, getWeekDayName)
 import Html exposing (Html, a, div, h1, nav, text)
 import Html.Attributes exposing (class, href, style)
 import Http exposing (Error(..))
@@ -12,7 +12,7 @@ viewRemoteData : Model -> (Model -> RemoteData a) -> (Model -> Html msg) -> Stri
 viewRemoteData model remoteData viewfn bg =
     case remoteData model of
         NotAsked ->
-            div [ class "page"]
+            div [ class "page" ]
                 [ div [ class "title" ]
                     [ div [ class "animated fadeInDown faster" ]
                         [ h1 [] [ text "Starter opp... ️️🏗️" ]
@@ -21,8 +21,8 @@ viewRemoteData model remoteData viewfn bg =
                 ]
 
         Loading ->
-           div [ class "page" ]
-                        [loadingAnim]
+            div [ class "page" ]
+                [ loadingAnim <| viewPageLogoColor model]
 
         Failure err ->
             div [ class "page" ]
@@ -39,7 +39,8 @@ viewRemoteData model remoteData viewfn bg =
                 ]
 
         Success _ ->
-            viewfn model                               
+            viewfn model
+
 
 
 httpErrorToString : Error -> String
@@ -64,8 +65,9 @@ httpErrorToString err =
 viewBackground : Model -> String -> Html msg
 viewBackground { here } bgColorClass =
     div [ class <| "background " ++ bgColorClass ]
-        [ div [ class (bgColorClass ++ " background__page") ] [ viewDayDate here, viewClock here]
+        [ div [ class (bgColorClass ++ " background__page") ] [ viewDayDate here, viewClock here ]
         ]
+
 
 viewDayDate : Here -> Html msg
 viewDayDate here =
@@ -73,6 +75,7 @@ viewDayDate here =
         [ text <|
             formatDayDate here
         ]
+
 
 viewClock : Here -> Html msg
 viewClock here =
@@ -126,13 +129,45 @@ viewLinkFooter =
         ]
 
 
+loadingAnim : String -> Html msg
+loadingAnim color =
+    div [ class "ot-logo-loader" ]
+        [ div [ class "ot-o", style "border" <| color ++ " 2.5rem solid"] []
+        , div [ class "ot-t-wrapper" ]
+            [ div [ class "ot-t-1", style "background-color" color] []
+            , div [ class "ot-t-2", style "background-color" color ] []
+            ]
+        ]
+        
+viewPageLogoColor : Model -> String
+viewPageLogoColor model =
+    case model.pages.active of
+        Transit ->
+            "#2B2B2B"
 
-loadingAnim : Html msg
-loadingAnim =
-    div [class "ot-logo-loader"][
-       div [class "ot-o"][],
-       div [class "ot-t-wrapper"][
-           div [class "ot-t-1"][],
-           div [class "ot-t-2"][]
-       ]
-    ]
+        Slack ->
+            "#2B2B2B"
+
+        Birthday person ->
+            "#f5f5f5"
+
+        Weather ->
+            "#f5f5f5"
+
+        Instagram ->
+            "#2B2B2B"
+
+        Lunch ->
+            "#f5f5f5"
+
+        Calendar ->
+            "#2B2B2B"
+
+        Video ->
+            "#2B2B2B"
+
+        Traffic ->
+            "#2B2B2B"
+
+        Surf ->
+            "#2B2B2B"

@@ -5,14 +5,14 @@
   grid-row: 12;
   display: flex;
   animation: rotate 4s cubic-bezier(0.75, 0.12, 0.02, 1.04) infinite;
-  mix-blend-mode: difference;
+ 
 
   /*
   */
   .ot-o {
     width: 50%;
     height: 10rem;
-    border: 2.5rem $ot-white solid;
+    
     border-radius: 50%;
   }
   .ot-t-wrapper {
