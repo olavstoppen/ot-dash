@@ -136,6 +136,7 @@ loadingAnim color =
         , div [ class "ot-t-wrapper" ]
             [ div [ class "ot-t-1", style "background-color" color] []
             , div [ class "ot-t-2", style "background-color" color ] []
+            , div [ class "ot-t-3"] []
             ]
         ]
         

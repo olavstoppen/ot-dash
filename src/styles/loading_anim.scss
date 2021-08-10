@@ -1,51 +1,66 @@
 .ot-logo-loader {
-  width: 20rem;
-  height: 10rem;
   grid-column: 11;
   grid-row: 12;
   display: flex;
-  animation: rotate 4s cubic-bezier(0.75, 0.12, 0.02, 1.04) infinite;
- 
+  animation: rotate2 4s cubic-bezier(0.75, 0.12, 0.02, 1.04) infinite;
+  position: relative;
 
   /*
   */
   .ot-o {
-    width: 50%;
+    width: 10rem;
     height: 10rem;
-    
+    position: relative;
     border-radius: 50%;
   }
+  $origin: -50% 50%;
   .ot-t-wrapper {
     display: flex;
-
+    position: absolute;
+    animation: rotate 4s cubic-bezier(0.75, 0.12, 0.02, 1.04) infinite;
+    transform-origin: $origin;
+    left: 100%;
+    
     .ot-t-1 {
       width: 2.5rem;
       height: 10rem;
       background-color: $ot-white;
     }
     .ot-t-2 {
-      margin-top: 50%;
+      margin-top: 3.75rem;
       width: 5rem;
       height: 2.5rem;
       background-color: $ot-white;
     }
+    .ot-t-3 {
+      width: 2.55rem;
+    }
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
-@keyframes rotate {
+@keyframes rotate2 {
   0% {
-    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  25% {
-    -webkit-transform: rotate(90deg);
-  }
-  50% {
-    -webkit-transform: rotate(180deg);
-  }
-  75% {
-    -webkit-transform: rotate(270deg);
-  }
+
   100% {
-    -webkit-transform: rotate(360deg);
+    transform: rotate(0deg);
   }
 }
