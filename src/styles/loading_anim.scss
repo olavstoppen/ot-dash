@@ -12,6 +12,7 @@
     height: 10rem;
     position: relative;
     border-radius: 50%;
+    margin: 0.625rem;
   }
   $origin: -50% 50%;
   .ot-t-wrapper {
@@ -20,7 +21,7 @@
     animation: rotate 4s cubic-bezier(0.75, 0.12, 0.02, 1.04) infinite;
     transform-origin: $origin;
     left: 100%;
-    
+    padding: 0.625rem;
     .ot-t-1 {
       width: 2.5rem;
       height: 10rem;
